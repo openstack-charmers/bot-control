@@ -18,7 +18,7 @@ p=openstack/charm-neutron-openvswitch
 p=openstack/charm-nova-cloud-controller
 p=openstack/charm-nova-compute
 p=openstack/charm-odl-controller
-p=openstack/charm-p=openstack-dashboard
+p=openstack/charm-openstack-dashboard
 p=openstack/charm-openvswitch-odl
 p=openstack/charm-percona-cluster
 p=openstack/charm-rabbitmq-server
