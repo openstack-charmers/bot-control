@@ -16,7 +16,7 @@ Usage examples:
   Expand all matches using all available environment variables:
     ./env-render FILENAME
 
-  Expand all ${} matches using only the listed environment variables:
+  Expand all matches using only the listed environment variables:
     ./env-render FILENAME "HOME,USER"
 
 
