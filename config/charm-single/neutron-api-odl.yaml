@@ -1,0 +1,5 @@
+neutron-api-odl:
+  options:
+    'install-url': ${AMULET_ODL_LOCATION},
+    'http-proxy': ${AMULET_HTTP_PROXY},
+    'https-proxy': ${AMULET_HTTP_PROXY}
