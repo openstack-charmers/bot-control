@@ -42,7 +42,7 @@ Usage examples:
   Expand all matches using all available environment variables:
     ./%prog FILENAME
 
-  Expand all ${} matches using only the listed environment variables:
+  Expand all matches using only the listed environment variables:
     ./%prog FILENAME "HOME,USER"
 '''
 
@@ -56,8 +56,9 @@ def option_handler():
                       help='Enable debug logging.  (Default: False)',
                       dest='debug', action='store_true',
                       default=False)
-    parser.add_option('-y', '--confirm',
-                      help='Required to overwrite.  (Default: False)',
+    parser.add_option('-y', '--yes',
+                      help='Do not ask for confirmation to overwrite.'
+                      '  (Default: False)',
                       dest='confirm_overwrite', action='store_true',
                       default=False)
 

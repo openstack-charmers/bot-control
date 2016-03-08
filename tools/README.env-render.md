@@ -23,5 +23,5 @@ Usage examples:
 Options:
   -h, --help       show this help message and exit
   -d, -v, --debug  Enable debug logging.  (Default: False)
-  -y, --confirm    Required to overwrite.  (Default: False)
+  -y, --yes        Do not ask for confirmation to overwrite.  (Default: False)
 ```
