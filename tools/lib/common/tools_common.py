@@ -10,6 +10,7 @@ import string
 import yaml
 
 from copy import deepcopy
+from jinja2 import Environment, FileSystemLoader
 
 
 def read_yaml(the_file):
@@ -49,6 +50,35 @@ def recursive_dict_key_search(data, key):
             ret = recursive_dict_key_search(val, key)
             if ret is not None:
                 return ret
+
+
+def render(source, target, context, templates_dir=None):
+    '''Render a template.
+
+       The `source` path, if not absolute, is relative to the `templates_dir`.
+
+       The `target` path should be absolute.
+
+       The context should be a dict containing the values to be replaced in
+       the template.
+
+       If omitted, `templates_dir` defaults to the current working dir.
+    '''
+
+    if templates_dir is None:
+        templates_dir = os.getcwd()
+    loader = Environment(loader=FileSystemLoader(templates_dir))
+    try:
+        source = source
+        template = loader.get_template(source)
+    except Exception:
+        logging.error('Could not load template {} from {}.'.format(
+            source, templates_dir))
+        raise
+
+#    safe_mkdir(templates_dir)
+    with open(target, 'w') as _file:
+        _file.write(template.render(context))
 
 
 # above, ripped from uosci common
@@ -174,3 +204,16 @@ def extract_services(org_bundle_dict, svcs_include="ALL", svcs_exclude=None,
                                                 'constraints')
 
     return new_bundle_dict
+
+
+def prompt_yes_no(question=None):
+    '''Prompt for yes or no, return True or False.'''
+    if not question:
+        question = "Proceed?"
+
+    _response = input('{}: [y/n]'.format(question))
+
+    if not _response or _response[0].lower() != 'y':
+        return False
+    else:
+        return True

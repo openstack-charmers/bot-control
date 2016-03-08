@@ -1,0 +1,8 @@
+*__pycache__*
+*.pyc
+.coverage
+.testrepository
+.tox
+*.sw[nop]
+*.pyc
+

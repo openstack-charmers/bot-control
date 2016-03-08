@@ -1,7 +1,7 @@
 # bot-control
 
 ## About
-Ubuntu OpenStack Charm CI (UOSCI) control files and config repository for test automation.
+Ubuntu OpenStack Charm CI (UOSCI) control file, config file, and tool repository for charm test automation.
 
 ## Structure
 * . (root dir)
