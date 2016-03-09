@@ -67,16 +67,19 @@ Apply the environment variables to the charm config options as defined in `ceph.
   # Grab the configs
   mkdir -p $HOME/tools
   git clone https://github.com/openstack-charmers/bot-control.git $HOME/tools/bot-control --depth 1
-  
+
+  # Set an environment variable
+  export TEST_CEPH_FSID="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+
   # Render the config (inject env vars into template)
   $HOME/tools/bot-control/tools/env-render bot-control/config/charm-single/ceph.yaml
 ```
 
-The `bot-control/config/charm-single/ceph.yaml` will look like this at this point (unless env vars were set in advance):
+The `bot-control/config/charm-single/ceph.yaml` will look like this at this point, which is something we can feed to `juju set`:
 ```
 ceph:
   options:
-    fsid: 11111111-2222-3333-4444-555555555555
+    fsid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
     monitor-secret: AQCXrnZQwI7KGBAAiPofmKEXKxu5bUzoYLVkbQ==
 ```
 Continue on...
