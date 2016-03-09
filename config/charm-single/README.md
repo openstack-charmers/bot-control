@@ -70,7 +70,17 @@ Apply the environment variables to the charm config options as defined in `ceph.
   
   # Render the config (inject env vars into template)
   $HOME/tools/bot-control/tools/env-render bot-control/config/charm-single/ceph.yaml
-  
+```
+
+The `bot-control/config/charm-single/ceph.yaml` will look like this at this point (unless env vars were set in advance):
+```
+ceph:
+  options:
+    fsid: 11111111-2222-3333-4444-555555555555
+    monitor-secret: AQCXrnZQwI7KGBAAiPofmKEXKxu5bUzoYLVkbQ==
+```
+Continue on...
+```
   # Bootstrap, deploy, configure:
   juju bootstrap
   juju deploy ceph
