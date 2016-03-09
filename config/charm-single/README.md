@@ -9,9 +9,8 @@ Some charms may require a bit of minimal non-default configuration values in ord
 Those configurations reside here, where deemed necessary on a per-charm basis.  Some config data may be specific to the UOSCI lab, but can be modified to fit other systems.
 
 ## Files
-   - One file per charm name, such as:  `charmname.yaml`
    - One yaml file per charm name in the `bot-control/config/charm-single/` directory.
-   - Only include a file for a charm if a config override is necessary.
+   - Config files should only exist for charms where config overrides are necessary in the context of the charm-single test.
    - If no config file exists for a charm, the charm-single test deploys the charm purely with the default configuration values as defined in its config.yaml.
 
 ## Tools
@@ -62,23 +61,8 @@ ceph:
 ```
 ---
 
-## Usage Example:  Static Config
-Because the yaml file contains no template parsing, it is not necessary to use the `env-render` tool in this work flow.
-```
-  # Grab the configs
-  mkdir -p $HOME/tools
-  git clone https://github.com/openstack-charmers/bot-control.git $HOME/tools/bot-control --depth 1
-  
-  # Bootstrap, deploy, configure:
-  juju bootstrap
-  juju deploy foo
-  juju set foo --config=$HOME/tools/bot-control/config/charm-single/foo.yaml
-  
-  # Inspect the service's resultant configuration data
-  juju get foo
-```
-
 ## Usage Example:  Rendered Config from Environment Variables
+Apply the environment variables to the charm config options as defined in `ceph.yaml`, then deploy and apply the resultant configuration from that rendered yaml file.
 ```
   # Grab the configs
   mkdir -p $HOME/tools
@@ -94,4 +78,20 @@ Because the yaml file contains no template parsing, it is not necessary to use t
   
   # Inspect the service's resultant configuration data
   juju get ceph
+```
+
+## Usage Example:  Static Config
+Because the foo yaml file contains no variable templating, it is not necessary to use the `env-render` tool in this work flow.
+```
+  # Grab the configs
+  mkdir -p $HOME/tools
+  git clone https://github.com/openstack-charmers/bot-control.git $HOME/tools/bot-control --depth 1
+  
+  # Bootstrap, deploy, configure:
+  juju bootstrap
+  juju deploy foo
+  juju set foo --config=$HOME/tools/bot-control/config/charm-single/foo.yaml
+  
+  # Inspect the service's resultant configuration data
+  juju get foo
 ```
