@@ -1,12 +1,13 @@
 # bot-control
 
 ## About
-Ubuntu OpenStack Charm CI (UOSCI) control file, config file, and tool repository for charm test automation.
+Ubuntu OpenStack Charm CI (UOSCI) control files, config files, and tool repositories for charm test automation.
 
 ## Structure
-* . (root dir)
-  - Keep it clean.
-* config/*
-  - Non-sensitive configuration data related to test automation.
-* tools/*
-  - Stand-alone tools related to test automation tasks.
+* bot-control/config/*:
+    * Non-sensitive configuration data and templates related to test automation.
+    * [README: charm-single](https://github.com/openstack-charmers/bot-control/blob/master/config/charm-single/README.md)
+* bot-control/tools/*
+    * Stand-alone tools related to test automation tasks.
+    * [README: bundle-reducer](https://github.com/openstack-charmers/bot-control/blob/master/tools/README.bundle-reducer.md)
+    * [README: env-render](https://github.com/openstack-charmers/bot-control/blob/master/tools/README.env-render.md)
