@@ -22,10 +22,9 @@ The `bot-control/tools/env-render` tool is a generic utility which can be used t
 * Ex. `bot-control/config/charm-single/foo.yaml`:
 ```
 foo:
-  options:
-    knob: 4
-    lever: False
-    button: True
+  knob: 4
+  lever: False
+  button: True
 ```
 
 ## YAML File Example 2:  ODL Charms
@@ -40,10 +39,9 @@ foo:
 * Ex. `bot-control/config/charm-single/neutron-api-odl.yaml`:
 ```
 neutron-api-odl:
-  options:
-    install-url: {{ env['AMULET_ODL_LOCATION'] }}
-    http-proxy: {{ env['AMULET_HTTP_PROXY'] }}
-    https-proxy: {{ env['AMULET_HTTP_PROXY'] }}
+  install-url: {{ env['AMULET_ODL_LOCATION'] }}
+  http-proxy: {{ env['AMULET_HTTP_PROXY'] }}
+  https-proxy: {{ env['AMULET_HTTP_PROXY'] }}
 ```
 
 ## YAML File Example 3:  Ceph Charm
@@ -54,10 +52,8 @@ neutron-api-odl:
 * Ex. `bot-control/config/charm-single/ceph.yaml`:
 ```
 ceph:
-  options:
-    fsid: {{ env['TEST_CEPH_FSID'] or '11111111-2222-3333-4444-555555555555' }}
-    monitor-secret: {{ env['TEST_CEPH_MON_SEC'] or 'AQCXrnZQwI7KGBAAiPofmKEXKxu5bUzoYLVkbQ==' }}
-
+  fsid: {{ env['TEST_CEPH_FSID'] or '11111111-2222-3333-4444-555555555555' }}
+  monitor-secret: {{ env['TEST_CEPH_MON_SEC'] or 'AQCXrnZQwI7KGBAAiPofmKEXKxu5bUzoYLVkbQ==' }}
 ```
 ---
 
@@ -78,9 +74,8 @@ Apply the environment variables to the charm config options as defined in `ceph.
 The `bot-control/config/charm-single/ceph.yaml` will look like this at this point, which is something we can feed to `juju set`:
 ```
 ceph:
-  options:
-    fsid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
-    monitor-secret: AQCXrnZQwI7KGBAAiPofmKEXKxu5bUzoYLVkbQ==
+  fsid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+  monitor-secret: AQCXrnZQwI7KGBAAiPofmKEXKxu5bUzoYLVkbQ==
 ```
 Continue on...
 ```
