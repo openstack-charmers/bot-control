@@ -36,9 +36,9 @@ foo:
 
 * If one or more of the specified environment variables are not set, the template will render empty values for those configuration options.  To ensure successful configuration in cases where the required environment variables are not set, see the Ceph Charm Example.
 
-* Ex. `bot-control/config/charm-single/neutron-api-odl.yaml`:
+* Ex. `bot-control/config/charm-single/odl-controller.yaml`:
 ```
-neutron-api-odl:
+odl-controller:
   install-url: {{ env['AMULET_ODL_LOCATION'] }}
   http-proxy: {{ env['AMULET_HTTP_PROXY'] }}
   https-proxy: {{ env['AMULET_HTTP_PROXY'] }}
