@@ -9,7 +9,10 @@ Some charms may require a bit of minimal non-default configuration values in ord
 Those configurations reside here, where deemed necessary on a per-charm basis.  Some config data may be specific to the UOSCI lab, but can be modified to fit other systems.
 
 ## Files
-   - One yaml file per charm name in the `bot-control/config/charm-single/` directory.
+   - One yaml file per charm name, applies to all series/releases:
+       - `bot-control/config/charm-single/odl-controller.yaml`
+   - Optionally, the charm-single test will consume a series/release-based file name (with priority) if it exists, such as:
+       - `bot-control/config/charm-single/odl-controller-xenial.yaml`
    - Config files should only exist for charms where config overrides are necessary in the context of the charm-single test.
    - If no config file exists for a charm, the charm-single test deploys the charm purely with the default configuration values as defined in its config.yaml.
 
@@ -27,7 +30,7 @@ foo:
   button: True
 ```
 
-## YAML File Example 2:  ODL Charms
+## YAML File Example 2:  ODL Controller Charm
 * By default, the ODL charms reach out to the internet to download a sizable installer tarball.  With iterative testing, that could cause undesirable WAN contention.  To minimize internet bandwidth consumption with repetitive testing, UOSCI houses the ODL installer tarball as a blob in a local object store bucket, but that could be any http server.
 
 * The UOSCI test environment has restricted egress access, as do many enterprise networks.  An http proxy value is passed to the charm for use in retrieving any other required installation bits which are pre-authorized by that specific http proxy service.
