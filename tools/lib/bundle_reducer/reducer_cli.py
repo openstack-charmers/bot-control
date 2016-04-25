@@ -45,9 +45,10 @@ Usage examples:
   services, write to a new file, overwrite if it exists, with debug output on.
       %prog -yd -i my.yaml -o my_new.yaml -s "keystone,cinder"
 
-  Reduce to only keystone and cinder, with none of the directly-related
-  services, remove all constraints, write to a new file, with debug output on.
-      %prog -d -i my.yaml -o my_new.yaml -s "keystone,cinder" --Xr --Xc
+  Reduce to only keystone and cinder, with none of the other related
+  services, remove all constraints, remove inheritance targets and
+  write to a new file, with debug output on.
+      %prog -d -i my.yaml -o my_new.yaml -s "keystone,cinder" --Xr --Xc --Xi
 
   Reduce to only keystone and cinder, plus any related services, and
   overwrite existing file, with debug output on.
@@ -95,6 +96,10 @@ def option_handler():
     parser.add_option('--Xp', '--remove-placements',
                       help='Remove all placements for all services.',
                       dest='remove_placements', action='store_true',
+                      default=False)
+    parser.add_option('--Xi', '--remove-inheritance',
+                      help='Remove all inheritance for all targets.',
+                      dest='remove_inheritance', action='store_true',
                       default=False)
 
     params = parser.parse_args()
@@ -146,6 +151,7 @@ def main():
     # Additional Validation
     rm_constraints = opts.remove_constraints
     rm_placements = opts.remove_placements
+    rm_inheritance = opts.remove_inheritance
     exclude_related = opts.exclude_related
 
     if opts.exclude_services:
@@ -166,7 +172,8 @@ def main():
                                          svcs_exclude,
                                          exclude_related,
                                          rm_constraints,
-                                         rm_placements)
+                                         rm_placements,
+                                         rm_inheritance)
 
     # Write the outfile
     logging.info('Writing out file: {}'.format(opts.out_file))

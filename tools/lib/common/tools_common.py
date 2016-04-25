@@ -132,9 +132,22 @@ def rm_attr_from_services(org_bundle_dict, attr):
     return new_bundle_dict
 
 
+def rm_inheritance_targets(org_bundle_dict):
+    """Remove all targets which attempt to inherit from another target."""
+
+    new_bundle_dict = deepcopy(org_bundle_dict)
+
+    for (k, v) in org_bundle_dict.items():
+        if 'inherits' in v.keys():
+            logging.debug('Removing {} because it inherits'.format(k))
+            del new_bundle_dict[k]
+
+    return new_bundle_dict
+
+
 def extract_services(org_bundle_dict, svcs_include="ALL", svcs_exclude=None,
                      exclude_related=False, rm_constraints=False,
-                     rm_placements=False):
+                     rm_placements=False, rm_inheritance=False):
 
     new_bundle_dict = deepcopy(org_bundle_dict)
     svcs_whitelist = set()
@@ -202,6 +215,10 @@ def extract_services(org_bundle_dict, svcs_include="ALL", svcs_exclude=None,
     if rm_constraints:
         new_bundle_dict = rm_attr_from_services(new_bundle_dict,
                                                 'constraints')
+
+    # Remove inheritance
+    if rm_inheritance:
+        new_bundle_dict = rm_inheritance_targets(new_bundle_dict)
 
     return new_bundle_dict
 
