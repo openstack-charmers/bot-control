@@ -85,6 +85,11 @@ def option_handler():
                       'exclude. Wins over include and wins over include '
                       'related.  Do not use spaces.  (Default=None)',
                       action='store', type='string', dest='exclude_services')
+    parser.add_option('-t', '--render-target',
+                      help='Collaps and render a single target, including its'
+                      'inheritance of targets.',
+                      action='store', type='string', dest='render_target',
+                      default=None)
     parser.add_option('--Xr', '--exclude-related',
                       help='Exclude related services.',
                       dest='exclude_related', action='store_true',
@@ -98,7 +103,7 @@ def option_handler():
                       dest='remove_placements', action='store_true',
                       default=False)
     parser.add_option('--Xi', '--remove-inheritance',
-                      help='Remove all inheritance for all targets.',
+                      help='Remove all targets which utilize inheritance.',
                       dest='remove_inheritance', action='store_true',
                       default=False)
 
@@ -153,6 +158,7 @@ def main():
     rm_placements = opts.remove_placements
     rm_inheritance = opts.remove_inheritance
     exclude_related = opts.exclude_related
+    render_target = opts.render_target
 
     if opts.exclude_services:
         svcs_exclude = frozenset(opts.exclude_services.split(','))
@@ -171,6 +177,7 @@ def main():
                                          svcs_include,
                                          svcs_exclude,
                                          exclude_related,
+                                         render_target,
                                          rm_constraints,
                                          rm_placements,
                                          rm_inheritance)

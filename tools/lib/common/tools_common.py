@@ -9,6 +9,8 @@ import random
 import string
 import yaml
 
+import lib.common.control_data_common as control_data
+
 from copy import deepcopy
 from jinja2 import Environment, FileSystemLoader
 
@@ -115,8 +117,8 @@ def get_all_services(org_bundle_dict):
 
 
 def rm_attr_from_services(org_bundle_dict, attr):
-    """Remove specified key from all services, where attr is
-    commonly one of: to, constraints, or options."""
+    '''Remove specified key from all services, where attr is
+    commonly one of: to, constraints, or options.'''
 
     new_bundle_dict = deepcopy(org_bundle_dict)
 
@@ -124,7 +126,8 @@ def rm_attr_from_services(org_bundle_dict, attr):
         if 'services' in v.keys():
             _svcs = v['services']
             for (_svc, _svc_attrs) in _svcs.items():
-                if attr in _svc_attrs.keys():
+                if (isinstance(_svc_attrs, dict) and
+                        attr in _svc_attrs.keys()):
                     logging.debug('Removing {} from '
                                   '{}'.format(attr, _svc))
                     del new_bundle_dict[k]['services'][_svc][attr]
@@ -133,7 +136,7 @@ def rm_attr_from_services(org_bundle_dict, attr):
 
 
 def rm_inheritance_targets(org_bundle_dict):
-    """Remove all targets which attempt to inherit from another target."""
+    '''Remove all targets which attempt to inherit from another target.'''
 
     new_bundle_dict = deepcopy(org_bundle_dict)
 
@@ -145,9 +148,115 @@ def rm_inheritance_targets(org_bundle_dict):
     return new_bundle_dict
 
 
+def get_lineage(dict_data, target, lineage=None):
+    '''Determine recursive deployer style bundle inheritance
+    trail and return a list.'''
+
+    if not lineage:
+        lineage = [target]
+
+    if 'inherits' in dict_data[target].keys():
+        inherits = dict_data[target]['inherits']
+        logging.debug('{} inherits {}'.format(target, inherits))
+        lineage.append(inherits)
+        get_lineage(dict_data, inherits, lineage)
+    else:
+        logging.debug('Inheritance stops at {}'.format(target))
+
+    return lineage
+
+
+def get_fresh_bundle():
+    '''Construct a fresh bundle with no services, relations or series.'''
+    return {
+        'services': {},
+        'series': None,
+        'relations': []
+    }
+
+
+def validate_target_exists(bundle_dict, target):
+    '''Validate that a target exists in a bundle'''
+    return target in bundle_dict.keys()
+
+
+def validate_target_inherits(bundle_dict, target):
+    '''Validate that a target exists in a bundle, and that it
+    claims inheritance of any sort.'''
+    return (validate_target_exists(bundle_dict, target) and
+            'inherits' in bundle_dict[target])
+
+
+def render_target_inheritance(bundle_dict, render_target):
+    '''Render inheritance for a specific target.'''
+
+    # Validate
+    if not validate_target_inherits(bundle_dict, render_target):
+        raise ValueError('Target does not specify inheritance: '
+                         '{}'.format(render_target))
+
+    # Determine recursive inheritance of target(s)
+    lineage = get_lineage(bundle_dict, render_target)
+    logging.debug('Lineage {}'.format(lineage))
+
+    # Construct a fresh bundle and seed with the senior inheritance target
+    new_bundle = get_fresh_bundle()
+    new_bundle.update(bundle_dict[lineage[-1]])
+
+    for target in lineage[:-1][::-1]:
+        # Handle relation inheritance
+        if 'relations' in bundle_dict[target].keys():
+            logging.debug('Inheriting relations from {}'.format(target))
+            new_bundle['relations'] = \
+                (new_bundle['relations'] +
+                 bundle_dict[target]['relations'])
+
+        # Handle series inheritance
+        if 'series' in bundle_dict[target].keys():
+            logging.debug('Inheriting series from {}'.format(target))
+            new_bundle['series'] = bundle_dict[target]['series']
+
+        # Handle service inheritance
+        if 'services' in bundle_dict[target].keys():
+            for svc in bundle_dict[target]['services']:
+                logging.debug('Inheriting service {} from '
+                              '{}'.format(svc, target))
+
+                if svc not in new_bundle['services'].keys():
+                    # Inheritance might introduce a new service
+                    new_bundle['services'][svc] = {}
+
+                new_bundle['services'][svc].update(
+                    bundle_dict[target]['services'][svc]
+                )
+
+        # Handle overrides
+        #   - Use an override keys map to determine which charms and config
+        #     overrides are valid for the charm.
+        #
+        #   - juju-deployer branches and inspects config.yaml of each charm
+        #     to determine valid config override keys, whereas this to
+        #     does not do charm code retrieval.
+        if 'overrides' in bundle_dict[target].keys():
+            logging.debug('Inheriting overrides from {}'.format(target))
+            for ovr_key, ovr_val in bundle_dict[target]['overrides'].items():
+                for svc in new_bundle['services'].keys():
+                    if ovr_key in control_data.OVERRIDE_KEYS_MAP.keys() and \
+                            svc in control_data.OVERRIDE_KEYS_MAP[ovr_key]:
+                        logging.debug('Applying {} to {}'.format(ovr_key, svc))
+                        new_bundle['services'][svc]['options'][ovr_key] = \
+                            bundle_dict[target]['overrides'][ovr_key]
+                    else:
+                        logging.debug('Ignoring {} for {}'.format(ovr_key,
+                                                                  svc))
+    return new_bundle
+
+
 def extract_services(org_bundle_dict, svcs_include="ALL", svcs_exclude=None,
-                     exclude_related=False, rm_constraints=False,
-                     rm_placements=False, rm_inheritance=False):
+                     exclude_related=False, render_target=None,
+                     rm_constraints=False, rm_placements=False,
+                     rm_inheritance=False):
+    '''The mangling beast'''
 
     new_bundle_dict = deepcopy(org_bundle_dict)
     svcs_whitelist = set()
@@ -216,9 +325,14 @@ def extract_services(org_bundle_dict, svcs_include="ALL", svcs_exclude=None,
         new_bundle_dict = rm_attr_from_services(new_bundle_dict,
                                                 'constraints')
 
-    # Remove inheritance
+    # Remove targets which inherit
     if rm_inheritance:
         new_bundle_dict = rm_inheritance_targets(new_bundle_dict)
+
+    # Render target inheritance
+    if render_target:
+        new_bundle_dict = render_target_inheritance(new_bundle_dict,
+                                                    render_target)
 
     return new_bundle_dict
 
