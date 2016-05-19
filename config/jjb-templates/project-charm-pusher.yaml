@@ -66,6 +66,9 @@
          url: https://github.com/openstack/charm-{charm}
          basedir: '{charm}'
          skip-tag: true
+         fastpoll: true
+         shallow-clone: true
+         clean: {before: true}
          branches:
           - master
     triggers:
@@ -99,6 +102,9 @@
          url: https://github.com/openstack/charm-{charm}
          basedir: '{charm}'
          skip-tag: true
+         fastpoll: true
+         shallow-clone: true
+         clean: {before: true}
          branches:
           - stable/16.04
     triggers:
@@ -132,6 +138,9 @@
          url: https://github.com/ryan-beisner/trigger-test
          basedir: 'trigger-test'
          skip-tag: true
+         fastpoll: true
+         shallow-clone: true
+         clean: {before: true}
          branches:
           - master
     triggers:
