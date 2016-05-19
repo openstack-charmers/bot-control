@@ -65,6 +65,7 @@
       - git:
          url: https://github.com/openstack/charm-{charm}
          basedir: '{charm}'
+         skip-tag: true
          branches:
           - master
     triggers:
@@ -97,6 +98,7 @@
       - git:
          url: https://github.com/openstack/charm-{charm}
          basedir: '{charm}'
+         skip-tag: true
          branches:
           - stable/16.04
     triggers:
@@ -129,6 +131,7 @@
       - git:
          url: https://github.com/ryan-beisner/trigger-test
          basedir: 'trigger-test'
+         skip-tag: true
          branches:
           - master
     triggers:
