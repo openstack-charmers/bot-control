@@ -120,3 +120,27 @@ INFO:jenkins_jobs.builder:Cache saved
 
 vi temp.xml  # To see it.
 '''
+
+------------------------------------------------------------------------------
+
+#### Render Jobs into Jenkins using JJB
+
+Create the conf file.  Here is an example:
+
+```
+ubuntu@osci-bastion:~/bot-control/tools⟫ cat uosci-jjb.conf
+[job_builder]
+ignore_cache=True
+allow_duplicates=False
+
+[jenkins]
+user=XXXXXX
+password=XXXXXX
+url=http://n.n.n.n:8080/
+```
+
+And go!  This will create or update the jobs in Jenkins (CAUTION).
+
+```
+jenkins-jobs --user XXXXXX --password XXXXXX --conf ./uosci-jjb.conf update ../config/jjb-templates/project-charm-pusher.yaml
+```
