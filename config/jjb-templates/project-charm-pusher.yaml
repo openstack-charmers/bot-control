@@ -50,11 +50,11 @@
     name: 'charm_pusher_{charm}_master'
     node: slave
     parameters:
-        - bool:
+        - string:
             name: BASE_NAME
             default: '{charm}'
             description: Asset name (charm name).
-        - bool:
+        - string:
             name: GIT_BRANCH
             default: master
             description: Git branch.  Generally master or stable/nn.nn.
@@ -82,11 +82,11 @@
     name: 'charm_pusher_{charm}_stable'
     node: slave
     parameters:
-        - bool:
+        - string:
             name: BASE_NAME
             default: '{charm}'
             description: Asset name (charm name).
-        - bool:
+        - string:
             name: GIT_BRANCH
             default: stable/16.04
             description: Git branch.  Generally master or stable/nn.nn.
