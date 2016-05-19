@@ -48,11 +48,11 @@
     parameters:
         - bool:
             name: BASE_NAME
-            default: {charm}
+            default: '{charm}'
             description: Asset name (charm name).
         - bool:
             name: GIT_BRANCH
-            default: "{branch}"
+            default: '{branch}'
             description: Git branch.  Generally master or stable/nn.nn.
         - DRY_RUN
         - DISPLAY_NAME
@@ -63,10 +63,10 @@
           - master
     triggers:
       - pollscm:
-          cron: "*/2 * * * *"
+          cron: '*/2 * * * *'
           ignore-post-commit-hooks: True
     builders:
-      - shell: "echo {charm}:{branch}"
+      - shell: 'echo {charm}:{branch}'
       - prep_osci_repo_if_necessary
       - build_charm_push_and_publish
     publishers:
