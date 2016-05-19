@@ -63,6 +63,7 @@
     scm:
       - git:
          url: https://github.com/openstack/charm-{charm}
+         basedir: '{charm}'
          branches:
           - master
     triggers:
@@ -94,6 +95,7 @@
     scm:
       - git:
          url: https://github.com/openstack/charm-{charm}
+         basedir: '{charm}'
          branches:
           - stable/16.04
     triggers:
