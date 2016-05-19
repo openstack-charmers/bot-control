@@ -149,10 +149,7 @@
           ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
-      - shell: |
-          #!/bin/bash -e
-          env | sort
-          ls $WORKSPACE -alh
+      - build_charm_push_and_publish
     publishers:
         - archive_artifacts
         - email_peeps
