@@ -36,14 +36,18 @@
       - rabbitmq-server
       - swift-proxy
       - swift-storage
-    branch:
-      - master
-      - stable/16.04
+# FYI - Jenkins job names cannot contain slashes, so we cannot use branch
+# as a pivot point to simplify.
+#    branch:
+#      - master
+#      - stable/16.04
     jobs:
-      - 'charm_pusher_{charm}_{branch}'
+      - 'charm_pusher_{charm}_master'
+      - 'charm_pusher_{charm}_stable'
 
+# MASTER
 - job-template:
-    name: 'charm_pusher_{charm}_{branch}'
+    name: 'charm_pusher_{charm}_master'
     node: slave
     parameters:
         - bool:
@@ -52,7 +56,7 @@
             description: Asset name (charm name).
         - bool:
             name: GIT_BRANCH
-            default: '{branch}'
+            default: master
             description: Git branch.  Generally master or stable/nn.nn.
         - DRY_RUN
         - DISPLAY_NAME
@@ -66,7 +70,37 @@
           cron: '*/2 * * * *'
           ignore-post-commit-hooks: True
     builders:
-      - shell: 'echo {charm}:{branch}'
+      - prep_osci_repo_if_necessary
+      - build_charm_push_and_publish
+    publishers:
+        - archive_artifacts
+        - email_peeps
+
+# STABLE CURRENT
+- job-template:
+    name: 'charm_pusher_{charm}_stable'
+    node: slave
+    parameters:
+        - bool:
+            name: BASE_NAME
+            default: '{charm}'
+            description: Asset name (charm name).
+        - bool:
+            name: GIT_BRANCH
+            default: stable/16.04
+            description: Git branch.  Generally master or stable/nn.nn.
+        - DRY_RUN
+        - DISPLAY_NAME
+    scm:
+      - git:
+         url: https://github.com/openstack/charm-{charm}
+         branches:
+          - stable/16.04
+    triggers:
+      - pollscm:
+          cron: '*/2 * * * *'
+          ignore-post-commit-hooks: True
+    builders:
       - prep_osci_repo_if_necessary
       - build_charm_push_and_publish
     publishers:
