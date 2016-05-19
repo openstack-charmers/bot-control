@@ -44,6 +44,7 @@
     jobs:
       - 'charm_pusher_{charm}_master'
       - 'charm_pusher_{charm}_stable'
+      - 'charm_pusher_noop_debug'
 
 # MASTER
 - job-template:
@@ -105,6 +106,41 @@
     builders:
       - prep_osci_repo_if_necessary
       - build_charm_push_and_publish
+    publishers:
+        - archive_artifacts
+        - email_peeps
+
+# NO-OP DEBUG JOB
+- job-template:
+    name: 'charm_pusher_noop_debug'
+    node: slave
+    parameters:
+        - string:
+            name: BASE_NAME
+            default: 'trigger-test'
+            description: Asset name (charm name).
+        - string:
+            name: GIT_BRANCH
+            default: master
+            description: Git branch.  Generally master or stable/nn.nn.
+        - DRY_RUN
+        - DISPLAY_NAME
+    scm:
+      - git:
+         url: https://github.com/ryan-beisner/trigger-test
+         basedir: 'trigger-test'
+         branches:
+          - master
+    triggers:
+      - pollscm:
+          cron: '*/2 * * * *'
+          ignore-post-commit-hooks: True
+    builders:
+      - prep_osci_repo_if_necessary
+      - shell: |
+          #!/bin/bash -e
+          env | sort
+          ls $WORKSPACE -alh
     publishers:
         - archive_artifacts
         - email_peeps
