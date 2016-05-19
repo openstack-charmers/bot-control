@@ -8,6 +8,11 @@ Default behavior:
   related services, and save to an out_nnnnnn.yaml file in the current dir.
 
 Usage examples:
+
+  Render a juju-deployer-style target with inheritance out to a flat bundle.
+  BEWARE - inheritence is OpenStack-specific for config options at the moment.
+      ./bundle-reducer -i next.yaml -o next2.yaml -t trusty-mitaka
+
   Reduce to only ceilometer, with all of the directly-related services.  Save
   to a new auto-generated filename in the current dir.
       ./bundle-reducer -i example.yaml -s "ceilometer"

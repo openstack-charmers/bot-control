@@ -244,6 +244,9 @@ def render_target_inheritance(bundle_dict, render_target):
                     if ovr_key in control_data.OVERRIDE_KEYS_MAP.keys() and \
                             svc in control_data.OVERRIDE_KEYS_MAP[ovr_key]:
                         logging.debug('Applying {} to {}'.format(ovr_key, svc))
+                        if 'options' not in new_bundle['services'][svc].keys():
+                            new_bundle['services'][svc]['options'] = {}
+
                         new_bundle['services'][svc]['options'][ovr_key] = \
                             bundle_dict[target]['overrides'][ovr_key]
                     else:
@@ -267,6 +270,10 @@ def extract_services(org_bundle_dict, svcs_include="ALL", svcs_exclude=None,
     # Make list of service names from all targets
     svcs_all = get_all_services(org_bundle_dict)
     logging.debug(yaml_dump({'svcs_all': sorted(list(svcs_all))}))
+
+    if svcs_include == frozenset():
+        logging.debug('Including all services.')
+        svcs_include = svcs_all
 
     # Determine other services
     svcs_other = svcs_exclude | svcs_all - svcs_include

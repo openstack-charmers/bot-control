@@ -148,8 +148,8 @@ def main():
 
     # TO-DO
     if str(opts.include_services).upper() == "ALL":
-        logging.error('Include ALL services feature not yet implemented.')
-        return
+        logging.debug('Including ALL services.')
+        svcs_include = frozenset([])
     else:
         svcs_include = frozenset(opts.include_services.split(','))
 
