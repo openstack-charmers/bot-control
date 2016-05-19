@@ -8,6 +8,36 @@ source .vjjb/bin/activate
 pip install -r jjb-requirements.txt
 
 jenkins-jobs --help
+
+usage: jenkins-jobs [-h] [--conf CONF] [-l LOG_LEVEL] [--ignore-cache]
+                    [--flush-cache] [--version] [--allow-empty-variables]
+                    [--user USER] [--password PASSWORD]
+                    {update,test,delete,delete-all} ...
+
+positional arguments:
+  {update,test,delete,delete-all}
+                        update, test or delete job
+    delete-all          delete *ALL* jobs from Jenkins server, including those
+                        not managed by Jenkins Job Builder.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --conf CONF           configuration file
+  -l LOG_LEVEL, --log_level LOG_LEVEL
+                        log level (default: info)
+  --ignore-cache        ignore the cache and update the jobs anyhow (that will
+                        only flush the specified jobs cache)
+  --flush-cache         flush all the cache entries before updating
+  --version             show version
+  --allow-empty-variables
+                        Don't fail if any of the variables inside any string
+                        are not defined, replace with empty string instead
+  --user USER, -u USER  The Jenkins user to use for authentication. This
+                        overrides the user specified in the configuration file
+  --password PASSWORD, -p PASSWORD
+                        Password or API token to use for authenticating
+                        towards Jenkins. This overrides the password specified
+                        in the configuration file.
 ```
 
 #### To exit the virtual env:
@@ -22,6 +52,8 @@ deactivate
 Generates the XML that Jenkins eats.  We don't actually do anything with this,
 it's just useful to see what JJB renders.  This particular example takes
 [26 charms] x [2 branches] and generates [52 jobs].
+
+```jenkins-jobs test <foo>``` simply sends the generated XML to stdout.
 
 ```
 virtualenv .vjjb
