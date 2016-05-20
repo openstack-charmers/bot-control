@@ -73,7 +73,7 @@
           - master
     triggers:
       - pollscm:
-          cron: '*/2 * * * *'
+          cron: '*/5 * * * *'
           ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
@@ -109,7 +109,7 @@
           - stable/16.04
     triggers:
       - pollscm:
-          cron: '*/2 * * * *'
+          cron: '*/5 * * * *'
           ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
@@ -145,7 +145,7 @@
           - master
     triggers:
       - pollscm:
-          cron: '*/2 * * * *'
+          cron: '*/5 * * * *'
           ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
