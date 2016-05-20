@@ -212,6 +212,7 @@
                 $DEFAULT_CONTENT
             attach-build-log: true
             # XXX Defaulting to no mail for now.
-            always: false
+            disable-publisher: true
+            always: true
             presend-script: $DEFAULT_PRESEND_SCRIPT
             save-output: true
