@@ -59,7 +59,7 @@
             name: GIT_BRANCH
             default: master
             description: Git branch.  Generally master or stable/nn.nn.
-        - DRY_RUN
+        - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
     scm:
       - git:
@@ -95,7 +95,7 @@
             name: GIT_BRANCH
             default: stable/16.04
             description: Git branch.  Generally master or stable/nn.nn.
-        - DRY_RUN
+        - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
     scm:
       - git:
@@ -131,7 +131,7 @@
             name: GIT_BRANCH
             default: master
             description: Git branch.  Generally master or stable/nn.nn.
-        - DRY_RUN
+        - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
     scm:
       - git:
@@ -176,10 +176,10 @@
             fi
 
 - parameter:
-    name: DRY_RUN
+    name: CHARM_PUSH_DRY_RUN
     parameters:
         - bool:
-            name: DRY_RUN
+            name: CHARM_PUSH_DRY_RUN
             default: false
             description: Optionally take no action, just run for debug purpose.
 
