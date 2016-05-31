@@ -145,7 +145,7 @@
           - master
     triggers:
       - pollscm:
-          cron: '*/5 * * * *'
+          cron: 'H/5 * * * *'
           ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
