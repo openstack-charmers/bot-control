@@ -202,17 +202,16 @@
     name: email_peeps
     publishers:
         - email-ext:
-            # XXX Don't commit email addresses this to the repo.  Update when regenerating.
-            recipients: foo@example.com, bar@example.com
-            reply-to: foo@example.com
+            # XXX Don't commit email addresses to this repo.  Update when regenerating.
+            recipients: foo@host.local, bar@host.local
+            reply-to: foo@host.local
             content-type: html
             subject: '[UOSCI] $DEFAULT_SUBJECT - #${BUILD_NUMBER} ${ENV,var="BASE_NAME"} ${ENV,var="GIT_BRANCH"} ${ENV,var="DISPLAY_NAME"}'
             body: |
                 ${BUILD_NUMBER} ${ENV,var="BASE_NAME"}-${ENV,var="GIT_BRANCH"} ${ENV,var="DISPLAY_NAME"}
                 $DEFAULT_CONTENT
             attach-build-log: true
-            # XXX Defaulting to no mail for now.
-            disable-publisher: true
+            disable-publisher: false
             always: true
             presend-script: $DEFAULT_PRESEND_SCRIPT
             save-output: true
