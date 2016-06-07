@@ -119,7 +119,7 @@ INFO:jenkins_jobs.builder:Job name:  charm_pusher_swift-storage_stable
 INFO:jenkins_jobs.builder:Cache saved
 
 vi temp.xml  # To see it.
-'''
+```
 
 ------------------------------------------------------------------------------
 
