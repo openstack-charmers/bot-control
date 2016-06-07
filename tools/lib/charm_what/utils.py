@@ -53,13 +53,13 @@ def whatis(asset_path):
     '''Attempt to determine if the contents of asset_path appear
     to be a classic charm, a built charm, a layer, or
     an interface.'''
-    if is_charm_layer(asset_path):
-        return 'layer'
+    if is_built_charm(asset_path):
+        return 'charm (built)'
     elif is_classic_charm(asset_path):
         return 'charm (classic)'
+    elif is_charm_layer(asset_path):
+        return 'layer'
     elif is_charm_interface(asset_path):
         return 'interface'
-    elif is_built_charm(asset_path):
-        return 'charm (built)'
     else:
         return 'unknown'
