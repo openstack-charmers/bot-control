@@ -7,7 +7,8 @@ EXPECTED = {
     'built-charm': 'charm (built)',
     'classic-charm': 'charm (classic)',
     'interface': 'interface',
-    'layer': 'layer'
+    'layer': 'layer',
+    'foobar': 'unknown'
 }
 
 
@@ -96,3 +97,13 @@ class ValidateCharmWhatUtilsTestCase(unittest.TestCase):
 
         result = utils.whatis(asset_path)
         self.assertNotEqual(EXPECTED[asset], result)
+
+    def test_whatis_foobar(self):
+        '''An interface is not a built charm.'''
+        asset = 'foobar'
+        asset_path = os.path.join('unit_tests',
+                                  'charm_what_test_files',
+                                  asset)
+
+        result = utils.whatis(asset_path)
+        self.assertEqual(EXPECTED[asset], result)

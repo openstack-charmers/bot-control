@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 '''
-charm-what helpers
+charm-what utils
 '''
 
-# import logging
 import os
 
 
@@ -62,3 +61,5 @@ def whatis(asset_path):
         return 'interface'
     elif is_built_charm(asset_path):
         return 'charm (built)'
+    else:
+        return 'unknown'
