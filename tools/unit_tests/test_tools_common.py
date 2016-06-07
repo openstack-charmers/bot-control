@@ -1,8 +1,8 @@
 import unittest
-import tools_common
+import common.tools_common as tools_common
 
 
-class ValidateServicesByProcessIDTestCase(unittest.TestCase):
+class ValidateCommonToolsTestCase(unittest.TestCase):
 
     def setUp(self):
         # TODO: Load reference bundle yaml into dict
