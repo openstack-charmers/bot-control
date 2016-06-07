@@ -39,7 +39,7 @@ Usage examples:
 
 
 def option_handler():
-    '''Define and handle command line parameters
+    '''Define and handle command line parameters.
     '''
     # Define command line options
     parser = optparse.OptionParser(USAGE)
@@ -85,7 +85,7 @@ def option_handler():
 def main():
     opts, args = option_handler()
     asset_type = cw_utils.whatis(args[0])
-    print('{}'.format(asset_type))
+    print(asset_type)
 
 if __name__ == '__main__':
     main()
