@@ -30,8 +30,8 @@ USAGE = '''Usage: %prog [options] DIRNAME
 %prog
 ==============================================================================
 Attempt to identify whether a directory contains a Juju charm, charm layer,
-charm interface, or a built charm, based on presence and/or absence of certain
-files.
+charm interface, a built charm, or a source charm (top layer), based on
+presence and/or absence of certain files.
 
 Usage examples:
     ./%prog DIRNAME
