@@ -25,6 +25,8 @@ git clone https://github.com/openstack-charmers/bot-control /home/ubuntu/tools/b
 git clone https://github.com/openstack/charm-tempest /home/ubuntu/checkout/charm-tempest
 cd /home/ubuntu/tools/bot-control/tools
 ./charm-what /home/ubuntu/checkout/charm-tempest
+
+Asset type is:  layer
 ```
 
 ##### Python
