@@ -3,13 +3,13 @@ import unittest
 import charm_what.utils as utils
 
 EXPECTED = {
-    # sample-test-dir: expected-response
+    # test sample dir name: expected return value
     'source-charm': 'charm (source)',
     'built-charm': 'charm (built)',
     'classic-charm': 'charm (classic)',
     'interface': 'interface',
     'layer': 'layer',
-    'foobar': 'unknown'
+    'foobar': None
 }
 
 

@@ -87,4 +87,4 @@ def whatis(asset_path):
     elif is_charm_interface(asset_path):
         return 'interface'
     else:
-        return 'unknown'
+        return None

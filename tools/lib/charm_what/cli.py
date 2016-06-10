@@ -85,7 +85,11 @@ def option_handler():
 def main():
     opts, args = option_handler()
     asset_type = cw_utils.whatis(args[0])
-    print('Asset type is:  {}'.format(asset_type))
+    if asset_type:
+        print(asset_type)
+    else:
+        print('not a charm')
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from lib.charm_what import charm_what_cli
+from lib.charm_what import cli as charm_what_cli
 
 
 if __name__ == '__main__':

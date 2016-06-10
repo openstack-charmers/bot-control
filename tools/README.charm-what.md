@@ -29,8 +29,11 @@ git clone https://github.com/openstack-charmers/bot-control /home/ubuntu/tools/b
 git clone https://github.com/openstack/charm-tempest /home/ubuntu/checkout/charm-tempest
 cd /home/ubuntu/tools/bot-control/tools
 ./charm-what /home/ubuntu/checkout/charm-tempest
+layer
 
-Asset type is:  layer
+
+./charm-what /home/ubuntu/checkout/charm-keystone
+charm (classic)
 ```
 
 ##### Python
@@ -43,7 +46,7 @@ print(cw_utils.whatis('/home/ubuntu/checkout/charm-tempest'))
 ##### Hacking / Testing
 
 NOTE: this repo is really a collection of PoC and tactical scripts.  It is
-intended to be refactored into a more proper python module.
+intended to be refactored into a more proper python module at some point.
 
 Some basic unit tests exist.  To check:
 
