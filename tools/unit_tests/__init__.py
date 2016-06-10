@@ -1,3 +1,3 @@
 import sys
 
-sys.path.append('lib/common/')
+sys.path.append('lib/')
