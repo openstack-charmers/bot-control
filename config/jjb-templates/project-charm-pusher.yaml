@@ -207,13 +207,16 @@
             # XXX Don't commit email addresses to this repo.  Update when regenerating.
             recipients: foo@host.local, bar@host.local
             reply-to: foo@host.local
-            content-type: html
-            subject: '[UOSCI] $DEFAULT_SUBJECT - #${BUILD_NUMBER} ${ENV,var="BASE_NAME"} ${ENV,var="GIT_BRANCH"} ${ENV,var="DISPLAY_NAME"}'
+            content-type: text
+            subject: '[UOSCI] $DEFAULT_SUBJECT - ${ENV,var="BASE_NAME"} ${ENV,var="GIT_BRANCH"} ${ENV,var="DISPLAY_NAME"}'
             body: |
-                ${BUILD_NUMBER} ${ENV,var="BASE_NAME"}-${ENV,var="GIT_BRANCH"} ${ENV,var="DISPLAY_NAME"}
-                $DEFAULT_CONTENT
+                $DEFAULT_SUBJECT
+                ${ENV,var="BASE_NAME"} ${ENV,var="DISPLAY_NAME"}
+                ${GIT_URL} (${GIT_BRANCH})
+                commit: ${GIT_COMMIT}
             attach-build-log: true
             disable-publisher: false
             always: true
             presend-script: $DEFAULT_PRESEND_SCRIPT
             save-output: true
+
