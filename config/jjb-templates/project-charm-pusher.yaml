@@ -213,10 +213,13 @@
                 $DEFAULT_SUBJECT
                 ${ENV,var="BASE_NAME"} ${ENV,var="DISPLAY_NAME"}
                 ${GIT_URL} (${GIT_BRANCH})
-                commit: ${GIT_COMMIT}
+                ${GIT_COMMIT}
+
+                Charm store refs published:
+                ${FILE,path="cs_refs_published.txt"}
+            attachments: cs_refs_published.txt
             attach-build-log: true
             disable-publisher: false
             always: true
             presend-script: $DEFAULT_PRESEND_SCRIPT
             save-output: true
-
