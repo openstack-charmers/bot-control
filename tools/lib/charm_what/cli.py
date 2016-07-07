@@ -88,7 +88,7 @@ def main():
     if asset_type:
         print(asset_type)
     else:
-        print('not a charm')
+        print('{} is not a charm, interface or layer'.format(args[0]))
         sys.exit(1)
 
 if __name__ == '__main__':
