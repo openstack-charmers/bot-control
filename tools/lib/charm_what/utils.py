@@ -31,8 +31,7 @@ def is_source_charm(asset_path):
     be a Juju charm source (containing a top layer).'''
     return (
         f_exists(asset_path, 'src', 'layer.yaml') and
-        f_exists(asset_path, 'src', 'metadata.yaml') and
-        f_exists(asset_path, 'src', 'config.yaml') and not
+        f_exists(asset_path, 'src', 'metadata.yaml') and not
         f_exists(asset_path, 'src', '.build.manifest') and not
         f_exists(asset_path, 'src', 'interface.yaml') and not
         f_exists(asset_path, 'layer.yaml') and not
