@@ -226,6 +226,7 @@
             attachments: cs_refs_published.txt
             attach-build-log: true
             disable-publisher: false
-            always: true
+            success: true
+            failure: true
             presend-script: $DEFAULT_PRESEND_SCRIPT
-            save-output: true
+            save-output: false
