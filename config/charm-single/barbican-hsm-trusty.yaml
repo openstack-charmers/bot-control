@@ -1,0 +1,2 @@
+barbican-hsm:
+  openstack-origin: cloud:trusty-mitaka
