@@ -33,9 +33,13 @@ import platform
 import subprocess
 import sys
 
-DESCRIPTION = ("A tool to update symlinks to switch between juju 1.x and 2.x "
-               "executables. Assumes that juju-1 and juju-2.0 are installed. "
-               "Does not attempt to install any packages.")
+DESCRIPTION = ("A system-wide sym link switching tool for Juju 1.x and 2.x "
+               "binaries. Although it is possible to set path values to "
+               "control the Juju version, this is not always effective with "
+               "some tools which blindly call `juju` or `/usr/bin/juju`. "
+               "Targeted to Xenial (16.04) and later.  Assumes that juju-1 "
+               "and juju-2.0 are installed. Does not attempt to install any "
+               "packages.")
 
 # Xenial binaries and symlinks with both Juju 1 and 2 installed:
 #   lrwxrwxrwx 1 root root   8 Aug 23 13:12 /usr/bin/juju -> juju-2.0
