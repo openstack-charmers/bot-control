@@ -1,7 +1,7 @@
 juju-sym-switch
 ==============================================================================
 ```
-usage: juju-sym-switch [-h] [--force] [-0] [-v] major_version
+usage: juju-sym-switch [-h] [--force] [-0] [-v] [-i] major_version
 
 A system-wide sym link switching tool for Juju 1.x and 2.x binaries. Although
 it is possible to set path values to control the Juju version, this is not
@@ -10,17 +10,25 @@ Targeted to Xenial (16.04) and later. Assumes that juju-1 and juju-2.0 are
 installed. Does not attempt to install any packages.
 
 positional arguments:
-  major_version  Major version of Juju to switch to: 1 or 2
+  major_version         Major version of Juju to switch to: 1 or 2
 
 optional arguments:
-  -h, --help     show this help message and exit
-  --force        Force overwrite (destruction) of existing files or symlinks.
-                 Understand that /usr/bin/juju needs to be overwritten with a
-                 new symlink, and this is likely required.
-  -0, --dry      Dry run. Does not alter anything, even if --force is
-                 specified.
-  -v, --debug    Enable verbose debug output
+  -h, --help            show this help message and exit
 
+  --force               Force overwrite (destruction) of existing files or
+                        symlinks. Understand that /usr/bin/juju needs to be
+                        overwritten with a new symlink, and this is likely
+                        required.
+
+  -0, --dry             Dry run. Does not alter anything, even if --force is
+                        specified.
+
+  -v, --debug           Enable verbose debug output
+
+  -i, --ignore-platform
+                        Ignore platform operating system requirement
+                        enforcement. Experimental, and will likely break
+                        something!
 ```
 
 

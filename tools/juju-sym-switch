@@ -65,7 +65,7 @@ MAP = {
 
 def validate_config(conf):
     """Check config and system."""
-    assert check_platform_dist_supported() is True
+    assert check_platform_dist_supported(conf) is True
     assert check_files() is True
     assert check_major_version_value(conf) is True
 
@@ -118,13 +118,21 @@ def check_executable_version(major_ver):
     return True
 
 
-def check_platform_dist_supported():
+def check_platform_dist_supported(conf):
     """Ensure minimum operating system requirement is met."""
     distro, version, release = platform.dist()
-    if distro != 'Ubuntu' or float(version) < 16.04:
+
+    if (distro != 'Ubuntu' or float(version) < 16.04 and not
+            conf['ignore_platform']):
         logging.error('This tool supports Ubuntu 16.04 and later.  Detected: '
                       '{} {} {}'.format(distro, version, release))
         return False
+    elif (distro != 'Ubuntu' or float(version) < 16.04 and
+            conf['ignore_platform']):
+        logging.warning('Ignoring unsupported OS version!  Use at your own '
+                        'risk.  This tool supports Ubuntu 16.04 and later. '
+                        'Detected: {} {} {}'.format(distro, version, release))
+        return True
 
     logging.info('Dist OK: {} {} {}'.format(distro, version, release))
     return True
@@ -196,6 +204,11 @@ def cli_args():
                         action='store_true', required=False)
     parser.add_argument('-v', '--debug',
                         help='Enable verbose debug output',
+                        action='store_true', required=False)
+    parser.add_argument('-i', '--ignore-platform',
+                        help='Ignore platform operating system requirement '
+                             'enforcement.  Experimental, and will likely '
+                             'break something!',
                         action='store_true', required=False)
     try:
         options = parser.parse_args()
