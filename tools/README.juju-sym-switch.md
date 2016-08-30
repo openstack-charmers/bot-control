@@ -52,7 +52,7 @@ cd /home/ubuntu/tools/bot-control/tools
 ```
 
 ```
-Doing it for real:
+# Doing it for real:
 
 jenkins@juju-osci-machine-21:~/tools/bot-control/tools$ juju version
 2.0-beta15-xenial-amd64
