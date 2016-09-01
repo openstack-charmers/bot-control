@@ -23,7 +23,7 @@ import optparse
 import os
 import sys
 import yaml
-import lib.common.tools_common as u
+import common.tools_common as u
 
 USAGE = '''Usage: %prog [options] FILENAME [OPTIONAL ENV VAR LIST]
 

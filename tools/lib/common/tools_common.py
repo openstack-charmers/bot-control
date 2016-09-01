@@ -9,7 +9,7 @@ import random
 import string
 import yaml
 
-import lib.common.control_data_common as control_data
+import common.control_data_common as control_data
 
 from copy import deepcopy
 from jinja2 import Environment, FileSystemLoader

@@ -23,7 +23,7 @@ import optparse
 import os
 import sys
 import yaml
-import lib.charm_what.utils as cw_utils
+import charm_what.utils as cw_utils
 
 USAGE = '''Usage: %prog [options] DIRNAME
 
