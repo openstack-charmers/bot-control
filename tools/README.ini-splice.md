@@ -1,4 +1,4 @@
-juju-sym-switch
+ini-splice
 ==============================================================================
 ```
 usage: ini-splice [-h] [-0] [-v] ini_file action target from other_file
