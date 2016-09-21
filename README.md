@@ -16,4 +16,5 @@ Ubuntu OpenStack Charm CI (UOSCI) control files, config files, and tool reposito
     * [README: jenkins-job-builder - one way to use it](https://github.com/openstack-charmers/bot-control/blob/master/tools/README.jenkins-job-builder.md)
     * [README: juju-sym-switch](https://github.com/openstack-charmers/bot-control/blob/master/tools/README.juju-sym-switch.md)
     * [README: mojo-juju1-venv](https://github.com/openstack-charmers/bot-control/blob/master/tools/README.mojo-juju1-venv.md)
+    * [README: mojo-juju2-venv](https://github.com/openstack-charmers/bot-control/blob/master/tools/README.mojo-juju2-venv.md)
 
