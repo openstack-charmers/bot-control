@@ -16,6 +16,7 @@
       - ceilometer
       - ceilometer-agent
       - ceph
+      - ceph-fs
       - ceph-osd
       - ceph-proxy
       - ceph-mon
@@ -30,12 +31,15 @@
       - heat
       - keystone
       - lxd
+      - manila
+      - manila-generic
       - neutron-api
       - neutron-api-odl
       - neutron-gateway
       - neutron-openvswitch
       - nova-cloud-controller
       - nova-compute
+      - nova-compute-proxy
       - odl-controller
       - openstack-dashboard
       - openvswitch-odl
