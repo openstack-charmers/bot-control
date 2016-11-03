@@ -15,6 +15,8 @@ Those configurations reside here, where deemed necessary on a per-charm basis.  
        - `bot-control/config/charm-single/odl-controller-xenial.yaml`
    - Config files should only exist for charms where config overrides are necessary in the context of the charm-single test.
    - If no config file exists for a charm, the charm-single test deploys the charm purely with the default configuration values as defined in its config.yaml.
+   - For charms which are not expected to pass charm-single, the test can be skipped by creating a .skip file.  Be sure to include a note and pointer to a bug.
+       - `bot-control/config/charm-single/nova-compute-proxy.skip`
 
 ## Tools
 The `bot-control/tools/env-render` tool is a generic utility which can be used to expand environment variables inside text files which contain jinja2 template directives, per the following examples.

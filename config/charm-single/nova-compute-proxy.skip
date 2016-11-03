@@ -1,0 +1,4 @@
+# The nova-compute-proxy charm is not idempotent in its current form,
+# and cannot pass charm-single yet.
+#
+# https://bugs.launchpad.net/charm-nova-compute-proxy/+bug/1638772
