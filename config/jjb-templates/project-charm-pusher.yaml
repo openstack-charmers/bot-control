@@ -4,7 +4,7 @@
 - defaults:
     name: global
     description: |
-        <p>Watch for git commits and kick off charmstore charm upload/publish paths.</p>
+        <p>Watch for git commits and kick off charmstore charm upload/release paths.</p>
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
 
 - project:
@@ -85,14 +85,14 @@
           - master
     triggers:
       - pollscm:
-          cron: 'H/5 * * * *'
+          cron: 'H/10 * * * *'
           ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
       - build_charm_push_and_publish
     publishers:
         - archive_artifacts
-        - email_peeps
+        - email_watchers
 
 # STABLE CURRENT
 - job-template:
@@ -121,14 +121,14 @@
           - stable/16.10
     triggers:
       - pollscm:
-          cron: 'H/5 * * * *'
+          cron: 'H/10 * * * *'
           ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
       - build_charm_push_and_publish
     publishers:
         - archive_artifacts
-        - email_peeps
+        - email_watchers
 
 # NO-OP DEBUG JOB
 - job-template:
@@ -164,14 +164,14 @@
       - build_charm_push_and_publish
     publishers:
         - archive_artifacts
-        - email_peeps
+        - email_watchers
 
 - builder:
     name: build_charm_push_and_publish
     builders:
         - shell: |
             #!/bin/bash -e
-            ${OSCI_ROOT}/job-parts/build_charm_push_and_publish.sh
+            ${OSCI_ROOT}/job-parts/build_charm_pusher.sh
 
 - builder:
     name: prep_osci_repo_if_necessary
@@ -211,26 +211,24 @@
             fingerprint: true
 
 - publisher:
-    name: email_peeps
+    name: email_watchers
     publishers:
         - email-ext:
-            # XXX Don't commit email addresses to this repo.  Update when regenerating.
-            recipients: foo@host.local, bar@host.local
-            reply-to: foo@host.local
+            recipients: openstack-charm-ci-watchers@lists.launchpad.net
             content-type: text
-            subject: '[UOSCI] $DEFAULT_SUBJECT - ${ENV,var="BASE_NAME"} ${ENV,var="GIT_BRANCH"} ${ENV,var="DISPLAY_NAME"}'
+            subject: '[UOSCI] $DEFAULT_SUBJECT'
             body: |
                 $DEFAULT_SUBJECT
                 ${ENV,var="BASE_NAME"} ${ENV,var="DISPLAY_NAME"}
                 ${GIT_URL} (${GIT_BRANCH})
                 ${GIT_COMMIT}
 
-                Charm store refs published:
-                ${FILE,path="cs_refs_published.txt"}
-            attachments: cs_refs_published.txt
-            attach-build-log: true
+                Charm store refs pushed and released:
+                ${FILE,path="cs_refs_released.txt"}
+            attachments: cs_refs_released.txt
+            attach-build-log: false
             disable-publisher: false
             success: true
-            failure: true
+            failure: false
             presend-script: $DEFAULT_PRESEND_SCRIPT
             save-output: false
