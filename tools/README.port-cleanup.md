@@ -29,3 +29,16 @@ optional arguments:
 ./port-cleanup -pn "juju-osci-.*-machine.*ext-port" -ps "DOWN" --delete
 ```
 
+```
+# Query all matching ports but don't list each port and don't delete them.
+# Shows that 811 of 900 ports matched and would have been deleted.
+⟫ ./port-cleanup -pn "juju-osci.*-machine.*ext-port" -ps "DOWN" -q
+INFO:root:Command arguments: {'port_status': 'DOWN', 'quiet': True, 'port_delete': False, 'debug': False, 'port_name_regex': 'juju-osci.*-machine.*ext-port'}
+INFO:root:Keystone client region name check: True
+INFO:root:Nova client flavor list check: 8
+INFO:root:Neutron client network list check: 25
+INFO:root:Neutron ports total: 900
+INFO:root:Neutron ports matched: 811
+INFO:root:Nova servers in ACTIVE status: 35
+INFO:root:Nova servers in ERROR status: 0
+```
