@@ -1,0 +1,80 @@
+| fd6c74b7-dd0f-4c44-bd7a-0639208f3f18 | juju-osci-lb03-machine-11_ext-port | fa:16:3e:f6:c1:e9 | {"subnet_id": "d31f229f-6f85-4339-a773-e4fbc32daaab", "ip_address": "172.17.121.14"}  |
+| fd7632e3-0767-494b-a1b2-de6bb26879c2 | juju-osci-sv04-machine-11_ext-port | fa:16:3e:9b:30:ae | {"subnet_id": "9936f4ee-e074-4d41-b89b-9c72b0585150", "ip_address": "172.17.104.103"} |
+| fded9ca9-c20c-4d66-95e7-7d850b639e1c | juju-osci-sv13-machine-11_ext-port | fa:16:3e:6d:9b:63 | {"subnet_id": "0d0f4f5e-dba3-4163-94ae-9219308d691c", "ip_address": "172.17.113.191"} |
+| fe7ec566-28a1-4903-9277-c16871d72ee7 | juju-osci-sv04-machine-11_ext-port | fa:16:3e:a4:80:6e | {"subnet_id": "9936f4ee-e074-4d41-b89b-9c72b0585150", "ip_address": "172.17.104.154"} |
+| fe9f9cf5-a886-4d3e-b93b-805cfa186018 | juju-osci-sv07-machine-11_ext-port | fa:16:3e:da:68:e4 | {"subnet_id": "a30fcce1-4cee-47ec-be3f-71c6e8addda0", "ip_address": "172.17.107.80"}  |
+| ff5cf2f9-4278-49b3-9f8e-6525b3fe3329 | juju-osci-sv07-machine-11_ext-port | fa:16:3e:8a:75:94 | {"subnet_id": "a30fcce1-4cee-47ec-be3f-71c6e8addda0", "ip_address": "172.17.107.109"} |
+| ff993e7f-3012-4169-8289-dd943599f951 | juju-osci-sv07-machine-11_ext-port | fa:16:3e:ed:ed:bb | {"subnet_id": "a30fcce1-4cee-47ec-be3f-71c6e8addda0", "ip_address": "172.17.107.116"} |
+
+
+
+
+jenkins@juju-osci1-machine-14:~$ neutron port-show 60ba3bb8-d7e3-4d43-bedb-108682fad0cc
++-----------------------+---------------------------------------------------------------------------------------+
+| Field                 | Value                                                                                 |
++-----------------------+---------------------------------------------------------------------------------------+
+| admin_state_up        | True                                                                                  |
+| allowed_address_pairs |                                                                                       |
+| binding:vnic_type     | normal                                                                                |
+| created_at            | 2016-11-16T22:24:51                                                                   |
+| description           |                                                                                       |
+| device_id             | 5852c4c2-2862-4e73-b307-2dd4fd92f455                                                  |
+| device_owner          | compute:nova                                                                          |
+| extra_dhcp_opts       |                                                                                       |
+| fixed_ips             | {"subnet_id": "b4c54256-da74-4779-9381-baf425b00f12", "ip_address": "172.17.110.135"} |
+| id                    | 60ba3bb8-d7e3-4d43-bedb-108682fad0cc                                                  |
+| mac_address           | fa:16:3e:4c:98:ad                                                                     |
+| name                  |                                                                                       |
+| network_id            | 7fe7d86b-3949-448d-9048-4a557593e298                                                  |
+| security_groups       | 60f7217a-82ea-436c-afcf-49fdfad86e66                                                  |
+|                       | 7e823cbc-58e7-4810-96f3-23a0fc1c51de                                                  |
+|                       | cc06a658-cc33-4fe1-840e-12041e615878                                                  |
+| status                | DOWN                                                                                  |
+| tenant_id             | 8c3aac4e154846f3a3e4c779a2942736                                                      |
+| updated_at            | 2016-11-16T22:24:52                                                                   |
++-----------------------+---------------------------------------------------------------------------------------+
+jenkins@juju-osci1-machine-14:~$ neutron port-show 0f5a8b8e-a2ac-45bd-a048-5eb266a01161
++-----------------------+-------------------------------------------------------------------------------------+
+| Field                 | Value                                                                               |
++-----------------------+-------------------------------------------------------------------------------------+
+| admin_state_up        | True                                                                                |
+| allowed_address_pairs |                                                                                     |
+| binding:vnic_type     | normal                                                                              |
+| description           |                                                                                     |
+| device_id             | 1bc9e453-e670-49b1-8a27-caf6b9017b4d                                                |
+| device_owner          | network:router_interface                                                            |
+| extra_dhcp_opts       |                                                                                     |
+| fixed_ips             | {"subnet_id": "b4c54256-da74-4779-9381-baf425b00f12", "ip_address": "172.17.110.1"} |
+| id                    | 0f5a8b8e-a2ac-45bd-a048-5eb266a01161                                                |
+| mac_address           | fa:16:3e:ef:f9:e5                                                                   |
+| name                  |                                                                                     |
+| network_id            | 7fe7d86b-3949-448d-9048-4a557593e298                                                |
+| security_groups       |                                                                                     |
+| status                | ACTIVE                                                                              |
+| tenant_id             | 8c3aac4e154846f3a3e4c779a2942736                                                    |
++-----------------------+-------------------------------------------------------------------------------------+
+jenkins@juju-osci1-machine-14:~$ neutron port-show e1e23603-d9b6-420a-ba15-e197e7bd70c3
++-----------------------+--------------------------------------------------------------------------------------+
+| Field                 | Value                                                                                |
++-----------------------+--------------------------------------------------------------------------------------+
+| admin_state_up        | True                                                                                 |
+| allowed_address_pairs |                                                                                      |
+| binding:vnic_type     | normal                                                                               |
+| created_at            | 2016-11-21T20:37:44                                                                  |
+| description           |                                                                                      |
+| device_id             | 5135ba6d-bf6a-45bb-ae4a-cd28cb9f4538                                                 |
+| device_owner          | compute:nova                                                                         |
+| extra_dhcp_opts       |                                                                                      |
+| fixed_ips             | {"subnet_id": "b4c54256-da74-4779-9381-baf425b00f12", "ip_address": "172.17.110.62"} |
+| id                    | e1e23603-d9b6-420a-ba15-e197e7bd70c3                                                 |
+| mac_address           | fa:16:3e:eb:f3:7b                                                                    |
+| name                  |                                                                                      |
+| network_id            | 7fe7d86b-3949-448d-9048-4a557593e298                                                 |
+| security_groups       | 0fcdf997-9a46-46d7-8a38-acf47a360b39                                                 |
+|                       | 60f7217a-82ea-436c-afcf-49fdfad86e66                                                 |
+|                       | 7e823cbc-58e7-4810-96f3-23a0fc1c51de                                                 |
+| status                | ACTIVE                                                                               |
+| tenant_id             | 8c3aac4e154846f3a3e4c779a2942736                                                     |
+| updated_at            | 2016-11-21T20:37:50                                                                  |
++-----------------------+--------------------------------------------------------------------------------------+
+
