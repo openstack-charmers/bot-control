@@ -203,7 +203,7 @@ def do_cleanup(conf, clients):
                                status=conf['port_status'])
 
     # Destructive
-    if conf['port_delete'] is True:
+    if conf['port_delete'] is True and matching_ports:
         # Provide last ditch opportunity for user to bail.
         logging.info('Deleting ports after 10s delay.')
         time.sleep(10)
@@ -214,7 +214,7 @@ def do_cleanup(conf, clients):
             delete_port(clients, port_id=port['id'])
 
     # Announce Only
-    elif conf['port_delete'] is not True:
+    elif conf['port_delete'] is not True and matching_ports:
         for port in matching_ports:
             if not conf['quiet']:
                 logging.info('Not deleting port: {}  {}  {}'.format(
