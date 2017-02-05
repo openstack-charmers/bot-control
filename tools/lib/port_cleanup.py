@@ -16,8 +16,8 @@
 
 
 """
-A tool to clean up certain matching neutron ports, such as might be left
-behind after failed overcloud deployment tests.
+A tool to delete neutron ports which match a port name regex
+and/or port status.
 """
 
 import argparse
@@ -32,14 +32,10 @@ from neutronclient.v2_0 import client as neutronclient
 from novaclient import client as novaclient
 
 
-DESCRIPTION = """
-A tool to clean up certain matching neutron ports, such as may be left
-behind after failed overcloud deployment tests.
-"""
+DESCRIPTION = sys.modules[__name__].__doc__
 
-# Usage examples:
-# ./port-cleanup -pn "juju-osci-.*-machine.*ext-port" -ps "DOWN" --delete -q
-# ./port-cleanup -pn "juju-osci-sv08.*-machine.*ext-port" -ps "DOWN" --delete
+# Usage example:
+# ./port-cleanup -pn "juju-osci-.*-machine.*ext-port" -ps "DOWN" --delete
 
 
 def validate_config(conf):
@@ -76,9 +72,11 @@ def get_openstack_clients():
     return clients
 
 
-def get_nova_client():
-    """Get nova client
+def get_auth():
+    """Return dict for use as kwargs in OpenStack clients.
     """
+    # TODO: Need to also handle the KS v3 session approach.
+    # Port it from openstack mojo helpers, then make those use these.
     novarc = get_novarc()
     auth = {
         'username': novarc['OS_USERNAME'],
@@ -86,10 +84,16 @@ def get_nova_client():
         'auth_url': novarc['OS_AUTH_URL'],
         'project_name': novarc['OS_TENANT_NAME'],
         'region_name': novarc['OS_REGION_NAME'],
-        # TODO: Need to also handle KS v3 session approach
         'insecure': True,
         'version': 2,
     }
+    return auth
+
+
+def get_nova_client():
+    """Get nova client
+    """
+    auth = get_auth()
     nc = novaclient.Client(**auth)
     assert check_nova_client(nc) is True
     return nc
@@ -98,19 +102,7 @@ def get_nova_client():
 def get_keystone_client(verison=None):
     """Get keystone client
     """
-
-    novarc = get_novarc()
-    auth = {
-        'username': novarc['OS_USERNAME'],
-        'password': novarc['OS_PASSWORD'],
-        'auth_url': novarc['OS_AUTH_URL'],
-        'tenant_name': novarc['OS_TENANT_NAME'],
-        'region_name': novarc['OS_REGION_NAME'],
-        # TODO: Need to also handle KS v3 session approach
-        'insecure': True,
-        'version': 2,
-    }
-
+    auth = get_auth()
     kc = keystoneclient.Client(**auth)
     assert check_ks_client(kc) is True
     return kc
@@ -119,17 +111,7 @@ def get_keystone_client(verison=None):
 def get_neutron_client():
     """Get neutron client
     """
-    novarc = get_novarc()
-    auth = {
-        'username': novarc['OS_USERNAME'],
-        'password': novarc['OS_PASSWORD'],
-        'auth_url': novarc['OS_AUTH_URL'],
-        'tenant_name': novarc['OS_TENANT_NAME'],
-        'region_name': novarc['OS_REGION_NAME'],
-        # TODO: Need to also handle KS v3 session approach
-        'insecure': True,
-        'version': 2,
-    }
+    auth = get_auth()
     nc = neutronclient.Client(**auth)
     assert check_neutron_client(nc) is True
     return nc
@@ -213,6 +195,8 @@ def delete_port(clients, port_id=None):
 
 
 def do_cleanup(conf, clients):
+    """Perform neutron port cleanup.
+    """
     # juju-osci-.*-machine.*ext-port
     matching_ports = get_ports(clients,
                                name_regex=conf['port_name_regex'],
