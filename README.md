@@ -18,4 +18,3 @@ Ubuntu OpenStack Charm CI (UOSCI) control files, config files, and tool reposito
     * [README: mojo-juju1-venv](tools/README.mojo-juju1-venv.md)
     * [README: mojo-juju2-venv](tools/README.mojo-juju2-venv.md)
     * [README: openstack-client-venv](tools/README.openstack-client-venv.md)
-    * [README: port-cleanup](tools/README.port-cleanup.md)
