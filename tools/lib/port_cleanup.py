@@ -173,23 +173,18 @@ def get_ports(clients, name_regex=None, status=None):
 
     _ports_matched = []
     for port in ports:
-        if re_name.match(port['name']) and not status:
-            _ports_matched.append(port)
-
-        if (re_name.match(port['name']) and status and
-                port['status'] == status):
+        if ((re_name.match(port['name']) and not status) or
+                (re_name.match(port['name']) and status and
+                    port['status'] == status)):
             _ports_matched.append(port)
 
     logging.info('Neutron ports matched: {}'.format(len(_ports_matched)))
     return _ports_matched
 
 
-def delete_port(clients, port_id=None):
+def delete_port(clients, port_id):
     """Delete a neutron port based on the port ID value.
     """
-    if not port_id:
-        raise ValueError('Port ID is required')
-
     # TODO: Add exception handling
     clients['nu'].delete_port(port_id)
 
@@ -220,11 +215,13 @@ def do_cleanup(conf, clients):
                 logging.info('Not deleting port: {}  {}  {}'.format(
                     port['id'], port['name'], port['status']))
 
-    # TODO: The following are for a separate tool, split out of here.
+    # TODO: The following are for a separate tool, split out of here later.
     active_servers = get_servers_in_state(clients, status="ACTIVE")
     error_servers = get_servers_in_state(clients, status="ERROR")
     logging.debug('Active nova servers: {}'.format(active_servers))
     logging.debug('Error nova servers: {}'.format(error_servers))
+
+    return 0
 
 
 def cli_args():
