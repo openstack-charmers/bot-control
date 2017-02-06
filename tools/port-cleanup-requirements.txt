@@ -1,0 +1,4 @@
+python-openstackclient
+python-neutronclient
+python-novaclient
+python-keystoneclient
