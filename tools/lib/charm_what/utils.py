@@ -38,6 +38,12 @@ def is_built_charm(asset_path):
         f_exists(asset_path, 'interface.yaml')
     )
 
+def is_rust_charm(asset_path):
+    '''Return True if the contents of asset_path appear to
+    be a Rust Juju charm (containing a Cargo.toml).'''
+    return (
+        f_exists(asset_path, 'Cargo.toml')
+    )
 
 def is_source_charm(asset_path):
     '''Return True if the contents of asset_path appear to
@@ -94,6 +100,8 @@ def whatis(asset_path):
         return 'charm (classic)'
     elif is_source_charm(asset_path):
         return 'charm (source)'
+    elif is_rust_charm(asset_path):
+        return 'charm (rust)'
     elif is_charm_layer(asset_path):
         return 'layer'
     elif is_charm_interface(asset_path):
