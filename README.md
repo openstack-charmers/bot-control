@@ -15,7 +15,6 @@ Ubuntu OpenStack Charm CI (UOSCI) control files, config files, and tool reposito
     * [README: ini-splice](tools/README.ini-splice.md)
     * [README: jenkins-job-builder - one way to use it](tools/README.jenkins-job-builder.md)
     * [README: juju-sym-switch](tools/README.juju-sym-switch.md)
-    * [README: mojo-juju1-venv](tools/README.mojo-juju1-venv.md)
-    * [README: mojo-juju2-venv](tools/README.mojo-juju2-venv.md)
+    * [README: mojo-openstack](tools/README.mojo-openstack.md)
     * [README: openstack-client-venv](tools/README.openstack-client-venv.md)
     * [README: port-cleanup](tools/README.port-cleanup.md)

@@ -1,4 +1,4 @@
-# Install MOJO in a Python Virtual Env for Juju 2.x
+# Install MOJO in a Python Virtual Env for OpenStack Specs
 
 ```
 # Clone the tool to a tools directory
@@ -7,10 +7,11 @@ git clone https://github.com/openstack-charmers/bot-control /home/ubuntu/tools/b
 cd /home/ubuntu/tools/bot-control/tools
 
 # Build venv
-cd mojo-juju2-venv
-tox -e mojo
+cd mojo-openstack
+tox
 
 # Source venv and use it
 . .tox/mojo/bin/activate
 mojo --version
+openstack --version
 ```
