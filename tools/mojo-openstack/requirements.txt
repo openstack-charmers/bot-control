@@ -5,5 +5,5 @@ jinja2>=2.8  # Version in Xenial
 python-cinderclient>=1.0.0  # From Mojo requirements
 bzr+lp:codetree#egg=codetree
 bzr+lp:mojo#egg=mojo
+#bzr+lp:~1chb1n/mojo/venv-friendly#egg=mojo
 python-openstackclient
-

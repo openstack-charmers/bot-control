@@ -14,4 +14,11 @@ tox
 . .tox/mojo/bin/activate
 mojo --version
 openstack --version
+
+mojo-project-new --series trusty --container containerless mojo-openstack-specs --mojo-root /tmp/mojo
+
+mojo --mojo-root /tmp/mojo workspace-new --project mojo-openstack-specs --series trusty --stage specs/full_stack/stable_to_next/mitaka 'lp:~ost-maintainers/openstack-mojo-specs/mojo-openstack-specs' mojo-openstack-specs
+
+mojo --mojo-root /tmp/mojo run --project mojo-openstack-specs --series trusty --stage specs/full_stack/stable_to_next/mitaka 'lp:~ost-maintainers/openstack-mojo-specs/mojo-openstack-specs
+' osci-mojo
 ```
