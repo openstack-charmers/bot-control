@@ -6,6 +6,9 @@ mkdir -p /home/ubuntu/tools
 git clone https://github.com/openstack-charmers/bot-control /home/ubuntu/tools/bot-control
 cd /home/ubuntu/tools/bot-control/tools
 
+# Prep host
+sudo apt-get install juju git bzr python-pip tox libffi-dev -y
+
 # Build venv
 cd mojo-openstack
 tox
