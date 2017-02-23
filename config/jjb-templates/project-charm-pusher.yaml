@@ -30,6 +30,7 @@
       - hacluster
       - heat
       - keystone
+      - keystone-ldap
       - lxd
       - manila
       - manila-generic
@@ -105,7 +106,7 @@
             description: Asset name (charm name).
         - string:
             name: GIT_BRANCH
-            default: stable/16.10
+            default: stable/17.02
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
@@ -118,7 +119,7 @@
          shallow-clone: true
          clean: {before: true}
          branches:
-          - stable/16.10
+          - stable/17.02
     triggers:
       - pollscm:
           cron: 'H/10 * * * *'
