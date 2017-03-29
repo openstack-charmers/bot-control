@@ -52,9 +52,9 @@ MAP = {
         'check': '1.2',
     },
     '2': {
-        'src': '/usr/bin/juju-2.0',
+        'src': '/usr/bin/juju-2',
         'dst': '/usr/bin/juju',
-        'check': '2.0',
+        'check': '2.',
     },
     'default': '1'
 }
