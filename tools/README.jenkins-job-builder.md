@@ -142,5 +142,5 @@ url=http://n.n.n.n:8080/
 And go!  This will create or update the jobs in Jenkins (CAUTION).
 
 ```
-jenkins-jobs --user XXXXXX --password XXXXXX --conf ./uosci-jjb.conf update ../config/jjb-templates/project-charm-pusher.yaml
+jenkins-jobs --conf uosci-jjb.conf update project-charm-pusher.yaml
 ```
