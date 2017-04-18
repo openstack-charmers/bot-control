@@ -120,10 +120,12 @@
          clean: {before: true}
          branches:
           - stable/17.02
-    triggers:
-      - pollscm:
-          cron: 'H/10 * * * *'
-          ignore-post-commit-hooks: True
+# XXX: /!\ Temporarily disable stable cs pusher trigger while sorting out CI redeploy.
+#
+#    triggers:
+#      - pollscm:
+#          cron: 'H/10 * * * *'
+#          ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
       - build_charm_push_and_publish
@@ -172,21 +174,22 @@
     builders:
         - shell: |
             #!/bin/bash -e
-            ${OSCI_ROOT}/job-parts/build_charm_pusher.sh
+            ${OSCI_ROOT}/run/job-parts/build_charm_pusher.sh
 
 - builder:
     name: prep_osci_repo_if_necessary
     builders:
         - shell: |
-            #!/bin/bash -e
-            # Ensure we have a checkout of UOSCI code
-            if [[ ! -f $OSCI_ROOT/job-parts/osci_job_common.sh ]]; then
-              echo " - Removing checkout @ $OSCI_ROOT if it exists"
-              rm -rf $OSCI_ROOT ||:
-              echo " + Creating new lightweight checkout of $OSCI_REPO @ $OSCI_ROOT."
-              bzr co --lightweight $OSCI_REPO $OSCI_ROOT
-              echo "revno: $(bzr revno $OSCI_ROOT)"
-            fi
+            #!/bin/bash -ue
+            # Do a bare minimum code checkout for a job if it doesn't already exist.
+            . ~/oscirc
+            stat --format="%n %F %y" $OSCI_ROOT/run ||\
+            (
+                rm -rf $OSCI_ROOT ||:
+                mkdir -vp $OSCI_ROOT
+                bzr co --lightweight $OSCI_REPO $OSCI_ROOT
+            )
+
 
 - parameter:
     name: CHARM_PUSH_DRY_RUN
