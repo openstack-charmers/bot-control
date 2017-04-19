@@ -173,7 +173,8 @@
     name: build_charm_push_and_publish
     builders:
         - shell: |
-            #!/bin/bash -e
+            #!/bin/bash -ue
+            . ~/oscirc
             ${OSCI_ROOT}/run/job-parts/build_charm_pusher.sh
 
 - builder:
