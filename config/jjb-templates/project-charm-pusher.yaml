@@ -62,7 +62,7 @@
 # MASTER
 - job-template:
     name: 'charm_pusher_{charm}_master'
-    node: slave
+    node: task
     parameters:
         - string:
             name: BASE_NAME
@@ -98,7 +98,7 @@
 # STABLE CURRENT
 - job-template:
     name: 'charm_pusher_{charm}_stable'
-    node: slave
+    node: task
     parameters:
         - string:
             name: BASE_NAME
@@ -136,7 +136,7 @@
 # NO-OP DEBUG JOB
 - job-template:
     name: 'charm_pusher_noop_debug'
-    node: slave
+    node: task
     parameters:
         - string:
             name: BASE_NAME
