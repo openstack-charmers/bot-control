@@ -182,15 +182,8 @@
     builders:
         - shell: |
             #!/bin/bash -ue
-            # Do a bare minimum code checkout for a job if it doesn't already exist.
             . ~/oscirc
-            stat --format="%n %F %y" $OSCI_ROOT/run ||\
-            (
-                rm -rf $OSCI_ROOT ||:
-                mkdir -vp $OSCI_ROOT
-                bzr co --lightweight $OSCI_REPO $OSCI_ROOT
-            )
-
+            ~/osci-repo-boot-clean.sh
 
 - parameter:
     name: CHARM_PUSH_DRY_RUN
