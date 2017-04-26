@@ -182,5 +182,6 @@ def main():
     logging.info('Writing out file: {}'.format(opts.out_file))
     u.write_yaml(new_bundle_dict, opts.out_file)
 
+
 if __name__ == '__main__':
     main()
