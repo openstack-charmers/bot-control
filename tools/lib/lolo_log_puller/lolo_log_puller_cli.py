@@ -95,43 +95,29 @@ def main():
     for app_unit in app_units:
         cmds = []
         app_unit_clean_name = app_unit.replace('/', '-')
-        cmds.append('juju ssh {} sudo tar -cjf '
-                    '/home/ubuntu/{}-var-log.tar.bz2 /var/log '
-                    '--warning=no-file-changed'.format(
-                        app_unit,
-                        app_unit_clean_name))
+        # Note: /var/lib/charm may not always exist (ceph stores confs there)
 
-        cmds.append('juju ssh {} sudo tar -cjf '
-                    '/home/ubuntu/{}-etc.tar.bz2 /etc '
-                    '--warning=no-file-changed '
-                    '--exclude="/etc/X11" --exclude="/etc/ssl" '
-                    '--exclude="/etc/ssh" --exclude="shadow"'.format(
-                        app_unit,
-                        app_unit_clean_name))
+        cmd_archive = '''
+dpkg -l | bzip2 -9z > /home/ubuntu/{1}-dpkg-list.bz2 &&\
 
-        # May not always exist (ceph stores some confs here)
-        cmds.append('juju ssh {} "[[ -d /var/lib/charm ]] && '
-                    'sudo tar -cjf /home/ubuntu/{}-var-lib-charm.tar.bz2 '
-                    '/var/lib/charm ||:"'.format(app_unit,
-                                                 app_unit_clean_name))
+[[ -d /var/lib/charm ]] && sudo tar -cjf /home/ubuntu/{1}-var-lib-charm.tar.bz2 /var/lib/charm ||: &&\
 
-        cmds.append('juju ssh {} "dpkg -l | bzip2 -9z > '
-                    '/home/ubuntu/{}-dpkg-list.bz2"'.format(
-                        app_unit, app_unit_clean_name))
+ps aux | bzip2 -9z > /home/ubuntu/{1}-processes.bz2 &&\
 
-        cmds.append('juju ssh {} "df -h | bzip2 -9z > '
-                    '/home/ubuntu/{}-df.bz2"'.format(
-                        app_unit, app_unit_clean_name))
+sudo netstat -taupn | grep LISTEN | bzip2 -9z > /home/ubuntu/{1}-listening.bz2 &&\
 
-        cmds.append('juju ssh {} "ps aux | bzip2 -9z > '
-                    '/home/ubuntu/{}-processes.bz2"'.format(
-                        app_unit, app_unit_clean_name))
+sudo ip a > /home/ubuntu/{1}-ip-addr.txt &&\
 
-        cmds.append('juju ssh {} "sudo netstat -taupn | '
-                    'grep LISTEN | bzip2 -9z > '
-                    '/home/ubuntu/{}-listening.bz2"'.format(
-                        app_unit, app_unit_clean_name))
+df -h | bzip2 -9z > /home/ubuntu/{1}-df.bz2 &&\
 
+free -m | bzip2 -9z > /home/ubuntu/{1}-free.bz2 &&\
+
+sudo tar -cjf /home/ubuntu/{1}-var-log.tar.bz2 /var/log --warning=no-file-changed &&\
+
+sudo tar -cjf /home/ubuntu/{1}-etc.tar.bz2 /etc --warning=no-file-changed --exclude="/etc/X11" --exclude="/etc/ssl" --exclude="/etc/ssh" --exclude="shadow"
+'''.format(app_unit, app_unit_clean_name)  # noqa
+
+        cmds.append('juju ssh {} "{}"'.format(app_unit, cmd_archive))
         cmds.append('juju scp {}:/home/ubuntu/*.bz2'
                     ' {}'.format(app_unit, log_dir))
 
