@@ -387,6 +387,9 @@ def get_juju_application_units(application=None):
     j_stat = get_juju_status(application)
     j_units = []
     for app, app_data in j_stat['applications'].items():
+        if 'units' not in app_data:
+            # Likely an unrelated subordinate
+            continue
         for app_unit in app_data['units']:
             j_units.append(app_unit)
     return j_units
