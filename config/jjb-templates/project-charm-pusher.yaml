@@ -120,12 +120,10 @@
          clean: {before: true}
          branches:
           - stable/17.02
-# XXX: /!\ Temporarily disable stable cs pusher trigger while sorting out CI redeploy.
-#
-#    triggers:
-#      - pollscm:
-#          cron: 'H/10 * * * *'
-#          ignore-post-commit-hooks: True
+    triggers:
+      - pollscm:
+          cron: 'H/10 * * * *'
+          ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
       - build_charm_push_and_publish
