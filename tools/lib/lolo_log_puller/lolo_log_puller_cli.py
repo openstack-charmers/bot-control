@@ -25,8 +25,8 @@ USAGE = '''Usage: %prog [options] FILENAME [OPTIONAL ENV VAR LIST]
 
 %prog
 ==============================================================================
-A simple tool to collect log files from Juju all application units in the
-current Juju model.
+A down and dirty tool to collect log files from all Juju application units
+in the current Juju model.
 
 Usage examples:
     ./%prog /tmp/log_dir
