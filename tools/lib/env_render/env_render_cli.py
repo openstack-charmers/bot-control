@@ -134,6 +134,9 @@ def main():
     try:
         logging.info('Rendering {}'.format(target))
         u.render(source, target, context, templates_dir)
+        f = open(target, 'a')
+        f.write('\n')
+        f.close()
     except:
         logging.error('Failed to render file: {}'.format(target))
         raise

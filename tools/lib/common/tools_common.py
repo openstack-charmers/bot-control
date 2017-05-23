@@ -19,7 +19,9 @@ bundle-reducer helpers
 import logging
 import os
 import random
+import subprocess
 import string
+import sys
 import yaml
 
 import common.control_data_common as control_data
@@ -368,3 +370,71 @@ def prompt_yes_no(question=None):
         return False
     else:
         return True
+
+
+def get_juju_status(application=None):
+    '''Return juju yaml status as dict.'''
+    if not application:
+        return yaml.load(subprocess.check_output(
+                     ['juju', 'status', '--format', 'yaml']))
+    else:
+        return yaml.load(subprocess.check_output(
+                     ['juju', 'status', application, '--format', 'yaml']))
+
+
+def get_juju_application_units(application=None):
+    '''Get a list of juju application units.'''
+    j_stat = get_juju_status(application)
+    j_units = []
+    for app, app_data in j_stat['applications'].items():
+        if 'units' not in app_data:
+            # Likely an unrelated subordinate
+            continue
+        for app_unit in app_data['units']:
+            j_units.append(app_unit)
+    return j_units
+
+
+def safe_mkdir(directory):
+    '''Make directory if it doesn't exist.  a la mkdir -p
+    '''
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+
+def run_cmds(cmds, fatal=False, stop_on_first_fail=True,
+             dry_run=False, suppress=True):
+    ''' Execute a list of commands.
+    '''
+
+    logging.debug('Dry run: {}'.format(dry_run))
+    if not cmds:
+        return False
+
+    all_passed = True
+    for cmd in cmds:
+        if suppress:
+            cmd = cmd + ' >/dev/null 2>&1'
+
+        if dry_run:
+            logging.info('not running cmd: {}'.format(cmd))
+            ret = 0
+        else:
+            # Use os.system instead of subprocess due to piping and redirection
+            ret = os.system(cmd)
+            logging.info('cmd [returned {}]: {}'.format(ret, cmd))
+
+        if fatal and ret:
+            logging.debug('Aborting on failed command.')
+            sys.exit(1)
+        elif not fatal and ret:
+            all_passed = False
+            logging.debug('Ignoring failed command.')
+
+        if not fatal and ret and stop_on_first_fail:
+            break
+
+    if all_passed:
+        return True
+    else:
+        return False

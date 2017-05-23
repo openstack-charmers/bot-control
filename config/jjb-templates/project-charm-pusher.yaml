@@ -62,7 +62,7 @@
 # MASTER
 - job-template:
     name: 'charm_pusher_{charm}_master'
-    node: slave
+    node: task
     parameters:
         - string:
             name: BASE_NAME
@@ -98,7 +98,7 @@
 # STABLE CURRENT
 - job-template:
     name: 'charm_pusher_{charm}_stable'
-    node: slave
+    node: task
     parameters:
         - string:
             name: BASE_NAME
@@ -134,7 +134,7 @@
 # NO-OP DEBUG JOB
 - job-template:
     name: 'charm_pusher_noop_debug'
-    node: slave
+    node: task
     parameters:
         - string:
             name: BASE_NAME
@@ -171,22 +171,17 @@
     name: build_charm_push_and_publish
     builders:
         - shell: |
-            #!/bin/bash -e
-            ${OSCI_ROOT}/job-parts/build_charm_pusher.sh
+            #!/bin/bash -ue
+            . ~/oscirc
+            ${OSCI_ROOT}/run/job-parts/build_charm_pusher.sh
 
 - builder:
     name: prep_osci_repo_if_necessary
     builders:
         - shell: |
-            #!/bin/bash -e
-            # Ensure we have a checkout of UOSCI code
-            if [[ ! -f $OSCI_ROOT/job-parts/osci_job_common.sh ]]; then
-              echo " - Removing checkout @ $OSCI_ROOT if it exists"
-              rm -rf $OSCI_ROOT ||:
-              echo " + Creating new lightweight checkout of $OSCI_REPO @ $OSCI_ROOT."
-              bzr co --lightweight $OSCI_REPO $OSCI_ROOT
-              echo "revno: $(bzr revno $OSCI_ROOT)"
-            fi
+            #!/bin/bash -ue
+            . ~/oscirc
+            ~/osci-repo-boot-clean.sh
 
 - parameter:
     name: CHARM_PUSH_DRY_RUN
