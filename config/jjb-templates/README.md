@@ -216,5 +216,11 @@ jenkins-jobs --conf uosci-jjb.conf update --workers 8 .
 ```
 
 #### References
- - https://docs.openstack.org/infra/jenkins-job-builder/index.html
+ - https://docs.openstack.org/infra/jenkins-job-builder/
  - https://docs.openstack.org/infra/jenkins-job-builder/execution.html
+ - https://docs.openstack.org/infra/jenkins-job-builder/project_matrix.html
+ - https://docs.openstack.org/infra/jenkins-job-builder/project_pipeline.html
+ - https://docs.openstack.org/infra/jenkins-job-builder/parameters.html
+ - https://docs.openstack.org/infra/jenkins-job-builder/properties.html
+ - https://docs.openstack.org/infra/jenkins-job-builder/scm.html
+ - https://docs.openstack.org/infra/jenkins-job-builder/triggers.html
