@@ -1,5 +1,5 @@
-Set Up Jenkins Job Builder in a Virtual Env
-===========================================
+OpenStack Charm CI - Jenkins Job Builder Usage
+==============================================
 
 #### Example: Basic usage
 ```
