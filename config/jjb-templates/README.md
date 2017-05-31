@@ -195,7 +195,7 @@ INFO:jenkins_jobs.builder:Cache saved
 Create the conf file.  Here is an example:
 
 ```
-ubuntu@osci-bastion:~/bot-control/tools⟫ cat uosci-jjb.conf
+ubuntu@osci-bastion:~/git/bot-control/config/jjb-templates⟫ cat uosci-jjb.conf
 [job_builder]
 ignore_cache=True
 allow_duplicates=False
@@ -206,10 +206,13 @@ password=XXXXXX
 url=http://n.n.n.n:8080/
 ```
 
-And go!  This will create or update the jobs in Jenkins (CAUTION).
+*And, go!*  With a completed conf file containing the necessary Jenkins auth and location information, the following will create or update all jobs/views in Jenkins.  It is recommended to always verify with ```test``` before running ```update```.  If executing from a small cloud instance, it may be beneficial to set ```workers```, as the default will be 1 worker per core.
 
 ```
-jenkins-jobs --conf uosci-jjb.conf update .
+cd bot-control/config/jjb-templates
+tox -e jjb
+. jjbrc
+jenkins-jobs --conf uosci-jjb.conf update --workers 8 .
 ```
 
 #### References
