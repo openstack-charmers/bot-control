@@ -1,0 +1,20 @@
+# Charm Pusher View(s)
+# TODO: JJB only supports list and pipeline views, and the existing OSCI
+#      system uses dashboard views.  Perhaps an opportunity to extend and
+#      contribute to JJB itself.
+# https://github.com/openstack-infra/jenkins-job-builder/tree/master/jenkins_jobs/modules
+# https://github.com/openstack-infra/jenkins-job-builder/commit/1deb3aff4c1ff57b92d967c67411b316ef5b8952
+
+- view:
+    name: CS
+    description: |
+        <p>Charm store push-release jobs</p>
+    view-type: list
+    regex: "charm_pusher.*"
+    columns:
+      - status
+      - build-button
+      - weather
+      - job
+      - last-success
+      - last-failure

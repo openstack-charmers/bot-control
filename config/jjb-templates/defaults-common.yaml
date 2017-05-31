@@ -1,0 +1,45 @@
+# OpenStack Charm CI - defaults, common builders, and common publishers.
+- defaults:
+    name: global
+    arch: amd64
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+
+- builder:
+    name: prep_osci_repo_if_necessary
+    builders:
+        - shell: |
+            #!/bin/bash -ue
+            . ~/oscirc
+            ~/osci-repo-boot-clean.sh
+
+- publisher:
+    name: archive_artifacts
+    publishers:
+        - archive:
+            artifacts: '*, logs/*'
+            allow-empty: true
+            fingerprint: true
+
+- publisher:
+    name: email_watchers
+    publishers:
+        - email-ext:
+            recipients: openstack-charm-ci-watchers@lists.launchpad.net
+            content-type: text
+            subject: '[UOSCI] $DEFAULT_SUBJECT'
+            body: |
+                $DEFAULT_SUBJECT
+                ${ENV,var="BASE_NAME"} ${ENV,var="DISPLAY_NAME"}
+                ${GIT_URL} (${GIT_BRANCH})
+                ${GIT_COMMIT}
+
+                Charm store refs pushed and released:
+                ${FILE,path="cs_refs_released.txt"}
+            attachments: cs_refs_released.txt
+            attach-build-log: false
+            disable-publisher: false
+            success: true
+            failure: false
+            presend-script: $DEFAULT_PRESEND_SCRIPT
+            save-output: false
