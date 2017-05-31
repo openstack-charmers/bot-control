@@ -1,14 +1,11 @@
 # OpenStack Charm CI - Charm Pusher Job Generator for Jenkins-Job-Builder
 #   Renders (Charms) x (Branches) = (Lots of Jobs) so we can forget about XML
-#
-- defaults:
-    name: global
-    description: |
-        <p>Watch for git commits and kick off charmstore charm upload/release paths.</p>
-        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
 
 - project:
     name: project-charm-pusher
+    description: |
+        <p>Watch for git commits and kick off charmstore charm upload/release paths.</p>
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     charm:
       - aodh
       - barbican
@@ -74,6 +71,9 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
+    build-discarder:
+      artifactDaysToKeep: 365
+      artifactNumToKeep: 500
     scm:
       - git:
          url: https://github.com/openstack/charm-{charm}
@@ -95,7 +95,7 @@
         - archive_artifacts
         - email_watchers
 
-# STABLE CURRENT
+# STABLE
 - job-template:
     name: 'charm_pusher_{charm}_stable'
     node: task
@@ -110,6 +110,9 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
+    build-discarder:
+      artifactDaysToKeep: 365
+      artifactNumToKeep: 500
     scm:
       - git:
          url: https://github.com/openstack/charm-{charm}
@@ -146,6 +149,9 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
+    build-discarder:
+      artifactDaysToKeep: 90
+      artifactNumToKeep: 100
     scm:
       - git:
          url: https://github.com/ryan-beisner/trigger-test
@@ -158,7 +164,7 @@
           - master
     triggers:
       - pollscm:
-          cron: 'H/5 * * * *'
+          cron: 'H/20 * * * *'
           ignore-post-commit-hooks: True
     builders:
       - prep_osci_repo_if_necessary
@@ -175,14 +181,6 @@
             . ~/oscirc
             ${OSCI_ROOT}/run/job-parts/build_charm_pusher.sh
 
-- builder:
-    name: prep_osci_repo_if_necessary
-    builders:
-        - shell: |
-            #!/bin/bash -ue
-            . ~/oscirc
-            ~/osci-repo-boot-clean.sh
-
 - parameter:
     name: CHARM_PUSH_DRY_RUN
     parameters:
@@ -197,34 +195,3 @@
         - string:
             name: DISPLAY_NAME
             description: Optional string to add to the Build Name of the job.
-
-- publisher:
-    name: archive_artifacts
-    publishers:
-        - archive:
-            artifacts: '*, logs/*'
-            allow-empty: true
-            fingerprint: true
-
-- publisher:
-    name: email_watchers
-    publishers:
-        - email-ext:
-            recipients: openstack-charm-ci-watchers@lists.launchpad.net
-            content-type: text
-            subject: '[UOSCI] $DEFAULT_SUBJECT'
-            body: |
-                $DEFAULT_SUBJECT
-                ${ENV,var="BASE_NAME"} ${ENV,var="DISPLAY_NAME"}
-                ${GIT_URL} (${GIT_BRANCH})
-                ${GIT_COMMIT}
-
-                Charm store refs pushed and released:
-                ${FILE,path="cs_refs_released.txt"}
-            attachments: cs_refs_released.txt
-            attach-build-log: false
-            disable-publisher: false
-            success: true
-            failure: false
-            presend-script: $DEFAULT_PRESEND_SCRIPT
-            save-output: false
