@@ -3,9 +3,8 @@ Set Up Jenkins Job Builder in a Virtual Env
 
 #### Example: Basic usage
 ```
-virtualenv .vjjb
-source .vjjb/bin/activate
-pip install -r jjb-requirements.txt
+tox -e jjb
+. jjbrc
 
 jenkins-jobs --help
 
@@ -49,7 +48,7 @@ deactivate
 
 #### Example: Iterating on JJB Template Authoring
 
-Use the test command to see what XML job config would be generated for Jenkins.
+For a batch of jobs, this example uses the test command to see what XML job config would be generated for Jenkins.
 
 ```jenkins-jobs test <foo>``` simply sends the generated XML to stdout.
 
@@ -144,6 +143,49 @@ INFO:jenkins_jobs.builder:Job name:  charm_pusher_tempest_stable
 INFO:jenkins_jobs.builder:Cache saved
 
 vi temp.xml  # To see it.
+```
+
+#### Example: JJB Authoring - Single Job
+
+For a single job, this example uses the test command to see what XML job config would be generated for Jenkins.
+
+```
+(jjb) rbeisner@rby:~/git/bot-control/config/jjb-templates⟫ jenkins-jobs test . charm_pusher_percona-cluster_master > temp.xml
+INFO:root:Will use anonymous access to Jenkins if needed.
+INFO:jenkins_jobs.builder:Number of jobs generated:  1
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_percona-cluster_master
+INFO:jenkins_jobs.builder:Cache saved
+```
+
+
+#### Example: JJB Authoring - Wildcard Jobs
+
+For wildcard jobs, this example uses the test command to see what XML job config would be generated for Jenkins.
+
+```
+(jjb) rbeisner@rby:~/git/bot-control/config/jjb-templates⟫ jenkins-jobs test . charm_pusher_percona-cluster* > temp.xml
+INFO:root:Will use anonymous access to Jenkins if needed.
+INFO:jenkins_jobs.builder:Number of jobs generated:  2
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_percona-cluster_master
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_percona-cluster_stable
+INFO:jenkins_jobs.builder:Cache saved
+
+(jjb) rbeisner@rby:~/git/bot-control/config/jjb-templates⟫ jenkins-jobs test . charm_pusher_ceph* > /tmp/1
+INFO:root:Will use anonymous access to Jenkins if needed.
+INFO:jenkins_jobs.builder:Number of jobs generated:  12
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-fs_master
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-fs_stable
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-mon_master
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-mon_stable
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-osd_master
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-osd_stable
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-proxy_master
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-proxy_stable
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-radosgw_master
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph-radosgw_stable
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph_master
+INFO:jenkins_jobs.builder:Job name:  charm_pusher_ceph_stable
+INFO:jenkins_jobs.builder:Cache saved
 ```
 
 ------------------------------------------------------------------------------
