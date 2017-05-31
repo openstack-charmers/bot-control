@@ -4,7 +4,7 @@
 #   AMULET_ODL_LI_LOCATION
 #   AMULET_ODL_BE_LOCATION
 odl-controller:
-  install-url: {{ env['AMULET_ODL_LI_LOCATION'] }}
-  http-proxy: {{ env['AMULET_HTTP_PROXY'] }}
-  https-proxy: {{ env['AMULET_HTTP_PROXY'] }}
+  install-url: "{{ env['AMULET_ODL_LI_LOCATION'] }}"
+  http-proxy: "{{ env['AMULET_HTTP_PROXY'] }}"
+  https-proxy: "{{ env['AMULET_HTTP_PROXY'] }}"
   profile: openvswitch-odl-lithium
