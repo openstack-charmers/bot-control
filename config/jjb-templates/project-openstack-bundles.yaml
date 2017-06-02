@@ -62,7 +62,7 @@
       - amd64:
           node-foo: 'osci-lab-0'
           cron-foo: 'H H * * 0'
-      - aarch64:
+      - arm64:
           node-foo: 'osci-lab-1'
           cron-foo: 'H H * * 1'
       - ppc64el:
