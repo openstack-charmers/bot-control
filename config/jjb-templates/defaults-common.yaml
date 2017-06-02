@@ -17,7 +17,7 @@
     name: archive_artifacts
     publishers:
         - archive:
-            artifacts: '*, logs/*'
+            artifacts: '*, logs/*, build/*'
             allow-empty: true
             fingerprint: true
 
