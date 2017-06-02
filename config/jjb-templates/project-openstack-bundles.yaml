@@ -2,7 +2,7 @@
 - job-template:
     name: '{name}-{risk}-{bundle-name}-{uos-combo}-{arch}'
     description: |
-        <p>Exercise an openstack-bundles type bundle: {name} {bundle-file} {arch}.</p>
+        <p>Exercise an openstack-bundles type bundle: {bundle-file} {arch}.</p>
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     node: '{node-foo}'
     parameters: 
@@ -15,9 +15,10 @@
             default: '{arch}'
             description: CPU architecture.
         - DISPLAY_NAME
-    build-discarder:
-      artifactDaysToKeep: 365
-      artifactNumToKeep: 500
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 365
+          artifact-num-to-keep: 500
     triggers:
       - timed: '{cron-foo}'
     wrappers:

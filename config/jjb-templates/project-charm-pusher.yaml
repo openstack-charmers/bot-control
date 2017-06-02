@@ -71,9 +71,10 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
-    build-discarder:
-      artifactDaysToKeep: 365
-      artifactNumToKeep: 500
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 365
+          artifact-num-to-keep: 500
     scm:
       - git:
          url: https://github.com/openstack/charm-{charm}
@@ -110,9 +111,10 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
-    build-discarder:
-      artifactDaysToKeep: 365
-      artifactNumToKeep: 500
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 365
+          artifact-num-to-keep: 500
     scm:
       - git:
          url: https://github.com/openstack/charm-{charm}
@@ -149,9 +151,10 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
-    build-discarder:
-      artifactDaysToKeep: 90
-      artifactNumToKeep: 100
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 365
+          artifact-num-to-keep: 500
     scm:
       - git:
          url: https://github.com/ryan-beisner/trigger-test
