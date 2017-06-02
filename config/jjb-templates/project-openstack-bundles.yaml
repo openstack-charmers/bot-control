@@ -1,0 +1,99 @@
+# OpenStack Charm CI - openstack-bundles jobs approach #1
+- job-template:
+    name: '{name}-{risk}-{bundle-name}-{uos-combo}-{arch}'
+    description: |
+        <p>Exercise an openstack-bundles type bundle: {name} {bundle-file} {arch}.</p>
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    node: '{node-foo}'
+    parameters: 
+        - string:
+            name: BUNDLE_FILE
+            default: '{bundle-file}'
+            description: Bundle file (relative path to bundle checkout directory).
+        - string:
+            name: ARCH
+            default: '{arch}'
+            description: CPU architecture.
+        - DISPLAY_NAME
+    build-discarder:
+      artifactDaysToKeep: 365
+      artifactNumToKeep: 500
+    triggers:
+      - timed: '{cron-foo}'
+    wrappers:
+      - workspace-cleanup
+      - timestamps
+      - timeout:
+          type: elastic
+          fail: false
+          abort: true
+          elastic-number-builds: 10
+          elastic-default-timeout: 240
+    builders:
+      - prep_osci_repo_if_necessary
+      - build_openstack_bundles_runner
+    publishers:
+      - archive_artifacts
+      - email_watchers
+
+- project:
+    name: bundle
+    risk:
+      - stable
+      - development
+    uos-combo:
+      - xenial-mitaka
+      - xenial-newton
+      - xenial-ocata
+      - xenial-pike
+    bundle-name:
+      - openstack-base
+      - openstack-telemetry
+      - openstack-lxd
+
+    bundle-file: '{risk}/{bundle-name}-{uos-combo}/bundle.yaml'
+
+    # Pivot all architectures by default; exclude by exception where not applicable.
+    arch:
+      - amd64:
+          node-foo: 'osci-lab-0'
+          cron-foo: 'H H * * 0'
+      - aarch64:
+          node-foo: 'osci-lab-1'
+          cron-foo: 'H H * * 1'
+      - ppc64el:
+          node-foo: 'osci-lab-2'
+          cron-foo: 'H H * * 2'
+
+    # Optionally exclude certain combos
+    exclude:
+      - uos-combo: xenial-pike
+      - bundle-name: openstack-lxd
+    # Ex.
+    # - bundle-name: openstack-telemetry
+    #   uos-combo: trusty-newton
+    #   arch: s390x
+    jobs:
+      - '{name}-{risk}-{bundle-name}-{uos-combo}-{arch}'
+
+- builder:
+    name: build_openstack_bundles_runner
+    builders:
+      - shell: |
+          #!/bin/bash -ue
+          . ~/oscirc
+          ${OSCI_ROOT}/run/job-parts/build_openstack_bundles_runner.sh
+
+- view:
+    name: OB
+    description: |
+        <p>OpenStack-Bundles jobs</p>
+    view-type: list
+    regex: "bundle-.*openstack.*"
+    columns:
+      - status
+      - build-button
+      - weather
+      - job
+      - last-success
+      - last-failure
