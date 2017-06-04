@@ -11,6 +11,10 @@
             default: '{bundle-file}'
             description: Bundle file (relative path to bundle checkout directory).
         - string:
+            name: BUNDLE_NAME
+            default: '{bundle-name}'
+            description: Bundle scenario name (not filename)
+        - string:
             name: ARCH
             default: '{arch}'
             description: CPU architecture.
