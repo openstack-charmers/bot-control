@@ -23,8 +23,9 @@
       - build-discarder:
           artifact-days-to-keep: 365
           artifact-num-to-keep: 500
-    triggers:
-      - timed: '{cron-foo}'
+    # Not triggering from the job definition directly (trigging via matrix instead).
+    # triggers:
+    #   - timed: '{cron-foo}'
     wrappers:
       - workspace-cleanup
       - timestamps
@@ -62,16 +63,17 @@
     bundle-file: '{risk}/{bundle-name}-{uos-combo}/bundle.yaml'
 
     # Pivot all architectures by default; exclude by exception where not applicable.
+    # Not triggering from the job definition directly (trigging via matrix instead).
     arch:
       - amd64:
           node-foo: 'osci-lab-0'
-          cron-foo: 'H H * * 0'
+          # Ex. cron-foo: 'H H * * 0'
       - arm64:
           node-foo: 'osci-lab-1'
-          cron-foo: 'H H * * 1'
+          # Ex. cron-foo: 'H H * * 1'
       - ppc64el:
           node-foo: 'osci-lab-2'
-          cron-foo: 'H H * * 2'
+          # Ex. cron-foo: 'H H * * 2'
 
     # Optionally exclude certain combos
     exclude:
