@@ -18,3 +18,17 @@
       - job
       - last-success
       - last-failure
+
+- view:
+    name: Matrix
+    description: |
+        <p>Matrix jobs</p>
+    view-type: list
+    regex: ".*matrix.*"
+    columns:
+      - status
+      - build-button
+      - weather
+      - job
+      - last-success
+      - last-failure
