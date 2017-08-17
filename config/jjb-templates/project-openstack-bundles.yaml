@@ -26,6 +26,8 @@
     # Not triggering from the job definition directly (trigging via matrix instead).
     # triggers:
     #   - timed: '{cron-foo}'
+    triggers:
+        - timed: " "
     wrappers:
       - workspace-cleanup
       - timestamps
