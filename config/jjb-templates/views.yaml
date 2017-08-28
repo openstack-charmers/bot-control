@@ -38,7 +38,7 @@
     description: |
         <p>Matrix jobs</p>
     view-type: list
-    regex: "test_mojo.*matrix.*"
+    regex: "test_mojo.*matrix.*||mojo_runner.*"
     columns:
       - status
       - build-button
