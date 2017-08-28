@@ -9,7 +9,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "@weekly"
+        - timed: "H H(17-23) * * 0"  # Once weekly on Sunday nights
     axes:
       - axis:
          type: user-defined

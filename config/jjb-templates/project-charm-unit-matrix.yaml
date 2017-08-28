@@ -9,7 +9,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "@midnight"
+        - timed: "H H(0-6) * * *"  # Daily in the wee hours
     axes:
       - axis:
          type: user-defined
