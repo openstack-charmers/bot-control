@@ -530,3 +530,47 @@
           predefined-parameters: |
             SPEC_PATH=$SPEC_PATH
             U_OS=$U_OS
+
+- job:
+    name: mojo_runner
+    # display-name: "Mojo Test Runner"
+    project-type: freestyle
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    node: slave
+    disabled: false
+    concurrent: true
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 180
+          artifact-num-to-keep: 500
+      - throttle:
+          max-per-node: 1
+          max-total: 4
+          categories:
+            - overclouds
+          option: category
+          matrix-builds: false
+          matrix-configs: true
+    parameters:
+      - string:
+          name: SPEC_PATH
+          default: "specs/full_stack/next_ha_oneshot"
+          description: Mojo Spec Path
+      - string:
+          name: U_OS
+          default: "xenial-ocata"
+          description: Ubuntu-OpenStack Release Combo
+      - string:
+          name: MOJO_OPENSTACK_SPECS_REPO
+          default: "lp:~ost-maintainers/openstack-mojo-specs/mojo-openstack-specs"
+          description: Launchpad repo for Mojo OpenStack Specs
+      - NO_POST_DESTROY
+      - DISPLAY_NAME
+    wrappers:
+      - build-name:
+          name: '#${BUILD_NUMBER} ${ENV,var="SPEC_PATH"} ${ENV,var="U_OS"}'
+    builders:
+      - prep_osci_repo_if_necessary
+    publishers:
+      - archive_artifacts

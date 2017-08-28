@@ -192,10 +192,3 @@
             name: CHARM_PUSH_DRY_RUN
             default: false
             description: Optionally take no action, just run for debug purpose.
-
-- parameter:
-    name: DISPLAY_NAME
-    parameters:
-        - string:
-            name: DISPLAY_NAME
-            description: Optional string to add to the Build Name of the job.
