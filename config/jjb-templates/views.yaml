@@ -20,11 +20,25 @@
       - last-failure
 
 - view:
-    name: Matrix
+    name: Charm Matrix
     description: |
         <p>Matrix jobs</p>
     view-type: list
-    regex: ".*matrix.*"
+    regex: "test_charm.*matrix.*"
+    columns:
+      - status
+      - build-button
+      - weather
+      - job
+      - last-success
+      - last-failure
+
+- view:
+    name: Mojo Matrix
+    description: |
+        <p>Matrix jobs</p>
+    view-type: list
+    regex: "test_mojo.*matrix.*"
     columns:
       - status
       - build-button

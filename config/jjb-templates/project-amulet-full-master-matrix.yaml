@@ -9,7 +9,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "@weekly"
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
