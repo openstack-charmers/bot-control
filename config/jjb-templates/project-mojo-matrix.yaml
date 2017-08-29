@@ -12,7 +12,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/next_ha_oneshot
       - axis:
@@ -34,8 +34,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_ha_oneshot_stable_matrix
@@ -50,7 +51,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/stable_ha_oneshot
       - axis:
@@ -72,8 +73,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_ssl_master_matrix
@@ -88,7 +90,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/next_deploy_ssl
       - axis:
@@ -110,8 +112,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_ssl_stable_matrix
@@ -126,7 +129,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/stable_deploy_ssl
       - axis:
@@ -148,8 +151,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_ksv3_master_matrix
@@ -164,7 +168,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/next_keystone_v3
       - axis:
@@ -186,8 +190,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_ksv3_stable_matrix
@@ -202,7 +207,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/next_keystone_v3
       - axis:
@@ -224,8 +229,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_openstack_upgrade_master_matrix
@@ -240,7 +246,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/next_openstack_upgrade
       - axis:
@@ -262,8 +268,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_openstack_upgrade_stable_matrix
@@ -278,7 +285,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/stable_openstack_upgrade
       - axis:
@@ -300,8 +307,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_charm_upgrade_ha_matrix
@@ -316,7 +324,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/stable_to_next_ha
       - axis:
@@ -338,8 +346,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_charm_upgrade_matrix
@@ -354,7 +363,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/stable_to_next
       - axis:
@@ -376,8 +385,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_ch_sync_ha_master_matrix
@@ -392,7 +402,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/next_charmhelper_sync_ha
       - axis:
@@ -414,8 +424,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_ch_sync_stable_matrix
@@ -430,7 +441,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/next_charmhelper_sync
       - axis:
@@ -452,8 +463,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_vrrp_ha_master_matrix
@@ -468,7 +480,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/next_ha_vrrp
       - axis:
@@ -490,8 +502,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: test_mojo_vrrp_ha_stable_matrix
@@ -506,7 +519,7 @@
     axes:
       - axis:
          type: user-defined
-         name: SPEC_PATH
+         name: MOJO_SPEC
          values:
           - specs/full_stack/stable_ha_vrrp
       - axis:
@@ -528,8 +541,9 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            SPEC_PATH=$SPEC_PATH
+            MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
     name: mojo_runner
@@ -554,7 +568,7 @@
           matrix-configs: true
     parameters:
       - string:
-          name: SPEC_PATH
+          name: MOJO_SPEC
           default: "specs/full_stack/next_ha_oneshot"
           description: Mojo Spec Path
       - string:
@@ -568,9 +582,19 @@
       - NO_POST_DESTROY
       - DISPLAY_NAME
     wrappers:
+      - timestamps
       - build-name:
-          name: '#${BUILD_NUMBER} ${ENV,var="SPEC_PATH"} ${ENV,var="U_OS"}'
+          name: '#${BUILD_NUMBER} ${ENV,var="MOJO_SPEC"} ${ENV,var="U_OS"}'
     builders:
       - prep_osci_repo_if_necessary
+      - build_mojo_runner
     publishers:
       - archive_artifacts
+
+- builder:
+    name: build_mojo_runner
+    builders:
+        - shell: |
+            #!/bin/bash -ue
+            . ~/oscirc
+            ${OSCI_ROOT}/run/job-parts/build_mojo_runner.sh
