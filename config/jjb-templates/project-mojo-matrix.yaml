@@ -337,13 +337,14 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
-          - "trusty-kilo"
-          - "trusty-liberty"
+          # - "trusty-icehouse"  # No KSV3 support in Icehouse
+          # - "trusty-kilo"      # No KSV3 support in Kilo
+          - "trusty-liberty"     # Early KSV3 support
           - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
+          - "zesty-ocata"
 #          - "xenial-pike"
     builders:
       - trigger-builds:
