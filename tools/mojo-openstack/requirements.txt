@@ -6,3 +6,4 @@ python-cinderclient>=1.0.0  # From Mojo requirements
 bzr+lp:codetree#egg=codetree
 bzr+lp:mojo#egg=mojo
 python-openstackclient
+websocket-client<=0.40.0
