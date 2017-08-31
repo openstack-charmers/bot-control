@@ -20,7 +20,7 @@
       - last-failure
 
 - view:
-    name: Charm Matrix
+    name: CharmMatrix
     description: |
         <p>Matrix jobs</p>
     view-type: list
@@ -34,7 +34,7 @@
       - last-failure
 
 - view:
-    name: Mojo Matrix
+    name: MojoMatrix
     description: |
         <p>Matrix jobs</p>
     view-type: list
