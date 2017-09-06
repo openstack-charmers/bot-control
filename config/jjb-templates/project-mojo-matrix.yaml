@@ -22,7 +22,7 @@
           - "trusty-distro"
           - "xenial-distro"
           - "zesty-distro"
-          - "artful-distro"
+          # - "artful-distro"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -63,7 +63,7 @@
           - "xenial-ocata"
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -144,7 +144,7 @@
           - "xenial-ocata"
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -225,7 +225,7 @@
           - "xenial-ocata"
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -305,7 +305,7 @@
           - "xenial-ocata"
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -380,13 +380,13 @@
           - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
-          - "trusty-mitaka"
+          # - "trusty-mitaka"        # Nothing to upgrade to.
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
-          - "xenial-pike"
-          - "zesty-ocata"
-          - "artful-pike"
+          # - "xenial-pike"          # Nothing to upgrade to.
+          # - "zesty-ocata"          # Nothing to upgrade to.
+          # - "artful-pike"          # Nothing to upgrade to.  Also pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -421,11 +421,11 @@
           - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
-          - "trusty-mitaka"
+          # - "trusty-mitaka"         # Nothing to upgrade to.
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
-#          - "xenial-pike"
+          # - "xenial-pike"           # Nothing to upgrade to.
     builders:
       - trigger-builds:
         - project:
@@ -546,7 +546,7 @@
           - "xenial-ocata"
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -559,7 +559,7 @@
             DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
-    name: test_mojo_ch_sync_stable_matrix
+    name: test_mojo_ch_sync_master_matrix
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -567,7 +567,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
     axes:
       - axis:
          type: user-defined
@@ -585,7 +585,9 @@
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
-#          - "xenial-pike"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -627,7 +629,7 @@
           - "xenial-ocata"
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -694,7 +696,7 @@
           artifact-num-to-keep: 500
       - throttle:
           max-per-node: 1
-          max-total: 5
+          max-total: 3
           option: project
           # NOTE(beisner): One can use either strategy/option (project or category).
           #     Category (from Jenkins master global config) wins over any max
@@ -767,7 +769,7 @@
           - "xenial-ocata"
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -809,7 +811,7 @@
           - "xenial-ocata"
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -850,7 +852,7 @@
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -892,7 +894,7 @@
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -933,7 +935,7 @@
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -974,7 +976,7 @@
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
@@ -1015,7 +1017,7 @@
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
           - "zesty-ocata"
-          - "artful-pike"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
         - project:
