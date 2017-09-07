@@ -1,3 +1,6 @@
+# /!\ DEPRECATED, not implemented as-is.  Saving in-tree as an example of how
+#     some things can work well, and others not so much.
+#
 # OpenStack Charm CI - openstack-bundles jobs approach #1
 - job-template:
     name: '{name}-{risk}-{bundle-name}-{uos-combo}-{arch}'
