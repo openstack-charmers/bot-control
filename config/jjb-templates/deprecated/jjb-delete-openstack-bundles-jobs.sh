@@ -1,5 +1,5 @@
 #!/bin/bash -ex
-# Perform a no-op test exercise of the jenkins job builder definitions
+# Delete specifically-named jobs
 
 stat -t .tox/jjb/bin/activate ||\
     tox
