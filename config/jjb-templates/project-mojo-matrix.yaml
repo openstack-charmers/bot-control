@@ -717,8 +717,7 @@
           description: Ubuntu-OpenStack Release Combo
       - string:
           name: MOJO_OPENSTACK_SPECS_REPO
-          # default: "lp:~ost-maintainers/openstack-mojo-specs/mojo-openstack-specs"
-          default: "lp:~ost-maintainers/openstack-mojo-specs/mojo-openstack-specs-1709"  # WIP
+          default: "lp:~ost-maintainers/openstack-mojo-specs/mojo-openstack-specs"
           description: Launchpad repo for Mojo OpenStack Specs
       - NO_POST_DESTROY
       - DISPLAY_NAME
