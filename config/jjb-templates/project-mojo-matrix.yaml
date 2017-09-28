@@ -947,6 +947,47 @@
             DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
+    name: test_mojo_ceph_charm_migration_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 3"  # Once weekly on Wednesday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/storage/ceph/charm_migration
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          # - "trusty-kilo"    # Same ceph version as Liberty UCA
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          # - "xenial-newton"  # Same ceph version as Mitaka UCA
+          # - "xenial-ocata"   # Same ceph version as Mitaka UCA
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
     name: test_mojo_ceph_encrypt_master_matrix
     project-type: matrix
     description: |
