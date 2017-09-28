@@ -8,16 +8,16 @@
 - builder:
     name: prep_osci_repo_if_necessary
     builders:
-        - shell: |
-            #!/bin/bash -ue
-            . ~/oscirc
-            ~/osci-repo-boot-clean.sh
+      - shell: |
+          #!/bin/bash -ue
+          . ~/oscirc
+          ~/osci-repo-boot-clean.sh
 
 - publisher:
     name: archive_artifacts
     publishers:
         - archive:
-            artifacts: '*, logs/*'
+            artifacts: '*, logs/*, build/*'
             allow-empty: true
             fingerprint: true
 
@@ -43,3 +43,21 @@
             failure: false
             presend-script: $DEFAULT_PRESEND_SCRIPT
             save-output: false
+
+- parameter:
+    name: DISPLAY_NAME
+    parameters:
+      - string:
+          name: DISPLAY_NAME
+          description: "Optional string to add to the Build Name of the job."
+
+- parameter:
+    name: NO_POST_DESTROY
+    parameters:
+      - bool:
+          name: NO_POST_DESTROY
+          default: false
+          description: |
+              For jobs that recognize the value, do not destroy deployment at the
+              end.  Be aware that admin UI and console access is required for
+              this to be useful.

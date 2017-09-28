@@ -72,9 +72,10 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
-    build-discarder:
-      artifactDaysToKeep: 365
-      artifactNumToKeep: 500
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 365
+          artifact-num-to-keep: 500
     scm:
       - git:
          url: https://github.com/openstack/charm-{charm}
@@ -107,13 +108,14 @@
             description: Asset name (charm name).
         - string:
             name: GIT_BRANCH
-            default: stable/17.02
+            default: stable/17.08
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
-    build-discarder:
-      artifactDaysToKeep: 365
-      artifactNumToKeep: 500
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 365
+          artifact-num-to-keep: 500
     scm:
       - git:
          url: https://github.com/openstack/charm-{charm}
@@ -123,7 +125,7 @@
          shallow-clone: true
          clean: {before: true}
          branches:
-          - stable/17.02
+          - stable/17.08
     triggers:
       - pollscm:
           cron: 'H/10 * * * *'
@@ -150,9 +152,10 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
-    build-discarder:
-      artifactDaysToKeep: 90
-      artifactNumToKeep: 100
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 365
+          artifact-num-to-keep: 500
     scm:
       - git:
          url: https://github.com/ryan-beisner/trigger-test
@@ -189,10 +192,3 @@
             name: CHARM_PUSH_DRY_RUN
             default: false
             description: Optionally take no action, just run for debug purpose.
-
-- parameter:
-    name: DISPLAY_NAME
-    parameters:
-        - string:
-            name: DISPLAY_NAME
-            description: Optional string to add to the Build Name of the job.

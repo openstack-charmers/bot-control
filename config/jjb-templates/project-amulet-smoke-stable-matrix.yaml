@@ -1,0 +1,73 @@
+# OpenStack Charm CI
+- job:
+    name: test_charm_amulet_smoke_stable_matrix
+    project-type: matrix
+    description: |
+        <p>Exercise charm amulet smoke tests from charms at the stable branch.</p>
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    axes:
+      - axis:
+         type: user-defined
+         name: GIT_BRANCH
+         values:
+          - stable/17.08
+      - axis:
+         type: user-defined
+         name: BASE_NAME
+         values:
+          - aodh
+          - barbican
+          - barbican-softhsm
+          - ceilometer
+          - ceilometer-agent
+          - ceph
+          - ceph-fs
+          - ceph-osd
+          - ceph-proxy
+          - ceph-mon
+          - ceph-radosgw
+          - cinder
+          - cinder-backup
+          - cinder-ceph
+          - designate
+          - designate-bind
+          - glance
+          - gnocchi
+          - hacluster
+          - heat
+          - keystone
+          - keystone-ldap
+          - lxd
+          - manila
+          - manila-generic
+          - murano
+          - neutron-api
+          - neutron-api-odl
+          - neutron-gateway
+          - neutron-openvswitch
+          - nova-cloud-controller
+          - nova-compute
+          - nova-compute-proxy
+          - odl-controller
+          - openstack-dashboard
+          - openvswitch-odl
+          - panko
+          - percona-cluster
+          - rabbitmq-server
+          - swift-proxy
+          - swift-storage
+          - tempest
+    builders:
+      - trigger-builds:
+        - project:
+            - "test_charm_amulet_smoke"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            BASE_NAME=$BASE_NAME
+            GIT_BRANCH=$GIT_BRANCH

@@ -1,0 +1,1029 @@
+# OpenStack Charm CI
+- job:
+    name: test_mojo_magpie_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * *"  # Once daily
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/dev/magpie
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-distro"
+          - "xenial-distro"
+          - "zesty-distro"
+          # - "artful-distro"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 4"  # Once weekly on Thursday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_deploy
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_stable_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/stable_deploy
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+#          - "xenial-pike"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ha_oneshot_master_matrix
+    disabled: true  # https://bugs.launchpad.net/bugs/1526511
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_ha_oneshot
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ha_oneshot_stable_matrix
+    disabled: true  # https://bugs.launchpad.net/bugs/1526511
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/stable_ha_oneshot
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+#          - "xenial-pike"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ssl_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_deploy_ssl
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ssl_stable_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/stable_deploy_ssl
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+#          - "xenial-pike"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ksv3_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_keystone_v3
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          # - "trusty-icehouse"  # No KSV3 support in Icehouse
+          # - "trusty-kilo"      # No KSV3 support in Kilo
+          - "trusty-liberty"     # Early KSV3 support
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ksv3_stable_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_keystone_v3
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          # - "trusty-icehouse"  # No KSV3 support in Icehouse
+          # - "trusty-kilo"      # No KSV3 support in Kilo
+          - "trusty-liberty"     # Early KSV3 support
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "zesty-ocata"
+#          - "xenial-pike"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_openstack_upgrade_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_openstack_upgrade
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          # - "trusty-mitaka"        # Nothing to upgrade to.
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          # - "xenial-pike"          # Nothing to upgrade to.
+          # - "zesty-ocata"          # Nothing to upgrade to.
+          # - "artful-pike"          # Nothing to upgrade to.  Also pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_openstack_upgrade_stable_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/stable_openstack_upgrade
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          # - "trusty-mitaka"         # Nothing to upgrade to.
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          # - "xenial-pike"           # Nothing to upgrade to.
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_charm_upgrade_ha_matrix
+    disabled: true  # https://bugs.launchpad.net/bugs/1526511
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/stable_to_next_ha
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+#          - "xenial-pike"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_charm_upgrade_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/stable_to_next
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+#          - "xenial-pike"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ch_sync_ha_master_matrix
+    disabled: true  # https://bugs.launchpad.net/bugs/1526511
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_charmhelper_sync_ha
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ch_sync_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_charmhelper_sync
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_vrrp_ha_master_matrix
+    disabled: true  # https://bugs.launchpad.net/bugs/1526511
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_ha_vrrp
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_vrrp_ha_stable_matrix
+    disabled: true  # https://bugs.launchpad.net/bugs/1526511
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/stable_ha_vrrp
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+#          - "xenial-pike"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: mojo_runner
+    # display-name: "Mojo Test Runner"
+    project-type: freestyle
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    node: slave
+    disabled: false
+    concurrent: true
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 180
+          artifact-num-to-keep: 500
+      - throttle:
+          max-per-node: 1
+          max-total: 3
+          option: project
+          # NOTE(beisner): One can use either strategy/option (project or category).
+          #     Category (from Jenkins master global config) wins over any max
+          #     throttle values set here.  Leaving in place as an example, however.
+          # categories:
+          #   - overclouds
+          # option: category
+          # matrix-builds: false
+          # matrix-configs: true
+    parameters:
+      - string:
+          name: MOJO_SPEC
+          default: "specs/full_stack/next_ha_oneshot"
+          description: Mojo Spec Path
+      - string:
+          name: U_OS
+          default: "xenial-ocata"
+          description: Ubuntu-OpenStack Release Combo
+      - string:
+          name: MOJO_OPENSTACK_SPECS_REPO
+          default: "lp:~ost-maintainers/openstack-mojo-specs/mojo-openstack-specs"
+          description: Launchpad repo for Mojo OpenStack Specs
+      - NO_POST_DESTROY
+      - DISPLAY_NAME
+    wrappers:
+      - timestamps
+      - build-name:
+          name: '#${BUILD_NUMBER} ${ENV,var="MOJO_SPEC"} ${ENV,var="U_OS"}'
+    builders:
+      - prep_osci_repo_if_necessary
+      - build_mojo_runner
+    publishers:
+      - archive_artifacts
+
+- builder:
+    name: build_mojo_runner
+    builders:
+        - shell: |
+            #!/bin/bash -ue
+            . ~/oscirc
+            ${OSCI_ROOT}/run/job-parts/build_mojo_runner.sh
+
+- job:
+    name: test_mojo_swift_base_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 4"  # Once weekly on Thursday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/storage/swift/base
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_swift_ha_master_matrix
+    disabled: true  # https://bugs.launchpad.net/bugs/1526511
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 4"  # Once weekly on Thursday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/storage/swift/ha_serial_scaleout
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ceph_radosgw_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 4"  # Once weekly on Thursday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/storage/ceph/radosgw
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          # - "trusty-kilo"    # Same ceph version as Liberty UCA
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          # - "xenial-newton"  # Same ceph version as Mitaka UCA
+          # - "xenial-ocata"   # Same ceph version as Mitaka UCA
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ceph_radosgw_ha_master_matrix
+    disabled: true  # https://bugs.launchpad.net/bugs/1526511
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 4"  # Once weekly on Thursday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/storage/ceph/radosgw_ha
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          # - "trusty-kilo"    # Same ceph version as Liberty UCA
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          # - "xenial-newton"  # Same ceph version as Mitaka UCA
+          # - "xenial-ocata"   # Same ceph version as Mitaka UCA
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ceph_base_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 3"  # Once weekly on Wednesday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/storage/ceph/base
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          # - "trusty-kilo"    # Same ceph version as Liberty UCA
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          # - "xenial-newton"  # Same ceph version as Mitaka UCA
+          # - "xenial-ocata"   # Same ceph version as Mitaka UCA
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ceph_encrypt_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 3"  # Once weekly on Wednesday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/storage/ceph/encrypt
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          # - "trusty-kilo"    # Same ceph version as Liberty UCA
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          # - "xenial-newton"  # Same ceph version as Mitaka UCA
+          # - "xenial-ocata"   # Same ceph version as Mitaka UCA
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_ceph_harden_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(17-23) * * 3"  # Once weekly on Wednesday nights
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/storage/ceph/harden
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-icehouse"
+          # - "trusty-kilo"    # Same ceph version as Liberty UCA
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          # - "xenial-newton"  # Same ceph version as Mitaka UCA
+          # - "xenial-ocata"   # Same ceph version as Mitaka UCA
+          - "xenial-pike"
+          - "zesty-ocata"
+          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS

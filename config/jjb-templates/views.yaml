@@ -18,3 +18,31 @@
       - job
       - last-success
       - last-failure
+
+- view:
+    name: CharmMatrix
+    description: |
+        <p>Matrix jobs</p>
+    view-type: list
+    regex: "test_charm.*matrix.*"
+    columns:
+      - status
+      - build-button
+      - weather
+      - job
+      - last-success
+      - last-failure
+
+- view:
+    name: MojoMatrix
+    description: |
+        <p>Matrix jobs</p>
+    view-type: list
+    regex: "test_mojo.*matrix.*||mojo_runner.*"
+    columns:
+      - status
+      - build-button
+      - weather
+      - job
+      - last-success
+      - last-failure
