@@ -22,7 +22,7 @@
           - "trusty-distro"
           - "xenial-distro"
           - "zesty-distro"
-          # - "artful-distro"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-distro"
     builders:
       - trigger-builds:
         - project:
