@@ -22,15 +22,11 @@ and/or port status.
 
 import argparse
 import logging
-import os
 import re
 import sys
 import time
 
-from keystoneclient.v2_0 import client as keystoneclient
-from neutronclient.v2_0 import client as neutronclient
-from novaclient import client as novaclient
-
+from common.tools_common import get_openstack_clients
 
 DESCRIPTION = sys.modules[__name__].__doc__
 
@@ -41,107 +37,6 @@ DESCRIPTION = sys.modules[__name__].__doc__
 def validate_config(conf):
     """Check config and return openstack clients if successful."""
     return get_openstack_clients()
-
-
-# TODO: Move most of these helpers to the common bot-control tools library
-
-def get_novarc():
-    """Get novarc info from env vars.
-    """
-    # TODO: Need to also handle newer keystone V3 approach.
-    auth_settings_legacy = {
-        'OS_AUTH_URL': os.environ.get('OS_AUTH_URL'),
-        'OS_TENANT_NAME': os.environ.get('OS_TENANT_NAME'),
-        'OS_USERNAME': os.environ.get('OS_USERNAME'),
-        'OS_PASSWORD': os.environ.get('OS_PASSWORD'),
-        'OS_REGION_NAME': os.environ.get('OS_REGION_NAME'),
-    }
-
-    logging.debug('novarc username: {}'.format(
-        auth_settings_legacy['OS_USERNAME']))
-    logging.debug('novarc auth url: {}'.format(
-        auth_settings_legacy['OS_AUTH_URL']))
-    return auth_settings_legacy
-
-
-def get_openstack_clients():
-    clients = {}
-    clients['ks'] = get_keystone_client()
-    clients['nv'] = get_nova_client()
-    clients['nu'] = get_neutron_client()
-    return clients
-
-
-def get_auth():
-    """Return dict for use as kwargs in OpenStack clients.
-    """
-    # TODO: Need to also handle the KS v3 session approach.
-    # Port it from openstack mojo helpers, then make those use these.
-    novarc = get_novarc()
-    auth = {
-        'username': novarc['OS_USERNAME'],
-        'password': novarc['OS_PASSWORD'],
-        'auth_url': novarc['OS_AUTH_URL'],
-        'project_name': novarc['OS_TENANT_NAME'],
-        'region_name': novarc['OS_REGION_NAME'],
-        'insecure': True,
-        'version': 2,
-    }
-    return auth
-
-
-def get_nova_client():
-    """Get nova client
-    """
-    auth = get_auth()
-    nc = novaclient.Client(**auth)
-    assert check_nova_client(nc) is True
-    return nc
-
-
-def get_keystone_client(verison=None):
-    """Get keystone client
-    """
-    auth = get_auth()
-    kc = keystoneclient.Client(**auth)
-    assert check_ks_client(kc) is True
-    return kc
-
-
-def get_neutron_client():
-    """Get neutron client
-    """
-    auth = get_auth()
-    nc = neutronclient.Client(**auth)
-    assert check_neutron_client(nc) is True
-    return nc
-
-
-def check_ks_client(ks=None):
-    """Check keystone client with a simple query. Also expect a region name.
-    """
-    _check = ks.service_catalog.region_name
-    logging.info('Keystone client region name check: '
-                 '{}'.format(_check is not None))
-    return _check is not None
-
-
-def check_neutron_client(nc=None):
-    """Check neutron client with a simple query for networks. Also expect
-    one or more networks to exist.
-    """
-    _check = nc.list_networks()['networks']
-    logging.info('Neutron client network list check: {}'.format(len(_check)))
-    return len(_check) > 0
-
-
-def check_nova_client(nc=None):
-    """Check nova client with a simple query for flavors. Also expect
-    one or more flavors to exist.
-    """
-    _check = nc.flavors.list()
-    logging.info('Nova client flavor list check: {}'.format(len(_check)))
-    return len(_check) > 0
 
 
 def get_servers_in_state(clients, status=None):
