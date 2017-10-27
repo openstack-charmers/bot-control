@@ -34,6 +34,7 @@ from keystoneauth1.identity import v3
 from keystoneauth1 import session
 from neutronclient.v2_0 import client as neutronclient
 from novaclient import client as novaclient
+import glanceclient.v1.client as glanceclient
 
 
 def read_yaml(the_file):
@@ -471,6 +472,7 @@ def get_openstack_clients():
     clients['ks'] = get_keystone_client()
     clients['nv'] = get_nova_client(session=clients['ks'].session)
     clients['nu'] = get_neutron_client(session=clients['ks'].session)
+    clients['gl'] = get_glance_client(session=clients['ks'].session)
     return clients
 
 
@@ -527,8 +529,16 @@ def get_neutron_client(session):
     return nc
 
 
+def get_glance_client(session):
+    """Get neutron client
+    """
+    gl = glanceclient.Client(session=session)
+    assert check_glance_client(gl) is True
+    return gl
+
+
 def check_ks_client(ks=None):
-    """Check keystone client with a simple query. Also expect a region name.
+    """Check keystone client with a simple query.
     """
     _check = ks.service_catalog
     logging.info('Keystone client region name check: '
@@ -552,3 +562,12 @@ def check_nova_client(nc=None):
     _check = nc.flavors.list()
     logging.info('Nova client flavor list check: {}'.format(len(_check)))
     return len(_check) > 0
+
+
+def check_glance_client(gl=None):
+    """Check glance client with a simple query.
+    """
+    _check = gl.images
+    logging.info('Glance client check: '
+                 '{}'.format(_check is not None))
+    return _check is not None
