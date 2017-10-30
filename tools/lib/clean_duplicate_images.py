@@ -15,9 +15,7 @@
 # limitations under the License.
 
 
-"""
-A tool to delete duplicate glance images not in use.
-"""
+"""A tool to delete duplicate glance images not in use."""
 
 import argparse
 import copy
@@ -49,7 +47,7 @@ class HashableImage(object):
     def __init__(self, image):
         """Initialize HashableImage
 
-        :param image: glancecllient Image class instance
+        :param image: glanceclient Image class instance
         """
         self.image = image
         self.id = image.id
@@ -108,11 +106,12 @@ def get_image_ids_in_use(conf, clients):
     :return: List of string image IDs that are in use
     """
     if conf['admin']:
-        # For admin
+        # For admin query servers from all tenants
         server_list = clients['nv'].servers.list(
                 search_opts={'all_tenants': 1})
     else:
-        # For non-admin testing
+        # For non-admin testing query this tenant's servers only
+        # For testing purposes only
         server_list = clients['nv'].servers.list()
     image_ids_in_use = []
     for server in server_list:
