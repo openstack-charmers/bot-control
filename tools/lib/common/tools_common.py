@@ -29,6 +29,12 @@ import common.control_data_common as control_data
 from copy import deepcopy
 from jinja2 import Environment, FileSystemLoader
 
+import keystoneclient.v3 as keystone_client
+from keystoneauth1.identity import v3
+from keystoneauth1 import session
+from neutronclient.v2_0 import client as neutronclient
+from novaclient import client as novaclient
+
 
 def read_yaml(the_file):
     '''Returns yaml data from provided file name
@@ -438,3 +444,111 @@ def run_cmds(cmds, fatal=False, stop_on_first_fail=True,
         return True
     else:
         return False
+
+
+def get_novarc():
+    """Get novarc info from env vars.
+    """
+    auth_settings = {
+        'OS_AUTH_URL': os.environ.get('OS_AUTH_URL'),
+        'OS_PROJECT_NAME': os.environ.get('OS_PROJECT_NAME'),
+        'OS_PROJECT_DOMAIN_NAME': os.environ.get('OS_PROJECT_DOMAIN_NAME'),
+        'OS_USERNAME': os.environ.get('OS_USERNAME'),
+        'OS_USER_DOMAIN_NAME': os.environ.get('OS_USER_DOMAIN_NAME'),
+        'OS_PASSWORD': os.environ.get('OS_PASSWORD'),
+        'OS_REGION_NAME': os.environ.get('OS_REGION_NAME'),
+    }
+
+    logging.debug('novarc username: {}'.format(
+        auth_settings['OS_USERNAME']))
+    logging.debug('novarc auth url: {}'.format(
+        auth_settings['OS_AUTH_URL']))
+    return auth_settings
+
+
+def get_openstack_clients():
+    clients = {}
+    clients['ks'] = get_keystone_client()
+    clients['nv'] = get_nova_client(session=clients['ks'].session)
+    clients['nu'] = get_neutron_client(session=clients['ks'].session)
+    return clients
+
+
+def get_auth():
+    """Return dict for use as kwargs in OpenStack clients.
+    """
+    # Port it from openstack mojo helpers, then make those use these.
+    novarc = get_novarc()
+    auth = {
+        'username': novarc['OS_USERNAME'],
+        'password': novarc['OS_PASSWORD'],
+        'auth_url': novarc['OS_AUTH_URL'],
+        'project_name': novarc['OS_PROJECT_NAME'],
+        'project_domain_name': novarc['OS_PROJECT_DOMAIN_NAME'],
+        'user_domain_name': novarc['OS_USER_DOMAIN_NAME'],
+        'region_name': novarc['OS_REGION_NAME'],
+        'insecure': True,
+        'version': 3,
+    }
+    return auth
+
+
+def get_nova_client(session, version='2'):
+    """Get nova client
+    """
+    nc = novaclient.Client(version, session=session)
+    assert check_nova_client(nc) is True
+    return nc
+
+
+def get_keystone_client(verison=None):
+    """Get keystone client
+    """
+    auth = get_auth()
+    auth = v3.Password(
+        username=auth['username'],
+        user_domain_name=auth['user_domain_name'],
+        project_domain_name=auth['project_domain_name'],
+        password=auth['password'],
+        project_name=auth['project_name'],
+        auth_url=auth['auth_url'],
+    )
+    sess = session.Session(auth=auth)
+    client = keystone_client.client.Client(session=sess)
+    client.auth_ref = auth.get_access(sess)
+    return client
+
+
+def get_neutron_client(session):
+    """Get neutron client
+    """
+    nc = neutronclient.Client(session=session)
+    assert check_neutron_client(nc) is True
+    return nc
+
+
+def check_ks_client(ks=None):
+    """Check keystone client with a simple query. Also expect a region name.
+    """
+    _check = ks.service_catalog
+    logging.info('Keystone client region name check: '
+                 '{}'.format(_check is not None))
+    return _check is not None
+
+
+def check_neutron_client(nc=None):
+    """Check neutron client with a simple query for networks. Also expect
+    one or more networks to exist.
+    """
+    _check = nc.list_networks()['networks']
+    logging.info('Neutron client network list check: {}'.format(len(_check)))
+    return len(_check) > 0
+
+
+def check_nova_client(nc=None):
+    """Check nova client with a simple query for flavors. Also expect
+    one or more flavors to exist.
+    """
+    _check = nc.flavors.list()
+    logging.info('Nova client flavor list check: {}'.format(len(_check)))
+    return len(_check) > 0
