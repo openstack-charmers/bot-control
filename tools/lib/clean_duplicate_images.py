@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Copyright 2016 Canonical Ltd
+# Copyright 2017 Canonical Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,13 @@ import copy
 import logging
 import sys
 
-from common.tools_common import get_openstack_clients
+from common.classes import HashableImage
+from common.tools_common import (
+    get_image_ids_in_use,
+    set_debug,
+    validate_config,
+)
+
 
 DESCRIPTION = sys.modules[__name__].__doc__
 
@@ -36,40 +42,6 @@ DESCRIPTION = sys.modules[__name__].__doc__
 
 # Destructive deletes
 # ./image-duplicate-cleanup --admin --delete
-
-
-class HashableImage(object):
-    """The HashableImage class allows us to do set math on the images. The
-    glance Image class is missing this simple feature. This greatly simplifies
-    the code required.
-    """
-
-    def __init__(self, image):
-        """Initialize HashableImage
-
-        :param image: glanceclient Image class instance
-        """
-        self.image = image
-        self.id = image.id
-        self.name = image.name
-
-    def __repr__(self):
-        """Return string image.id
-        """
-        return self.id
-
-    def __hash__(self):
-        """Hash based on image.id
-        """
-        return hash(self.id)
-
-
-def validate_config(conf):
-    """Check config and return openstack clients if successful.
-
-    :return: Dictionary of the form {client_initials: client}
-    """
-    return get_openstack_clients()
 
 
 def get_duplicate_images(images):
@@ -95,32 +67,6 @@ def get_duplicate_images(images):
             images_dict.pop(key)
 
     return images_dict
-
-
-def get_image_ids_in_use(conf, clients):
-    """Find image IDs that are in current use in the cloud
-
-    :param conf: Argparse configuration dictionary
-    :param clients: Clients dictionary from get_openstack_clients
-    :side effect: Calls nova server list
-    :return: List of string image IDs that are in use
-    """
-    if conf['admin']:
-        # For admin query servers from all tenants
-        server_list = clients['nv'].servers.list(
-                search_opts={'all_tenants': 1})
-    else:
-        # For non-admin testing query this tenant's servers only
-        # For testing purposes only
-        server_list = clients['nv'].servers.list()
-    image_ids_in_use = []
-    for server in server_list:
-        try:
-            image_ids_in_use.append(server.image.get('id'))
-        except AttributeError:
-            pass
-
-    return image_ids_in_use
 
 
 def do_cleanup(conf, clients):
@@ -203,15 +149,6 @@ def cli_args():
 
     options = parser.parse_args()
     return options
-
-
-def set_debug(conf):
-    """Set debug."""
-    if conf['debug']:
-        log_level = logging.DEBUG
-    else:
-        log_level = logging.INFO
-    logging.basicConfig(level=log_level)
 
 
 if __name__ == '__main__':

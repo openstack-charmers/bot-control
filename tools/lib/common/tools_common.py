@@ -571,3 +571,46 @@ def check_glance_client(gl=None):
     logging.info('Glance client check: '
                  '{}'.format(_check is not None))
     return _check is not None
+
+
+def validate_config(conf):
+    """Check config and return openstack clients if successful.
+
+    :return: Dictionary of the form {client_initials: client}
+    """
+    return get_openstack_clients()
+
+
+def set_debug(conf):
+    """Set debug."""
+    if conf['debug']:
+        log_level = logging.DEBUG
+    else:
+        log_level = logging.INFO
+    logging.basicConfig(level=log_level)
+
+
+def get_image_ids_in_use(conf, clients):
+    """Find image IDs that are in current use in the cloud
+
+    :param conf: Argparse configuration dictionary
+    :param clients: Clients dictionary from get_openstack_clients
+    :side effect: Calls nova server list
+    :return: List of string image IDs that are in use
+    """
+    if conf['admin']:
+        # For admin query servers from all tenants
+        server_list = clients['nv'].servers.list(
+                search_opts={'all_tenants': 1})
+    else:
+        # For non-admin testing query this tenant's servers only
+        # For testing purposes only
+        server_list = clients['nv'].servers.list()
+    image_ids_in_use = set()
+    for server in server_list:
+        try:
+            image_ids_in_use.add(server.image.get('id'))
+        except AttributeError:
+            pass
+
+    return list(image_ids_in_use)
