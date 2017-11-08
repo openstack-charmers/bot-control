@@ -155,5 +155,5 @@ if __name__ == '__main__':
     conf = vars(cli_args())
     set_debug(conf)
     logging.info('Command arguments: {}'.format(conf))
-    clients = validate_config(conf)
+    clients = validate_config()
     sys.exit(do_cleanup(conf, clients))

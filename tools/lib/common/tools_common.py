@@ -573,7 +573,7 @@ def check_glance_client(gl=None):
     return _check is not None
 
 
-def validate_config(conf):
+def validate_config():
     """Check config and return openstack clients if successful.
 
     :return: Dictionary of the form {client_initials: client}
