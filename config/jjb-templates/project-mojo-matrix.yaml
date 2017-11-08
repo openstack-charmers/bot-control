@@ -332,7 +332,7 @@
          type: user-defined
          name: MOJO_SPEC
          values:
-          - specs/full_stack/next_keystone_v3
+          - specs/full_stack/stable_keystone_v3
       - axis:
          type: user-defined
          name: U_OS
