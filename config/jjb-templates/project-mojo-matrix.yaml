@@ -116,7 +116,6 @@
 
 - job:
     name: test_mojo_ha_oneshot_master_matrix
-    disabled: true  # https://bugs.launchpad.net/bugs/1526511
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -158,7 +157,6 @@
 
 - job:
     name: test_mojo_ha_oneshot_stable_matrix
-    disabled: true  # https://bugs.launchpad.net/bugs/1526511
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
