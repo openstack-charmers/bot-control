@@ -439,7 +439,6 @@
 
 - job:
     name: test_mojo_charm_upgrade_ha_matrix
-    disabled: true  # https://bugs.launchpad.net/bugs/1526511
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -518,7 +517,6 @@
 
 - job:
     name: test_mojo_ch_sync_ha_master_matrix
-    disabled: true  # https://bugs.launchpad.net/bugs/1526511
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -601,7 +599,6 @@
 
 - job:
     name: test_mojo_vrrp_ha_master_matrix
-    disabled: true  # https://bugs.launchpad.net/bugs/1526511
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -643,7 +640,6 @@
 
 - job:
     name: test_mojo_vrrp_ha_stable_matrix
-    disabled: true  # https://bugs.launchpad.net/bugs/1526511
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -782,7 +778,6 @@
 
 - job:
     name: test_mojo_swift_ha_master_matrix
-    disabled: true  # https://bugs.launchpad.net/bugs/1526511
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -865,7 +860,6 @@
 
 - job:
     name: test_mojo_ceph_radosgw_ha_master_matrix
-    disabled: true  # https://bugs.launchpad.net/bugs/1526511
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
