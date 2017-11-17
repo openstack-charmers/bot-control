@@ -157,6 +157,7 @@
 
 - job:
     name: test_mojo_ha_oneshot_stable_matrix
+    disabled: true  # There is not currently a mojo spec for this
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -398,6 +399,7 @@
 
 - job:
     name: test_mojo_openstack_upgrade_stable_matrix
+    disabled: true  # There is not currently a mojo spec for this
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
