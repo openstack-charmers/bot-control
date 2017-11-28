@@ -6,7 +6,7 @@
         <p>Exercise charm amulet full tests from reactive charms at master.</p>
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: true
+      sequential: false
     node: task
     # Not scheduled.  This job is for humans to use to selectively trigger just the layer/reactive charms.
     # triggers:
