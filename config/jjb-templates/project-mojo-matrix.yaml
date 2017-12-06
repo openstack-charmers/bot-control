@@ -62,7 +62,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -142,7 +141,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -223,7 +221,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -303,7 +300,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -343,7 +339,6 @@
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
-          - "zesty-ocata"
 #          - "xenial-pike"
     builders:
       - trigger-builds:
@@ -543,7 +538,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -584,7 +578,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -625,7 +618,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -763,7 +755,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -804,7 +795,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -845,7 +835,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -886,7 +875,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -927,7 +915,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -968,7 +955,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -1050,7 +1036,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "zesty-ocata"
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
