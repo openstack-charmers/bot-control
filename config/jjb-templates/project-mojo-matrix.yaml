@@ -21,8 +21,8 @@
          values:
           - "trusty-distro"
           - "xenial-distro"
-          - "zesty-distro"
           - "artful-distro"
+          - "bionic-distro"
     builders:
       - trigger-builds:
         - project:
@@ -835,7 +835,7 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
     builders:
       - trigger-builds:
         - project:
@@ -915,7 +915,8 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
+          - "bionic-queens"
     builders:
       - trigger-builds:
         - project:
