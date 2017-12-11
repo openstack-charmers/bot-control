@@ -1,3 +1,0 @@
-ceph:
-  fsid: "{{ env['TEST_CEPH_FSID'] or '11111111-2222-3333-4444-555555555555' }}"
-  monitor-secret: "{{ env['TEST_CEPH_MON_SEC'] or 'AQCXrnZQwI7KGBAAiPofmKEXKxu5bUzoYLVkbQ==' }}"
