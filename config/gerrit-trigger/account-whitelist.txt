@@ -1,0 +1,13 @@
+Alex Kavanagh   alex.kavanagh@canonical.com
+Andrew McLeod   andrew.mcleod@canonical.com
+Billy Olsen billy.olsen@gmail.com
+Chris Holcombe  chris.holcombe@canonical.com
+Chris MacNaughton   chris.macnaughton@canonical.com
+Corey Bryant    corey.bryant@canonical.com
+David Ames  david.ames@canonical.com
+Edward Hope-Morley  edward.hope-morley@canonical.com
+Frode Nordahl   frode.nordahl@gmail.com
+James Page  james.page@canonical.com
+Liam Young  liam.young@canonical.com
+Ryan Beisner    ryan.beisner@canonical.com
+
