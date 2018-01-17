@@ -6,3 +6,4 @@
 *.sw[nop]
 *.pyc
 jjb-run.conf
+jenkins_jobs.ini
