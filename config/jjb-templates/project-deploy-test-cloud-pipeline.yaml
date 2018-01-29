@@ -1,0 +1,13 @@
+- job:
+    name: deploy_test_cloud_pipeline
+    project-type: pipeline
+    pipeline:
+      script-path: subdir/config/pipelines/deploy_test_cloud_pipeline.Jenkinsfile # path to pipeline script definition, "Jenkinsfile" by default.
+      scm: # normal scm definitions
+        - git:
+            branches:
+              - '*/pipeline_test'
+            url: 'git@github.com:openstack-charmers/bot-control.git'
+            basedir: 'subdir'
+            skip-tag: true
+            wipe-workspace: false
