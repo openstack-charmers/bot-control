@@ -12,3 +12,16 @@ Frode Nordahl   frode.nordahl@gmail.com
 James Page  james.page@canonical.com
 Liam Young  liam.young@canonical.com
 Ryan Beisner    ryan.beisner@canonical.com
+# Other whitelisted for auto test triggers
+Robert Ayres    robert.ayres@canonical.com
+Sean Feole    sean.feole@canonical.com
+Michael Skalka    michael.skalka@canonical.com
+Xav Paice    xav.paice@canonical.com
+Jill Rouleau    jill.rouleau@canonical.com
+Nobuto Murata    nobuto@ubuntu.com
+James Hebdon    james.hebdon@canonical.com
+Tytus Kurek    tytus.kurek@canonical.com
+Felipe Reyes    felipe.reyes@canonical.com
+Peter Sabaini    peter.sabaini@canonical.com
+Chris Sanders    sanders.chris@gmail.com
+Jeff Hillman    jeff.hillman@canonical.com
