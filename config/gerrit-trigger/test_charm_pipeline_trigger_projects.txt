@@ -50,3 +50,5 @@ p=openstack/charm-swift-proxy
 b^**
 p=openstack/charm-swift-storage
 b^**
+p=openstack/charm-vault
+b^**

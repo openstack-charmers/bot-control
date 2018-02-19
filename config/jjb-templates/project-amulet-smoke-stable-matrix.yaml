@@ -62,6 +62,7 @@
           - swift-proxy
           - swift-storage
           - tempest
+          - vault
     builders:
       - trigger-builds:
         - project:
