@@ -705,7 +705,9 @@
           description: Ubuntu-OpenStack Release Combo
       - string:
           name: MOJO_OPENSTACK_SPECS_REPO
-          default: "lp:~ost-maintainers/openstack-mojo-specs/mojo-openstack-specs"
+#          default: "lp:~ost-maintainers/openstack-mojo-specs/mojo-openstack-specs"
+# Temporary alternate branch for spec/bundle refactor
+          default: "lp:~thedac/openstack-mojo-specs/designate-neutron"
           description: Launchpad repo for Mojo OpenStack Specs
       - NO_POST_DESTROY
       - DISPLAY_NAME
