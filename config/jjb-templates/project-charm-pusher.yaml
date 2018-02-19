@@ -47,6 +47,7 @@
       - swift-proxy
       - swift-storage
       - tempest
+      - vault
 # FYI - Jenkins job names cannot contain slashes, so we cannot use branch
 # as a pivot point to simplify.
 #    branch:
