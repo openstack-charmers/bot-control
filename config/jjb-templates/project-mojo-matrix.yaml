@@ -856,7 +856,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(22-00) * * 2"  # Once weekly on Tuesday nights
+        - timed: "H H(21-23) * * 2"  # Once weekly on Tuesday nights
     axes:
       - axis:
          type: user-defined
@@ -896,7 +896,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(22-00) * * 5"  # Once weekly on Friday nights
+        - timed: "H H(21-23) * * 5"  # Once weekly on Friday nights
     axes:
       - axis:
          type: user-defined
