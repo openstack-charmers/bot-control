@@ -62,7 +62,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
@@ -143,7 +143,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
@@ -225,7 +225,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
@@ -306,7 +306,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
@@ -386,8 +386,7 @@
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
-          # - "xenial-pike"          # Nothing to upgrade to.
-          # - "artful-pike"          # Nothing to upgrade to.  Also pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "xenial-pike"
     builders:
       - trigger-builds:
         - project:
@@ -545,7 +544,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
@@ -587,7 +586,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
@@ -629,7 +628,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
@@ -770,7 +769,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
@@ -812,7 +811,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
@@ -855,7 +854,7 @@
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
           - "artful-pike"
-          - "xenial-queens"
+          # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
     builders:
       - trigger-builds:
@@ -896,8 +895,8 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
-          - "xenial-queens"
+          - "artful-pike"
+          # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
     builders:
       - trigger-builds:
@@ -980,8 +979,8 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
-          - "xenial-queens"
+          - "artful-pike"
+          # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
     builders:
       - trigger-builds:
@@ -1021,8 +1020,10 @@
           # - "xenial-mitaka" # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
-          # - "xenial-pike" # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
+          # - "xenial-pike"   # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
+          # - "artful-pike"   # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
+          # - "xenial-queens"  # Same ceph version as Pike UCA
+          - "bionic-queens"
     builders:
       - trigger-builds:
         - project:
@@ -1062,8 +1063,8 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
-          - "xenial-queens"
+          - "artful-pike"
+          # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
     builders:
       - trigger-builds:
