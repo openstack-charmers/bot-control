@@ -1076,3 +1076,45 @@
             MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
             DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_designate_ha_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(00-04) * * 2"  # Once weekly on Monday Evening / Tuesday Morning
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_designate_ha
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          # - "trusty-icehouse"   # Unsupported combo for these features.
+          # - "trusty-kilo"       # Unsupported combo for these features.
+          # - "trusty-liberty"    # Unsupported combo for these features.
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "artful-pike"
+          - "xenial-queens"
+          - "bionic-queens"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
