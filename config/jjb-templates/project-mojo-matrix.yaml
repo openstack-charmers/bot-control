@@ -620,7 +620,7 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
+          # - "trusty-icehouse"   # No spec defined, unsupported combo.
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
