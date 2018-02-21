@@ -387,7 +387,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           # - "xenial-pike"          # Nothing to upgrade to.
-          # - "zesty-ocata"          # Nothing to upgrade to.
           # - "artful-pike"          # Nothing to upgrade to.  Also pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
@@ -940,7 +939,7 @@
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
           - "artful-pike"
-          - "xenial-queens"
+          # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
     builders:
       - trigger-builds:
@@ -1023,7 +1022,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           # - "xenial-pike" # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
-          # - "zesty-ocata" # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
           # - "artful-pike"    # Pending https://bugs.launchpad.net/juju/+bug/1714305
     builders:
       - trigger-builds:
