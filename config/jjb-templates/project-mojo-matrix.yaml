@@ -980,8 +980,6 @@
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
           - "artful-pike"
-          # - "xenial-queens"  # Same ceph version as Pike UCA
-          - "bionic-queens"
     builders:
       - trigger-builds:
         - project:
