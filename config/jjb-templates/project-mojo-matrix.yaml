@@ -7,8 +7,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(17-23) * * *"  # Once daily
+    triggers:
+        - timed: "0 0 0 2 *"  # Once daily
     axes:
       - axis:
          type: user-defined
@@ -42,8 +42,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(04-08) * * 6"  # Once weekly on Friday Evening / Saturday Morning
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Friday Evening / Saturday Morning
     axes:
       - axis:
          type: user-defined
@@ -84,8 +84,8 @@
     execution-strategy:
       sequential: true
     node: task
-    # triggers:
-    #     - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    triggers:
+        - timed: "0 0 0 2 *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
@@ -123,8 +123,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(19-23) * * 4"  # Once weekly on Thursday evening
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Thursday evening
     axes:
       - axis:
          type: user-defined
@@ -166,8 +166,8 @@
     execution-strategy:
       sequential: true
     node: task
-    # triggers:
-    #     - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    triggers:
+        - timed: "0 0 0 2 *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
@@ -205,8 +205,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(00-04) * * 2"  # Once weekly on Monday Evening / Tuesday Morning
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Monday Evening / Tuesday Morning
     axes:
       - axis:
          type: user-defined
@@ -247,8 +247,8 @@
     execution-strategy:
       sequential: true
     node: task
-    # triggers:
-    #     - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    triggers:
+        - timed: "0 0 0 2 *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
@@ -286,8 +286,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(00-04) * * 4"  # Once weekly on Wednesday Evening / Thursday Morning
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Wednesday Evening / Thursday Morning
     axes:
       - axis:
          type: user-defined
@@ -328,8 +328,8 @@
     execution-strategy:
       sequential: true
     node: task
-    # triggers:
-    #     - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    triggers:
+        - timed: "0 0 0 2 *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
@@ -367,8 +367,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(00-04) * * 7"  # Once weekly on Saturday Evening / Sunday Morning
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Saturday Evening / Sunday Morning
     axes:
       - axis:
          type: user-defined
@@ -407,8 +407,8 @@
     execution-strategy:
       sequential: true
     node: task
-    # triggers:
-    #     - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    triggers:
+        - timed: "0 0 0 2 *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
@@ -446,8 +446,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    triggers:
+        - timed: "0 0 0 2 *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
@@ -485,8 +485,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(06-10) * * 6"  # Once weekly on Saturday Morning
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Saturday Morning
     axes:
       - axis:
          type: user-defined
@@ -524,8 +524,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Friday nights
     axes:
       - axis:
          type: user-defined
@@ -566,8 +566,8 @@
     execution-strategy:
       sequential: true
     node: task
-    # triggers:
-    #     - timed: "H H(12-16) * * 7"  # Once weekly on Sunday Afternoon
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Sunday Afternoon
     axes:
       - axis:
          type: user-defined
@@ -608,8 +608,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(00-04) * * 1"  # Once weekly on Friday nights
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Friday nights
     axes:
       - axis:
          type: user-defined
@@ -650,8 +650,8 @@
     execution-strategy:
       sequential: true
     node: task
-    # triggers:
-    #     - timed: "0 H(0-8) */15 * *"  # Twice monthly
+    triggers:
+        - timed: "0 0 0 2 *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
@@ -749,8 +749,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(04-06) * * 6"  # Once weekly on Saturday mornings
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Saturday mornings
     axes:
       - axis:
          type: user-defined
@@ -791,8 +791,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(22-0) * * 3"  # Once weekly on Wednesday nights
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Wednesday nights
     axes:
       - axis:
          type: user-defined
@@ -833,8 +833,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(03-05) * * 6"  # Once weekly on Saturday mornings
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Saturday mornings
     axes:
       - axis:
          type: user-defined
@@ -875,8 +875,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(21-23) * * 2"  # Once weekly on Tuesday nights
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Tuesday nights
     axes:
       - axis:
          type: user-defined
@@ -917,8 +917,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(21-23) * * 5"  # Once weekly on Friday nights
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Friday nights
     axes:
       - axis:
          type: user-defined
@@ -959,8 +959,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(00-04) * * 6"  # Once weekly on Saturday Morningns
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Saturday Morningns
     axes:
       - axis:
          type: user-defined
@@ -999,8 +999,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(01-05) * * 6"  # Once weekly on Saturday Morningns
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Saturday Morningns
     axes:
       - axis:
          type: user-defined
@@ -1041,8 +1041,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(02-06) * * 6"  # Once weekly on Saturday Morningns
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Saturday Morningns
     axes:
       - axis:
          type: user-defined
@@ -1083,8 +1083,8 @@
     execution-strategy:
       sequential: false
     node: task
-    # triggers:
-    #     - timed: "H H(00-04) * * 2"  # Once weekly on Monday Evening / Tuesday Morning
+    triggers:
+        - timed: "0 0 0 2 *"  # Once weekly on Monday Evening / Tuesday Morning
     axes:
       - axis:
          type: user-defined
