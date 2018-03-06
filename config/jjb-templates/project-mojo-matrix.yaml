@@ -1116,3 +1116,43 @@
             MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
             DISPLAY_NAME=$MOJO_SPEC $U_OS
+- job:
+    name: test_mojo_dvr_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(20-23) * * 1"  # Once Weekly, Monday Evening
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_dvr
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-kilo"
+          - "trusty-liberty"
+          - "trusty-mitaka"
+          - "xenial-mitaka"
+          - "xenial-newton"
+          - "xenial-ocata"
+          - "xenial-pike"
+          - "artful-pike"
+          - "xenial-queens"
+          - "bionic-queens"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
