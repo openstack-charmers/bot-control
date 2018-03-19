@@ -1,5 +1,5 @@
 # Initially based on charms-core group members
-Alex Kavanagh   alex.kavanagh@canonical.com
+Alex Kavanagh (tinwood)   alex.kavanagh@canonical.com
 Andrew McLeod   andrew.mcleod@canonical.com
 Billy Olsen billy.olsen@gmail.com
 Chris Holcombe  chris.holcombe@canonical.com
