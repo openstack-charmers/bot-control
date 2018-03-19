@@ -42,7 +42,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(17-23) * * *"  # Once daily
+        - timed: "H H(04-08) * * 1"  # Once Weekly, Monday Evening
     axes:
       - axis:
          type: user-defined
