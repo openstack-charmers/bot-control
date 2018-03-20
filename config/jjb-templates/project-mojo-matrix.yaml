@@ -717,9 +717,7 @@
           description: Ubuntu-OpenStack Release Combo
       - string:
           name: MOJO_OPENSTACK_SPECS_REPO
-          # default: "lp:openstack-mojo-specs"
-          # WIP spec update bundle, move back to trunk after 1802 release.
-          default: "lp:~ost-maintainers/openstack-mojo-specs/openstack-mojo-specs-1802"
+          default: "lp:openstack-mojo-specs"
           description: Launchpad repo for Mojo OpenStack Specs
       - NO_POST_DESTROY
       - DISPLAY_NAME
