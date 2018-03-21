@@ -1106,7 +1106,7 @@
             DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
-    name: test_mojo_designate_ha_master_matrix
+    name: test_mojo_designate_master_matrix
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1120,7 +1120,7 @@
          type: user-defined
          name: MOJO_SPEC
          values:
-          - specs/full_stack/next_designate_ha
+          - specs/full_stack/next_deploy_designate
       - axis:
          type: user-defined
          name: U_OS
