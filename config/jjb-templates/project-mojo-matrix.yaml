@@ -749,8 +749,12 @@
           description: Ubuntu-OpenStack Release Combo
       - string:
           name: MOJO_OPENSTACK_SPECS_REPO
-          default: "lp:openstack-mojo-specs"
-          description: Launchpad repo for Mojo OpenStack Specs
+          default: "git://github.com/openstack-charmers/openstack-mojo-specs.git"
+          description: Git repo for Mojo OpenStack Specs
+      - string:
+          name: MOJO_OPENSTACK_SPECS_BRANCH
+          default: "master"
+          description: Git branch for Mojo OpenStack Specs repo
       - NO_POST_DESTROY
       - DISPLAY_NAME
     wrappers:
