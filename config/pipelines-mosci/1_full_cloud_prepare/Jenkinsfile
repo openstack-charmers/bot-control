@@ -1,0 +1,103 @@
+// This method collects a list of Node names from the current Jenkins instance
+@NonCPS
+def nodeNames() {
+  return jenkins.model.Jenkins.instance.nodes.collect { node -> node.name }
+}
+
+def names = nodeNames()
+
+stage('Check Nodes for controllers and models') {
+        echo "All node names: " + names
+        for (int i=0; i<names.size(); ++i) {
+            def nodeName = names[i];
+            // node(nodeName) {
+            //    steps {
+            if (nodeName.contains("slave")) {
+                echo 'Names ' + nodeName
+                curNode = nodeName.replaceAll(/-([^-]*)$/, '/$1')
+                node(nodeName) {
+                    try {
+                        sh 'juju run --unit ' + curNode + ' "su - jenkins -c \'juju controllers\' | egrep -A1 \'ERROR|Controller\'"'
+                    } catch(all) {
+                        echo 'no controller found on ' + curNode
+                    }
+                }
+            }
+            //        }
+            //    }
+            }
+}
+
+echo "Sticking job to ${params.SLAVE_NODE_NAME} in ${params.WORKSPACE}"
+
+
+//following is needed for running on its own, but not yet functional
+
+if ("${params.SLAVE_NODE_NAME}" == '') {
+    SLAVE_NODE_NAME="${params.SLAVE_LABEL}"
+    echo "ninja 1"
+}
+else {
+    SLAVE_NODE_NAME="${params.SLAVE_NODE_NAME}"
+    echo "ninja 2"
+}
+
+node("${SLAVE_NODE_NAME}") {
+    ws("${params.WORKSPACE}") {
+        stage('Prepare repos') {
+            dir("${env.HOME}/tools/charm-test-infra/") {
+                sh "ls -lart"
+                git url: "${params.CTI_GIT_REPO}", branch: "${params.CTI_GIT_BRANCH}"
+                sh "pwd"
+                sh "ls -lart"
+                echo "${env.CLOUD_NAME}"
+                echo "${env.MODEL_CONSTRAINTS}"
+                echo "${env.BOOTSTRAP_CONSTRAINTS}"
+            }
+            dir("${env.HOME}/tools/openstack-charm-testing/") {
+                git url: "${params.OCT_GIT_REPO}", branch: "${params.OCT_GIT_BRANCH}"
+            }
+        stage('Check MAAS credentials') {
+            dir("${env.HOME}/cloud-credentials/") {
+                echo "Using credentials file"
+                if ( fileExists('./credentials.yaml') ) {
+                    if ( fileExists("${env.HOME}/tools/charm-test-infra/") ) {
+                        sh "cp ./credentials.yaml ${env.HOME}/tools/charm-test-infra/juju-configs/" 
+                    }
+                }
+            }
+            dir("${env.HOME}/tools/charm-test-infra") {
+            try { CHECK_AUTH=sh (
+                    script: "grep maas_oauth_${CLOUD_NAME} juju-configs/credentials.yaml",
+                    returnStdout: true
+                    ).trim()
+            }
+            catch(all) {
+                CHECK_AUTH=''
+            }
+            echo "${CHECK_AUTH}"
+            if ("${CHECK_AUTH}" != '') {
+                echo "MAAS API KEY IS: ${params.MAAS_API_KEY}"
+                if ("${params.MAAS_API_KEY}" != '') {
+                    maas_api_key="${params.MAAS_API_KEY}"
+                    echo "FOUND MAAS API KEY"
+                }
+                else {
+                    def get_maas_api_key = input(
+                        id: 'get_maas_api_key', message: 'MAAS API KEY for ${CLOUD_NAME}', parameters: [
+                        [$class: 'TextParameterDefinition', defaultValue: 'secret', description: 'API KEY', name: 'API_KEY']])
+                    echo ("API KEY: "+get_maas_api_key)
+                    echo "DID NOT FIND MAAS API KEY"
+                    maas_api_key="${get_maas_api_key}"
+                }
+                sh "sed -i 's/{{ maas_oauth_ruxton }}/${maas_api_key}/g' juju-configs/credentials.yaml"
+                sh "cat juju-configs/credentials.yaml"
+                dir("${env.HOME}/cloud-credentials/") {
+                    sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/credentials.yaml ."
+                }
+            }
+            }
+        }
+    }
+}
+}

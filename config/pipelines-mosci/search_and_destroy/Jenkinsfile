@@ -1,0 +1,17 @@
+import jenkins.model.*
+import hudson.model.*
+
+def jobName = "${JOB_NAME}"
+
+Jenkins.instance.getAllItems(AbstractItem.class).each { 
+    job->
+        job.builds.each { build->
+            if (build.getResult().equals(null)) {
+                buildname = build.toString()
+                if (buildname.contains(jobName)) {
+                    println("Killing build: " + buildname)
+                    build.doStop();
+                }
+            }
+        }
+}

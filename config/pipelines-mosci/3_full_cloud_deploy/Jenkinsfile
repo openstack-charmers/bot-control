@@ -1,0 +1,37 @@
+if ("${params.SLAVE_NODE_NAME}" == '') {
+    SLAVE_NODE_NAME="${params.SLAVE_LABEL}"
+}
+else {
+    SLAVE_NODE_NAME="${params.SLAVE_NODE_NAME}"
+}
+
+node("${SLAVE_NODE_NAME}") {
+    ws("${params.WORKSPACE}") {
+        stage('Get bundle') {
+            if (fileExists('bundle.yaml')) {
+                sh "rm bundle.yaml"
+            }
+            sh "curl ${params.BUNDLE_URL} -o bundle.yaml"
+            sh "cat bundle.yaml"
+            
+        }
+        //stage('Validate bundle') {
+        //    sh "yamllint bundle.yaml"
+        //}
+        stage('Deploy bundle') {
+            waitUntil {
+                try {
+                    sh "juju deploy bundle.yaml"
+                    return true
+                } catch (error) {
+                    input "Deploy failed - retry?"
+                    return false
+                }
+            }
+        }
+        stage('Wait for deploy to complete') {
+            echo "Kinda waiting but not really"
+            // do something here with juju-wait and a timeout
+        }
+    }
+}

@@ -1,0 +1,29 @@
+node("${params.SLAVE_NODE_NAME}") {
+    ws("${params.WORKSPACE}") { 
+        stage('Source things and get variables') {
+            dir("${env.HOME}/tools/openstack-charm-testing") {
+                sh "pwd"
+                sh "ls -lart"
+                env.OS_PROJECT_NAME="oscifullcloud"
+                //sh ". ./novarc"
+            }
+        }
+        /*stage('Destroy existing non-MAAS controller') {
+            sh "pwd"
+            dir('/home/jenkins/tools/charm-test-infra') { 
+                sh "pwd"
+                sh "juju status"
+                sh "cat ./juju-destroy-controller-and-models-example.sh -y"
+            }
+            //  # Bootstrap Juju controller on MAAS
+        }*/
+        stage('Bootstrap MAAS controller') {
+            echo "${env.SLAVE_NODE_NAME}"
+            dir("${env.HOME}/tools/charm-test-infra") {
+                //sh "juju status"
+                //sh "echo ./juju-destroy-controller-and-models-example.sh -y"
+                sh "./juju-maas-controller.sh"
+            }
+        }
+    }
+}
