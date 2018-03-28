@@ -15,7 +15,7 @@ node (specific_slave) {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
         }
         
-        stage('Preparation') {
+        stage("Preparation: ${params.ARCH}") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             prep_job = build job: '1. Full Cloud - Prepare', parameters: [[$class: 'StringParameterValue', name: 'CTI_GIT_REPO', value: "${params.CTI_GIT_REPO}"],
                                                                           [$class: 'StringParameterValue', name: 'CTI_GIT_BRANCH', value: "${params.CTI_GIT_BRANCH}"],
@@ -31,7 +31,7 @@ node (specific_slave) {
                 }
             }*/
         }
-        stage('Bootstrap') {
+        stage("Bootstrap: ${params.ARCH}") {
         // Bootstrap the environment from ${CLOUD_NAME}
             echo "Bootstrapping $ARCH from ${CLOUD_NAME}"
             bootstrap_job = build job: '2. Full Cloud - Bootstrap', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: "${params.CLOUD_NAME}-maas"],
