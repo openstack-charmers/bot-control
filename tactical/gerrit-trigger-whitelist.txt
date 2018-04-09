@@ -25,3 +25,4 @@ Felipe Reyes    felipe.reyes@canonical.com
 Peter Sabaini    peter.sabaini@canonical.com
 Chris Sanders    sanders.chris@gmail.com
 Jeff Hillman    jeff.hillman@canonical.com
+Craige McWhirter craige.mcwhirter@canonical.com
