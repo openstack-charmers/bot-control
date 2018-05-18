@@ -1,0 +1,2 @@
+neutron-dynamic-routing:
+  openstack-origin: cloud:xenial-pike
