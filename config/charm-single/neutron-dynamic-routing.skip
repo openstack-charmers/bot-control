@@ -1,0 +1,5 @@
+# charm-neutron-dynamic-routing requires openstack-origin to be set for
+# successful deploy on xenial.  However the config does not seem to be
+# picked up by the gate job.  Enable test as soon as this is sorted out.
+#
+# https://bugs.launchpad.net/charm-test-infra/+bug/1772149
