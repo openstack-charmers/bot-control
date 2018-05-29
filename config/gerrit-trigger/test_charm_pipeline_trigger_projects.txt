@@ -28,6 +28,8 @@ p=openstack/charm-neutron-api
 b^**
 p=openstack/charm-neutron-api-odl
 b^**
+p=openstack/charm-neutron-dynamic-routing
+b^**
 p=openstack/charm-neutron-gateway
 b^**
 p=openstack/charm-neutron-openvswitch
