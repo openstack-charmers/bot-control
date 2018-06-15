@@ -749,11 +749,11 @@
           description: Ubuntu-OpenStack Release Combo
       - string:
           name: MOJO_OPENSTACK_SPECS_REPO
-          default: "git://github.com/openstack-charmers/openstack-mojo-specs.git"
+          default: "git://github.com/thedac/openstack-mojo-specs.git"
           description: Git repo for Mojo OpenStack Specs
       - string:
           name: MOJO_OPENSTACK_SPECS_BRANCH
-          default: "master"
+          default: "zaza-phase-1"
           description: Git branch for Mojo OpenStack Specs repo
       - NO_POST_DESTROY
       - DISPLAY_NAME
