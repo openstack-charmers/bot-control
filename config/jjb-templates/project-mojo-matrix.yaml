@@ -749,7 +749,7 @@
           description: Ubuntu-OpenStack Release Combo
       - string:
           name: MOJO_OPENSTACK_SPECS_REPO
-          default: "git://github.com/thedac/openstack-mojo-specs.git"
+          default: "git://github.com/openstack-charmers/openstack-mojo-specs.git"
           description: Git repo for Mojo OpenStack Specs
       - string:
           name: MOJO_OPENSTACK_SPECS_BRANCH
