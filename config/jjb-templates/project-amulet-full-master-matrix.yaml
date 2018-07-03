@@ -37,6 +37,7 @@
           - designate
           - designate-bind
           - glance
+          - glance-simplestreams-sync
           - gnocchi
           - hacluster
           - heat
