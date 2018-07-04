@@ -98,6 +98,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -180,6 +181,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -263,6 +265,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -345,6 +348,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -584,6 +588,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -627,6 +632,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -670,6 +676,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -814,6 +821,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -857,6 +865,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -900,6 +909,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -943,6 +953,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -986,6 +997,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -1069,6 +1081,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -1112,6 +1125,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -1155,6 +1169,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -1196,6 +1211,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
