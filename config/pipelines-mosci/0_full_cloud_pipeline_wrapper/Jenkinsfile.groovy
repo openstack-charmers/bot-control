@@ -153,7 +153,7 @@ node(SLAVE_NODE_NAME) {
         }
         stage("Test: ${params.ARCH}") {
             echo 'Test Cloud'
-            if ( PHASES.contains("Teardown") ) {
+            if ( PHASES.contains("Test") ) {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             test_job = build job: '5. Full Cloud - Test', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                          [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
