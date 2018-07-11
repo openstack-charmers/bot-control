@@ -40,7 +40,7 @@ def s390x_snapshot_reset(reset_machine) {
             } else {
                 echo "SSH error, retrying"
                 sleep(60)
-                return false
+                return true 
                 }
             }
         //}
