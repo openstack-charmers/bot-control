@@ -21,7 +21,6 @@
          values:
           - "trusty-distro"
           - "xenial-distro"
-          - "artful-distro"
           - "bionic-distro"
     builders:
       - trigger-builds:
@@ -94,7 +93,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -177,7 +175,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -261,7 +258,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -344,7 +340,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -584,7 +579,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -628,7 +622,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -672,7 +665,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -817,7 +809,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -861,7 +852,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -905,7 +895,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
@@ -949,7 +938,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
@@ -993,7 +981,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
@@ -1037,7 +1024,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
     builders:
       - trigger-builds:
         - project:
@@ -1077,7 +1063,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           # - "xenial-pike"   # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
-          # - "artful-pike"   # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
@@ -1121,7 +1106,6 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
@@ -1165,7 +1149,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -1207,7 +1190,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
@@ -1244,7 +1226,6 @@
          name: U_OS
          values:
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:
