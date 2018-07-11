@@ -182,6 +182,7 @@ def s390x_add_machine(add_machines) {
                 return true 
                 }
             }
+        echo "We are moving on to the next machine, for some reason"
         }
 }
 
