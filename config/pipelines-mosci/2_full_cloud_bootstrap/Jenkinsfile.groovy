@@ -182,7 +182,6 @@ def s390x_add_machine(add_machines) {
                 return true 
                 }
             }
-        echo "We are moving on to the next machine, for some reason"
         }
 }
 
@@ -202,7 +201,7 @@ node(params.SLAVE_NODE_NAME) {
         }
         stage('Pre-release machines') {
             if ( MAAS && ! params.OVERCLOUD_DEPLOY ) {
-                    echo "MAAS: ${MAAS} parms.OVERCLOUD: ${params.OVERCLOUD_DEPLOY}"
+                    echo "MAAS: ${MAAS} params.OVERCLOUD: ${params.OVERCLOUD_DEPLOY}"
                     TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
                     print "Tags 1: ${TAGS}"
                     TAGS = TAGS.minus("tags=")
