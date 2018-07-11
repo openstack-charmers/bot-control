@@ -767,7 +767,7 @@
           description: Git repo for Mojo OpenStack Specs
       - string:
           name: MOJO_OPENSTACK_SPECS_BRANCH
-          default: "zaza-phase-1"
+          default: "master"
           description: Git branch for Mojo OpenStack Specs repo
       - NO_POST_DESTROY
       - DISPLAY_NAME
