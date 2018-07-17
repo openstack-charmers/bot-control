@@ -1,3 +1,5 @@
+# DEPRECATED, NOT IMPLEMENTED
+
 # bot-control: gerrit-trigger files
 ## About
 These files are not actively consumed at this point.
