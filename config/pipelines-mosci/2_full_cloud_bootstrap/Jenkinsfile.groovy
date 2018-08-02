@@ -282,7 +282,7 @@ node(params.SLAVE_NODE_NAME) {
                 }
                 if ( params.OVERCLOUD_DEPLOY ) {
                     echo "OVERCLOUD_DEPLOY is true"
-                    SRCCMD = "#!/bin/bash\nsource ${env.HOME}/tools/openstack-charm-testing/novarcv3_project"
+                    SRCCMD = "#!/bin/bash\nsource ${env.HOME}/tools/openstack-charm-testing/rcs/openrc"
                     // create a clouds.yaml for this overcloud with keystone endpoint
                     // env.OS_PROJECT_NAME=params.CLOUD_NAME
                     // env.CLOUD_NAME="overcloud"

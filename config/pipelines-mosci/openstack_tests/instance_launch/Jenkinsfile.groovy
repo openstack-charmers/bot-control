@@ -13,7 +13,7 @@ if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' ) {
                 CLOUD_NAME="${CLOUD_NAME}-maas"
 }
 
-SRCCMD = "#!/bin/bash \n. ./novarcv3_project > /dev/null 2>&1" 
+SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {

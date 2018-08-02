@@ -10,7 +10,7 @@ if ("${params.SLAVE_NODE_NAME}" == '') {
 echo "Tempest tests selected: ${TEST_TYPE}"
 // Simple test to launch a single openstack instance
 
-SRCCMD = "#!/bin/bash \nsource ./novarcv3_project > /dev/null 2>&1" 
+SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 
 def test_runner(TEST_CMD) {
     try {

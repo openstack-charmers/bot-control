@@ -48,7 +48,7 @@ node(params.SLAVE_NODE_NAME) {
                 } catch (error) {
                     echo "Couldn't juju switch: ${error}"
                 }
-                SRCCMD = "#!/bin/bash \nsource ./novarcv3_project > /dev/null 2>&1"
+                SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
                 try {
                     KEYSTONE_AUTH_URL = sh (
                         script: "${SRCCMD} ; env|grep OS_AUTH_URL|awk -F'=' '{print \$2}'",

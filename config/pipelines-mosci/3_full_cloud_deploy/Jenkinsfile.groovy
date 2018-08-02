@@ -171,7 +171,7 @@ node("${SLAVE_NODE_NAME}") {
                         echo "Error setting neutron-gateway data-port: ${error}"
                 }
             } else {
-                echo "This is not an openstack deployment, not configuring neutron gateway dataport"
+                echo "This is not an openstack deployment or is s390x, not configuring neutron gateway dataport"
             }
         }
         stage('Wait for deploy to complete') {

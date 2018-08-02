@@ -9,7 +9,7 @@ KEYSTONE_API_VERSION = ""
     KEYSTONE_API_VERSION = params.KEYSTONE_API_VERSION
 }
 
-SRCCMD = "#!/bin/bash \nsource ./novarcv3_project > /dev/null 2>&1"
+SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 
 /* This phase is configuring the deployed cloud to be accessible via openstack commands
         To do that, we need to run ./configure profile_name
@@ -102,7 +102,7 @@ node(params.SLAVE_NODE_NAME) {
                 try {
                     echo "Attempting to configure cloud with ./configure ${profile_name}"
                     env.WGET_MODE="--quiet"
-                    sh "#!/bin/bash ./configure ${profile_name}"
+                    sh "./configure ${profile_name}"
                     return true
                 } catch (error) {
                     echo "Configure script run failed: ${error}, failing."
