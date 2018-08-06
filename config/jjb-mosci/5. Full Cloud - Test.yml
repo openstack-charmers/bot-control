@@ -1,0 +1,128 @@
+- job:
+    description: null
+    disabled: false
+    name: !!python/unicode '5. Full Cloud - Test'
+    parameters:
+    - string:
+        default: ''
+        description: ''
+        name: SLAVE_NODE_NAME
+    - string:
+        default: ''
+        description: ''
+        name: WORKSPACE
+    - choice:
+        choices:
+        - ruxton
+        - icarus
+        - s390x
+        description: ''
+        name: CLOUD_NAME
+    - choice:
+        choices:
+        - amd64
+        - arm64
+        - ppc64el
+        - s390x
+        description: ''
+        name: ARCH
+    - raw:
+        xml: |
+          <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition plugin="extended-choice-parameter@0.76">
+          <name>SELECTED_TESTS_BAK</name>
+          <description>Select which tests to run</description>
+          <quoteValue>false</quoteValue>
+          <saveJSONParameterToFile>false</saveJSONParameterToFile>
+          <visibleItemCount>5</visibleItemCount>
+          <type>PT_CHECKBOX</type>
+          <value>openstack instance launch,magpie on openstack,openstack tempest smoke,openstack tempest full,openstack bundle deploy,CDK on openstack</value>
+          <multiSelectDelimiter>,</multiSelectDelimiter>
+          <descriptionPropertyValue>Launch an instance,juju deploy magpie,Tempest Smoke,Tempest Full,Deploy a bundle on openstack,Deploy CDK on openstack</descriptionPropertyValue>
+          </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+    - raw:
+        xml: |
+          <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@2.1">
+          <name>SELECTED_TESTS</name>
+          <description>Select openstack tests to run on top of deployed cloud</description>
+          <randomName>choice-parameter-2589567166070893</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+          <secureScript plugin="script-security@1.41">
+          <script>import hudson.model.*
+
+          def a = hudson.model.Hudson.instance.items.findAll{job -&gt; job.name =~ /openstack test/ }.each {
+          job -&gt;
+          println job
+          }
+
+          return a.displayName
+          </script>
+          <sandbox>false</sandbox>
+          </secureScript>
+          <secureFallbackScript plugin="script-security@1.41">
+          <script>return['error getting job names']</script>
+          <sandbox>false</sandbox>
+          </secureFallbackScript>
+          </script>
+          <projectName>5. Full Cloud - Test</projectName>
+          <choiceType>PT_CHECKBOX</choiceType>
+          <filterable>false</filterable>
+          <filterLength>1</filterLength>
+          </org.biouno.unochoice.ChoiceParameter>
+    - raw:
+        xml: |
+          <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@2.1">
+          <name>SLAVE_DROPDOWN</name>
+          <description />
+          <randomName>choice-parameter-3200745070014701</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+          <secureScript plugin="script-security@1.41">
+          <script>import hudson.model.*
+          names = Hudson.getInstance().getSlaves().name
+          names.add(0,"serverstack")
+          return names</script>
+          <sandbox>false</sandbox>
+          </secureScript>
+          <secureFallbackScript plugin="script-security@1.41">
+          <script>return['error getting job names']</script>
+          <sandbox>false</sandbox>
+          </secureFallbackScript>
+          </script>
+          <projectName>5. Full Cloud - Test</projectName>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>true</filterable>
+          <filterLength>1</filterLength>
+          </org.biouno.unochoice.ChoiceParameter>
+    - bool:
+        default: true
+        description: True if this is an openstack deployment
+        name: OPENSTACK
+    pipeline-scm:
+      lightweight-checkout: true
+      scm:
+      - git:
+          branches:
+          - '*/admcleod_test'
+          url: https://github.com/openstack-charmers/bot-control.git
+      scriptPath: ./config/pipelines-mosci/5_full_cloud_test/Jenkinsfile.groovy
+    project-type: pipeline
+    properties:
+    - raw:
+        xml: |
+          <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.27">
+          <autoRebuild>false</autoRebuild>
+          <rebuildDisabled>false</rebuildDisabled>
+          </com.sonyericsson.rebuild.RebuildSettings>
+    - raw:
+        xml: |
+          <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
+          <maxConcurrentPerNode>0</maxConcurrentPerNode>
+          <maxConcurrentTotal>0</maxConcurrentTotal>
+          <categories class="java.util.concurrent.CopyOnWriteArrayList" />
+          <throttleEnabled>false</throttleEnabled>
+          <throttleOption>project</throttleOption>
+          <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
+          <paramsToUseForLimit />
+          </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+    triggers: []

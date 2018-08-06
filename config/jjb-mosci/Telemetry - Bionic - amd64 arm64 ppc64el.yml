@@ -1,0 +1,78 @@
+- job:
+    axes:
+    - axis:
+        name: BUNDLE_URL
+        type: user-defined
+        values:
+        - https://raw.githubusercontent.com/openstack-charmers/openstack-bundles/master/development/openstack-telemetry-bionic-queens/bundle.yaml
+    - axis:
+        name: ARCH
+        type: user-defined
+        values:
+        - amd64
+        - ppc64el
+        - arm64
+        - s390x
+    block-downstream: false
+    block-upstream: false
+    builders:
+    - raw:
+        xml: |
+          <hudson.plugins.parameterizedtrigger.TriggerBuilder plugin="parameterized-trigger@2.35.2">
+          <configs>
+          <hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+          <configs>
+          <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          <properties>BUNDLE_URL=$BUNDLE_URL
+          ARCH=$ARCH
+          PRE_RELEASE_MACHINES=FALSE
+          SELECTED_TESTS=openstack test - instance launch,openstack test - magpie
+          PERSIST_SLAVE=FALSE
+          DESTROY_CONTROLLER=TRUE
+          RELEASE_MACHINES=TRUE
+          SLAVE_LABEL=serverstack
+          OVERRIDE_BUNDLE_CONFIG=ceph-osd,osd-devices=/srv/ceph-osd</properties>
+          <textParamValueOnNewLine>false</textParamValueOnNewLine>
+          </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          </configs>
+          <projects>0. Full Cloud - Pipeline</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
+          <buildAllNodesWithLabel>false</buildAllNodesWithLabel>
+          </hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+          </configs>
+          </hudson.plugins.parameterizedtrigger.TriggerBuilder>
+    concurrent: false
+    description: null
+    disabled: false
+    execution-strategy:
+      sequential: true
+    name: !!python/unicode 'Telemetry - Bionic - amd64 arm64 ppc64el'
+    node: master
+    project-type: matrix
+    properties:
+    - raw:
+        xml: |
+          <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.27">
+          <autoRebuild>false</autoRebuild>
+          <rebuildDisabled>false</rebuildDisabled>
+          </com.sonyericsson.rebuild.RebuildSettings>
+    - raw:
+        xml: |
+          <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
+          <maxConcurrentPerNode>0</maxConcurrentPerNode>
+          <maxConcurrentTotal>1</maxConcurrentTotal>
+          <categories class="java.util.concurrent.CopyOnWriteArrayList" />
+          <throttleEnabled>true</throttleEnabled>
+          <throttleOption>category</throttleOption>
+          <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
+          <matrixOptions>
+          <throttleMatrixBuilds>true</throttleMatrixBuilds>
+          <throttleMatrixConfigurations>false</throttleMatrixConfigurations>
+          </matrixOptions>
+          <paramsToUseForLimit>ARCH</paramsToUseForLimit>
+          </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+    publishers: []
+    triggers: []
+    wrappers: []

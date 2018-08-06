@@ -1,0 +1,22 @@
+- job:
+    axes: []
+    block-downstream: false
+    block-upstream: false
+    builders: []
+    concurrent: false
+    description: null
+    disabled: false
+    execution-strategy:
+      sequential: false
+    name: !!python/unicode '7. Full Cloud - Matrix'
+    project-type: matrix
+    properties:
+    - raw:
+        xml: |
+          <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.27">
+          <autoRebuild>false</autoRebuild>
+          <rebuildDisabled>false</rebuildDisabled>
+          </com.sonyericsson.rebuild.RebuildSettings>
+    publishers: []
+    triggers: []
+    wrappers: []
