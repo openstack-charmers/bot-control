@@ -105,7 +105,7 @@
           branches:
           - '*/admcleod_test'
           url: https://github.com/openstack-charmers/bot-control.git
-      scriptPath: ./config/pipelines-mosci/5_full_cloud_test/Jenkinsfile.groovy
+      script-path: ./config/pipelines-mosci/5_full_cloud_test/Jenkinsfile.groovy
     project-type: pipeline
     properties:
     - raw:
