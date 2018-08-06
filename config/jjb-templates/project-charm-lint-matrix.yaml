@@ -16,7 +16,7 @@
          name: GIT_BRANCH
          values:
           - master
-          - stable/18.02
+          - stable/18.05
       - axis:
          type: user-defined
          name: BASE_NAME
@@ -38,6 +38,7 @@
           - designate
           - designate-bind
           - glance
+          - glance-simplestreams-sync
           - gnocchi
           - hacluster
           - heat
@@ -49,6 +50,7 @@
           - murano
           - neutron-api
           - neutron-api-odl
+          - neutron-dynamic-routing
           - neutron-gateway
           - neutron-openvswitch
           - nova-cloud-controller

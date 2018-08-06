@@ -15,7 +15,7 @@
          type: user-defined
          name: GIT_BRANCH
          values:
-          - stable/18.02
+          - stable/18.05
       - axis:
          type: user-defined
          name: BASE_NAME
@@ -37,6 +37,7 @@
           - designate
           - designate-bind
           - glance
+          - glance-simplestreams-sync
           - gnocchi
           - hacluster
           - heat

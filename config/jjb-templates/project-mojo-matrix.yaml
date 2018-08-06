@@ -21,7 +21,6 @@
          values:
           - "trusty-distro"
           - "xenial-distro"
-          - "artful-distro"
           - "bionic-distro"
     builders:
       - trigger-builds:
@@ -94,9 +93,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -175,9 +175,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -257,9 +258,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -338,9 +340,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -576,9 +579,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -618,9 +622,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -660,9 +665,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -803,9 +809,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -845,9 +852,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -887,9 +895,10 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
+          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -929,9 +938,10 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
+          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -971,9 +981,10 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
+          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -1013,7 +1024,7 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
+          # No legacy 'ceph' charm support prior to Pike
     builders:
       - trigger-builds:
         - project:
@@ -1053,9 +1064,10 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           # - "xenial-pike"   # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
-          # - "artful-pike"   # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
+          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -1095,9 +1107,10 @@
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
           - "xenial-pike"
-          - "artful-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
+          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -1137,9 +1150,10 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
         - project:
@@ -1177,7 +1191,42 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "artful-pike"
+          - "xenial-queens"
+          - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_dynamic_routing_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(12-15) * * 5"  # Once weekly Thursday Afternoon
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_dynamic_routing
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "xenial-pike"
           - "xenial-queens"
           - "bionic-queens"
     builders:

@@ -24,6 +24,7 @@
       - designate
       - designate-bind
       - glance
+      - glance-simplestreams-sync
       - gnocchi
       - hacluster
       - heat
@@ -34,6 +35,7 @@
       - manila-generic
       - neutron-api
       - neutron-api-odl
+      - neutron-dynamic-routing
       - neutron-gateway
       - neutron-openvswitch
       - nova-cloud-controller
@@ -109,7 +111,7 @@
             description: Asset name (charm name).
         - string:
             name: GIT_BRANCH
-            default: stable/18.02
+            default: stable/18.05
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
@@ -126,7 +128,7 @@
          shallow-clone: true
          clean: {before: true}
          branches:
-          - stable/18.02
+          - stable/18.05
     triggers:
       - pollscm:
           cron: 'H/10 * * * *'
