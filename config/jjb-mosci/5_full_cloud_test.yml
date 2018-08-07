@@ -1,7 +1,7 @@
 - job:
     description: null
     disabled: false
-    name: !!python/unicode '5. Full Cloud - Test'
+    name: '5. Full Cloud - Test'
     parameters:
     - string:
         default: ''

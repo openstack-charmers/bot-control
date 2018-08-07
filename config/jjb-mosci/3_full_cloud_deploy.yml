@@ -1,7 +1,7 @@
 - job:
     description: null
     disabled: false
-    name: !!python/unicode '3. Full Cloud - Deploy'
+    name: '3. Full Cloud - Deploy'
     parameters:
     - string:
         default: bundle.yaml

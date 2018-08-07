@@ -1,7 +1,7 @@
 - job:
     description: null
     disabled: false
-    name: !!python/unicode '6. Full Cloud - Teardown'
+    name: '6. Full Cloud - Teardown'
     parameters:
     - bool:
         default: true

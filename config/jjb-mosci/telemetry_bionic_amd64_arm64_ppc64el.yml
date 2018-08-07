@@ -48,7 +48,7 @@
     disabled: false
     execution-strategy:
       sequential: true
-    name: !!python/unicode 'Telemetry - Bionic - amd64 arm64 ppc64el'
+    name: 'Telemetry - Bionic - amd64 arm64 ppc64el'
     node: master
     project-type: matrix
     properties:

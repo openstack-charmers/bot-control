@@ -8,7 +8,7 @@
       2. Do something slightly different based on ARCH:
       2a. Is this s390x? If so, this is manual provider stuff, plus static NAT, and specific scripts will need to be run prior to bootstrapping.
     disabled: false
-    name: !!python/unicode '1. Full Cloud - Prepare'
+    name: '1. Full Cloud - Prepare'
     parameters:
     - choice:
         choices:

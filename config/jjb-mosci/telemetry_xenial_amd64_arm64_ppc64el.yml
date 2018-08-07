@@ -46,7 +46,7 @@
     disabled: false
     execution-strategy:
       sequential: true
-    name: !!python/unicode 'Telemetry - Xenial - amd64 arm64 ppc64el'
+    name: 'Telemetry - Xenial - amd64 arm64 ppc64el'
     node: master
     project-type: matrix
     properties:

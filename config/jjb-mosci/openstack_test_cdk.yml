@@ -2,7 +2,7 @@
     description: Launch a single openstack instance of ARCH, give it a floating IP,
       ssh to the IP and run uname -a. Result of job will be uname -a output, or FAILED.
     disabled: false
-    name: !!python/unicode 'openstack test - CDK'
+    name: 'openstack test - CDK'
     parameters:
     - choice:
         choices:

@@ -1,7 +1,7 @@
 - job:
     description: null
     disabled: false
-    name: !!python/unicode 'terminate mosci slaves'
+    name: 'terminate mosci slaves'
     parameters:
     - raw:
         xml: |

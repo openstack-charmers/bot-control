@@ -44,7 +44,7 @@
     concurrent: false
     description: null
     disabled: false
-    name: !!python/unicode 'xenial queens s390x - s4lp5...s4lp9'
+    name: 'xenial queens s390x - s4lp5...s4lp9'
     project-type: freestyle
     properties:
     - raw:

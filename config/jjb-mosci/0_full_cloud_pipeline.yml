@@ -1,7 +1,7 @@
 - job:
     description: null
     disabled: false
-    name: !!python/unicode '0. Full Cloud - Pipeline'
+    name: '0. Full Cloud - Pipeline'
     parameters:
     - raw:
         xml: |

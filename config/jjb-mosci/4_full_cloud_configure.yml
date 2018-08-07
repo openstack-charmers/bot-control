@@ -1,7 +1,7 @@
 - job:
     description: null
     disabled: false
-    name: !!python/unicode '4. Full Cloud - Configure'
+    name: '4. Full Cloud - Configure'
     parameters:
     - string:
         default: ''

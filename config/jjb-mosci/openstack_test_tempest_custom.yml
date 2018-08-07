@@ -2,7 +2,7 @@
     description: This job is typically run as a manual job with specifications of
       custom classes, but can also be used as a template for other tempest tests.
     disabled: false
-    name: !!python/unicode 'openstack test - tempest custom'
+    name: 'openstack test - tempest custom'
     parameters:
     - choice:
         choices:

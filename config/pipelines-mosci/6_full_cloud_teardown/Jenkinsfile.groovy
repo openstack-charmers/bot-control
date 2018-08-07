@@ -197,19 +197,17 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
 
 node('master') {
 machines = params.S390X_NODES.split(',')
-if ( machines[0] != "none" ) {
-        echo "Attempting to restore and recreate LVM snapshot for ${machines}"
+if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]") {
+        echo "Attempting BARRY to restore and recreate LVM snapshot for ${machines}"
         for (int i = 0; i < machines.size(); i++ ) { 
             s390x_snapshot_reset(machines[i])           
             }
         }
 if ( MODEL_NAME.contains("maas") ) {
         TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
-        print "Tags 1: ${params.TAGS}"
         TAGS = TAGS.minus("tags=")
         TAGS = TAGS.replace(" ", "")
         TAGS = TAGS.split(",")
-        print "Tags 2: ${params.TAGS}"
         if ( params.CLOUD_NAME == 'ruxton' ) {
                 MAAS_API_KEY = RUXTON_API_KEY 
         } else if ( params.CLOUD_NAME == 'icarus' ) {
