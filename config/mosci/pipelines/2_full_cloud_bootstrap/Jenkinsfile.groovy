@@ -293,8 +293,8 @@ node(params.SLAVE_NODE_NAME) {
                     MODEL_NAME=params.MODEL_NAME
                     echo "MODEL_NAME: ${MODEL_NAME}, CONTROLLER_NAME: ${CONTROLLER_NAME}"
                     sh "cp juju-configs/clouds.yaml ${env.HOME}/cloud-credentials/"
-                    sh "sed -i '0,/serverstack/s/serverstack/overcloud/g' juju-configs/clouds.yaml"
-                    sh "sed -i '0,/serverstack/s/serverstack/RegionOne/g' juju-configs/clouds.yaml"
+                    sh "sed -i '0,/serverstack:/s/serverstack:/overcloud:/g' juju-configs/clouds.yaml"
+                    sh "sed -i '0,/serverstack:/s/serverstack:/RegionOne:/g' juju-configs/clouds.yaml"
                     sh "cat juju-configs/clouds.yaml"
                     sh "juju switch ${OVERCLOUD_NAME}:${OVERCLOUD_NAME}"
                     echo "${KSXCMD}"
