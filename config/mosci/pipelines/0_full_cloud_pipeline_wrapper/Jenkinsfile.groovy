@@ -23,6 +23,42 @@ echo "Slave selection logic has selected ${specific_slave}"
 
 echo "PHASES: ${PHASES}"
 
+if ( params.OS_RELEASE_NAME == "" ) {
+    releases = ["icehouse", "juno", "kilo", "librety", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "stable"]
+    echo "Trying to get release from bundle url..."
+    for ( a in releases ) {
+        if ( params.BUNDLE_URL.contains(a) ) {
+            release = a
+        }
+    }
+    try {
+        if ( release == "" ) {
+            release = "unknown"
+        }
+    } catch (error) {    
+        release = "unknown"
+        }
+    echo "Release: ${release}"
+}
+
+if ( params.DISTRO_NAME == "" ) {
+    distros = ["trusty", "xenial", "bionic", "cosmic", "stable"]
+    echo "Trying to get distro from bundle url..."
+    for ( a in distros ) {
+        if ( params.BUNDLE_URL.contains(a) ) {
+            distro = a
+        }
+    }
+    try {
+        if ( distro == "" ) {
+            distro = "unknown"
+        }
+    } catch (error) {    
+        distro = "unknown"
+        }
+    echo "Distro: ${distro}"
+}
+
 s390xcheck = ["${params.CLOUD_NAME}", "${params.ARCH}"]
 if ( s390xcheck.any { it.contains("390") } ) {
         if ( ! s390xcheck.every { it.contains("390") } ) {
@@ -76,7 +112,7 @@ node(SLAVE_NODE_NAME) {
             BOOTSTRAP_CONSTRAINTS="${BOOTSTRAP_CONSTRAINTS}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
         }
-        stage("Preparation: ${params.ARCH}") {
+        stage("Preparation: ${params.ARCH}, $distro, $release") {
             // Logic for differentiating between MAAS, s390x, or something else (probably oolxd)
             echo "Cloud name set to ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
@@ -97,7 +133,7 @@ node(SLAVE_NODE_NAME) {
             }*/
             }
         }
-        stage("Bootstrap: ${params.ARCH}") {
+        stage("Bootstrap") {
         // Bootstrap the environment from ${CLOUD_NAME}
             echo "Bootstrapping $ARCH from ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
@@ -123,7 +159,7 @@ node(SLAVE_NODE_NAME) {
             //sh 'cd examples ; ./controller-arm64.sh'
             }
         }
-        stage("Deploy: ${params.ARCH}") {
+        stage("Deploy") {
             echo 'Deploy'
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             if ( PHASES.contains("Deploy") ) {
@@ -140,7 +176,7 @@ node(SLAVE_NODE_NAME) {
                 //sh 'cd runners/manual-examples ; ./openstack-base-xenial-ocata-arm64-manual.sh'
             }
         }
-        stage("Configure: ${params.ARCH}") {
+        stage("Configure") {
             echo "Configure"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             if ( PHASES.contains("Configure") && Boolean.valueOf(OPENSTACK) == true ) {
@@ -151,7 +187,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
             }
         }
-        stage("Test: ${params.ARCH}") {
+        stage("Test: ${SELECTED_TESTS}") {
             echo 'Test Cloud'
             if ( PHASES.contains("Test") ) {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
@@ -163,7 +199,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
             }
         }
-        stage("Teardown: ${params.ARCH}") {
+        stage("Teardown") {
             echo 'Teardown'
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             if ( PHASES.contains("Teardown") ) {

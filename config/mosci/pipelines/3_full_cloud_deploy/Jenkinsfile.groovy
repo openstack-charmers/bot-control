@@ -50,6 +50,9 @@ def get_neutron_machine_id() {
                                 )
                         if ( NEUTRON_ID == '' ) {
                                 echo "Neutron ID error: ${NEUTRON_ID}"
+                                sh "juju  status -m ${CONMOD}"
+                                currentBuild.result = 'FAILURE'
+                                return true
                         } else {
                         echo "Got neutron machine id: ${NEUTRON_ID}"
                         return true
