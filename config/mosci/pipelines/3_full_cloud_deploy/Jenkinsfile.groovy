@@ -172,9 +172,10 @@ node("${SLAVE_NODE_NAME}") {
                         )
                         echo "Resolve neutron-gateway errors if there are any after setting correct data-port"
                         sh (
-                        script: "for a in \$(juju status neutron-gateway|grep -E 'neutron.*error'|awk '!/jujucharms/ {print \$1}'|tr -d '*'); do juju resolved \$a ; done",
+                        script: "for a in \$(juju status neutron-gateway|grep -E 'neutron.*error'|awk '!/jujucharms/ {print \$1}'|tr -d '*'); do echo juju resolved \$a ; juju resolved \$a ; done",
                         returnStdout: true
                         )
+                        sleep(60)
                 } catch (error) {
                         echo "Error setting neutron-gateway data-port: ${error}"
                 }
@@ -202,9 +203,9 @@ node("${SLAVE_NODE_NAME}") {
             } else {
                 echo CHECK_STATUS
                 }
-            } catch (err) {
+            } catch (error) {
                 currentBuild.result = 'FAILURE'
-                error "FAILURE: error with juju status: ${err}"
+                error "FAILURE: error found in juju status"
             }
         }
     }
