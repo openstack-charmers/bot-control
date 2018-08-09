@@ -112,7 +112,7 @@ node(SLAVE_NODE_NAME) {
             BOOTSTRAP_CONSTRAINTS="${BOOTSTRAP_CONSTRAINTS}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
         }
-        stage("Preparation: ${params.ARCH}, $distro, $release") {
+        stage("Preparation: ${params.ARCH}, $distro, $release |") {
             // Logic for differentiating between MAAS, s390x, or something else (probably oolxd)
             echo "Cloud name set to ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
@@ -133,7 +133,7 @@ node(SLAVE_NODE_NAME) {
             }*/
             }
         }
-        stage("Bootstrap") {
+        stage("Bootstrap |") {
         // Bootstrap the environment from ${CLOUD_NAME}
             echo "Bootstrapping $ARCH from ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
@@ -159,7 +159,7 @@ node(SLAVE_NODE_NAME) {
             //sh 'cd examples ; ./controller-arm64.sh'
             }
         }
-        stage("Deploy") {
+        stage("Deploy |") {
             echo 'Deploy'
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             if ( PHASES.contains("Deploy") ) {
@@ -177,7 +177,7 @@ node(SLAVE_NODE_NAME) {
                 //sh 'cd runners/manual-examples ; ./openstack-base-xenial-ocata-arm64-manual.sh'
             }
         }
-        stage("Configure") {
+        stage("Configure |") {
             echo "Configure"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             if ( PHASES.contains("Configure") && Boolean.valueOf(OPENSTACK) == true ) {
@@ -188,7 +188,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
             }
         }
-        stage("Test: ${SELECTED_TESTS}") {
+        stage("Test: ${SELECTED_TESTS} |") {
             echo 'Test Cloud'
             if ( PHASES.contains("Test") ) {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
