@@ -102,6 +102,7 @@ node(params.SLAVE_NODE_NAME) {
                 try {
                     echo "Attempting to configure cloud with ./configure ${profile_name}"
                     env.WGET_MODE="--quiet"
+                    env.BARE_METAL="true"
                     sh "./configure ${profile_name}"
                     return true
                 } catch (error) {
