@@ -58,12 +58,23 @@ node(params.SLAVE_NODE_NAME) {
                 currentBuild.result = 'FAILURE'
             }
             try {
-                CMD = "${SRCCMD} ; ./tools/instance_launch.sh 1 ${IMAGE_NAME} | egrep -v 'project|user' | awk /id/'{print \$4}' | tail -n1"
-                INSTANCE_NAME = sh (
+                // CMD = "${SRCCMD} ; ./tools/instance_launch.sh 1 ${IMAGE_NAME} | egrep -v 'project|user' | awk /id/'{print \$4}' | tail -n1"
+                CMD = "${SRCCMD} ; ./tools/instance_launch.sh 1 ${IMAGE_NAME} | egrep -v 'project|user'"
+                INSTANCE_OUTPUT = sh (
                     script: CMD,
                     returnStdout: true
                     ).trim()
-                
+                if ( INSTANCE_OUTPUT.contains("Error" ) ) {
+                    echo "Error: ${INSTANCE_OUTPUT}"         
+                    sh "openstack server show ${INSTANCE_OUTPUT.split(' ')[-1]}"
+                    currentBuild.result = 'FAILURE'
+                } else {
+                    INSTANCE_OUTPUT.eachLine { line, count ->
+                        if ( line.contains('id') ) {
+                            INSTANCE_NAME = line.split(' ')[3]
+                        }
+                    }
+                }
                 echo "INSTANCE_NAME: ${INSTANCE_NAME}"
             } catch (error) {
                 echo "Error launching instance: ${error}"
