@@ -175,7 +175,6 @@ node("${SLAVE_NODE_NAME}") {
                         script: "for a in \$(juju status neutron-gateway|grep -E 'neutron.*error'|awk '!/jujucharms/ {print \$1}'|tr -d '*'); do echo juju resolved \$a ; juju resolved \$a ; done",
                         returnStdout: true
                         )
-                        sleep(60)
                 } catch (error) {
                         echo "Error setting neutron-gateway data-port: ${error}"
                 }
@@ -185,6 +184,7 @@ node("${SLAVE_NODE_NAME}") {
         }
         stage('Wait for deploy to complete') {
             echo "Waiting for deployment to complete..."
+            sleep(60)
             try {
                 sh "~/tools/juju-wait/juju-wait -e ${CONMOD}"
             } catch (error) {
