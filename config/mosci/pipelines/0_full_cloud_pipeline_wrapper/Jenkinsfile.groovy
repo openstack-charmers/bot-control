@@ -165,6 +165,7 @@ node(SLAVE_NODE_NAME) {
             if ( PHASES.contains("Deploy") ) {
             deploy_job = build job: '3. Full Cloud - Deploy', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                          [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
+                         [$class: 'BooleanParameterValue', name: 'MANUAL_JOB', value: Boolean.valueOf(MANUAL_JOB)],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH],
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],

@@ -120,14 +120,19 @@ node("${SLAVE_NODE_NAME}") {
                     sh "juju deploy bundle.yaml --map-machines=existing --model=${CONMOD}"
                     return true
                 } catch (error) {
-                    echo "Deploy error. You can ssh into ${OPENSTACK_PUBLIC_IP} and manually modify ${params.WORKSPACE}/bundle.yaml if necessary."
-                    msg_one = "Deployment error detected"
-                    name = "Abort, Ignore (continue to next stage), or Retry.\nSelect Ignore or Retry and click Proceed, or click the Abort button.\n"
-                    def returnValue = input message: msg_one, parameters: [choice(choices: 'retry\nignore', description: '', name: name)]
-                    if ( returnValue == "retry" ) {
-                        return false
-                    } else if ( returnvalue == "ignore" ) {
-                    return false
+                    if ( params.MANUAL_JOB == true ) {
+                        echo "Deploy error. You can ssh into ${OPENSTACK_PUBLIC_IP} and manually modify ${params.WORKSPACE}/bundle.yaml if necessary."
+                        msg_one = "Deployment error detected"
+                        name = "Abort, Ignore (continue to next stage), or Retry.\nSelect Ignore or Retry and click Proceed, or click the Abort button.\n"
+                        def returnValue = input message: msg_one, parameters: [choice(choices: 'retry\nignore', description: '', name: name)]
+                        if ( returnValue == "retry" ) {
+                            return false
+                        } else if ( returnvalue == "ignore" ) {
+                            return false
+                        }
+                    } else {
+                        currentBuild.result = 'FAILURE'
+                        error "bundle deploy error"
                     }
                 }
             }
