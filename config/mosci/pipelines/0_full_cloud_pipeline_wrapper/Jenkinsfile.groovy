@@ -200,11 +200,14 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
             }
         }
+        if ( params.CLEANUP_ON_FAILURE == true ) { 
+            prop = false
+        }
         stage("Teardown") {
             echo 'Teardown'
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             if ( PHASES.contains("Teardown") ) {
-            deploy_job = build job: '6. Full Cloud - Teardown', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: "${params.CLOUD_NAME}"],
+            deploy_job = build job: '6. Full Cloud - Teardown', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: "${params.CLOUD_NAME}"],
                          [$class: 'StringParameterValue', name: 'ARCH', value: "${params.ARCH}"],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],

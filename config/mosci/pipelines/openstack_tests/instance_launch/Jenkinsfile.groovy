@@ -59,28 +59,47 @@ node(params.SLAVE_NODE_NAME) {
             }
             try {
                 // CMD = "${SRCCMD} ; ./tools/instance_launch.sh 1 ${IMAGE_NAME} | egrep -v 'project|user' | awk /id/'{print \$4}' | tail -n1"
-                CMD = "${SRCCMD} ; ./tools/instance_launch.sh 1 ${IMAGE_NAME} | egrep -v 'project|user'"
-                INSTANCE_OUTPUT = sh (
+                LAUNCH_CMD = "${SRCCMD} ; ./tools/instance_launch.sh 1 ${IMAGE_NAME}"
+                CMD = "#!/bin/bash \nset -o pipefail ; ${SRCCMD} ; ${LAUNCH_CMD} 2>&1 | tee launch.output"
+                INSTANCE_CODE = sh (
                     script: CMD,
-                    returnStdout: true
-                    ).trim()
-                if ( INSTANCE_OUTPUT.contains("Error" ) ) {
-                    echo "Error: ${INSTANCE_OUTPUT}"         
-                    sh "openstack server show ${INSTANCE_OUTPUT.split(' ')[-1]}"
+                    returnStatus: true
+                    )
+                if ( INSTANCE_CODE != 0 ) {
+                    echo "Failed to run instance launch:"
+                    OUT = readFile("launch.output").trim()
+                    echo "${OUT}"
                     currentBuild.result = 'FAILURE'
-                } else {
-                    INSTANCE_OUTPUT.eachLine { line, count ->
-                        if ( line.contains('id') ) {
-                            INSTANCE_NAME = line.split(' ')[3]
+                }
+                else if ( INSTANCE_CODE == 0 ) {
+                    INSTANCE_OUTPUT = readFile("launch.output")
+                        if ( INSTANCE_OUTPUT.contains("Error" ) ) {
+                            // echo "Error: ${INSTANCE_OUTPUT}"
+                            //for ( int i = 0 ; i < CONFIG_LINES.size() ; i++ ) {
+                            INSTANCE_OUTPUT.split("\n").each { line_a, count_a -> 
+                                if ( line_a.contains("Error creating server:") ) {
+                                    INSTANCE_NAME = line_a.split(' ')[-1]
+                                    echo "querying failed instance:"
+                                }
+                            }
+                            sh "${SRCCMD} ; openstack server show ${INSTANCE_NAME}"
+                            currentBuild.result = 'FAILURE'
+                            error "Instance build failed."
+                        } else {
+                            INSTANCE_OUTPUT.split("\n").each { line_b, count_b ->
+                                if ( line_b.contains(' id') ) {
+                                    INSTANCE_NAME = line_b.split()[3]
+                                }
+                            }
                         }
-                    }
                 }
                 echo "INSTANCE_NAME: ${INSTANCE_NAME}"
             } catch (error) {
                 echo "Error launching instance: ${error}"
-                currentBuild.result = 'ABORTED'
+                currentBuild.result = 'FAILED'
+                error "Failed."
             } finally {
-                if ( INSTANCE_NAME == "1" ) {
+                if ( INSTANCE_NAME == "1" || INSTANCE_NAME == "" ) {
                     error "Invalid instance name, aborting"
                 } 
             }
