@@ -179,20 +179,21 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                            }
                     primary_tag = TAGS[0]
                     additional_tags = TAGS.join(",")
-                    stage("MAAS release nodes: ${params.ARCH}, ${params.TAGS}") {
-                        def maas_api_cmd = ""
-                        echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, release nodes: ${params.RELEASE_MACHINES}, force: ${params.FORCE_RELEASE}"
-                        if ( primary_tag != additional_tags ) { 
-                                echo "not same"
-                                maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
+                    stage("MAAS release nodes") {
+                        try {
+                            MAAS_IDS = sh (
+                                script: "juju machines | grep -v lxd | awk '{print $4}',
+                                returnStdout: true
+                            ).trim()
+                        echo "Releasing: ${MAAS_IDS}"
+                        } catch (error){
+                            echo "Error getting machines from juju: ${error}"
                         }
-                        if ( params.FORCE_RELEASE )  {
-                                echo "force true"
-                                maas_api_cmd = maas_api_cmd + " --force "
-                        } 
+                        def maas_api_cmd = ""
                         if ( params.RELEASE_MACHINES ) {
-                            echo "release true"
-                            maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${params.CLOUD_NAME}-maas -k ${MAAS_API_KEY} --release --tags ${primary_tag} --arch ${ARCH}"
+                            MAAS_IDS.split("\n").each { MAAS_ID, count ->
+                                maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${params.CLOUD_NAME}-maas -k ${MAAS_API_KEY} --release --system_id ${MAAS_ID}
+                            }
                             dir("${env.HOME}/tools/openstack-charm-testing/") {
                                     sleep(60)
                                     sh "./bin/maas_actions.py ${maas_api_cmd}"
