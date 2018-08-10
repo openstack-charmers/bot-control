@@ -137,6 +137,15 @@ node(params.SLAVE_NODE_NAME) {
                 }
             } 
             echo "Result of running uname -a on ${FLOATING_IP}: ${UNAME_A}"
+        }
+        echo "Deleting instance ${INSTANCE_NAME}"
+        try {
+            DELETE_INSTANCE = sh (
+                script: "${SRCCMD} ; openstack server delete ${INSTANCE_NAME}",
+                returnStdout: true
+            )
+        } catch (error) {
+            echo "Erroring deleting instance: ${error}"
             }
         }
     }
