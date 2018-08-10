@@ -119,11 +119,11 @@ node(SLAVE_NODE_NAME) {
             BOOTSTRAP_CONSTRAINTS="${BOOTSTRAP_CONSTRAINTS}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
         }
-        stage("Preparation: ${params.ARCH}, $distro, $release ..... |") {
+        if ( PHASES.contains("Preparation") ) {
+            stage("Preparation: ${params.ARCH}, $distro, $release     |") {
             // Logic for differentiating between MAAS, s390x, or something else (probably oolxd)
             echo "Cloud name set to ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
-            if ( PHASES.contains("Preparation") ) {
             prep_job = build job: '1. Full Cloud - Prepare', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CTI_GIT_REPO', value: "${params.CTI_GIT_REPO}"],
                        [$class: 'StringParameterValue', name: 'CTI_GIT_BRANCH', value: "${params.CTI_GIT_BRANCH}"],
                        [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
@@ -139,14 +139,12 @@ node(SLAVE_NODE_NAME) {
                         echo line
                 }
             }*/
-            }
-        }
-        stage("Bootstrap ..... |") {
-        // Bootstrap the environment from ${CLOUD_NAME}
-            echo "${pipeline_state}"
-            echo "Bootstrapping $ARCH from ${CLOUD_NAME}"
+            } 
+        } else { echo "Skipping Preparation stage" } 
+        if ( PHASES.contains("Bootstrap") && ! pipeline_state.contains("FAILURE")) {
+            stage("Bootstrap     |") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
-            if ( PHASES.contains("Bootstrap") && ! pipeline_state.contains("FAILURE")) {
+            echo "Bootstrapping $ARCH from ${CLOUD_NAME}"
             bootstrap_job = build job: '2. Full Cloud - Bootstrap', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: params.CLOUD_NAME],
                             [$class: 'BooleanParameterValue', name: 'FORCE_RELEASE', value: Boolean.valueOf(FORCE_RELEASE)],
                             [$class: 'BooleanParameterValue', name: 'FORCE_NEW_CONTROLLER', value: Boolean.valueOf(FORCE_NEW_CONTROLLER)],
@@ -168,12 +166,11 @@ node(SLAVE_NODE_NAME) {
             }*/
             //sh 'cd examples ; ./controller-arm64.sh'
             }
-        }
-        stage("Deploy ..... |") {
-            echo "${pipeline_state}"
-            echo 'Deploy'
+        } else { echo "Skipping Bootstrap stage" } 
+        if ( PHASES.contains("Deploy") && ! pipeline_state.contains("FAILURE")) {
+            stage("Deploy     |") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
-            if ( PHASES.contains("Deploy") && ! pipeline_state.contains("FAILURE")) {
+            echo 'Deploying Bundle'
             deploy_job = build job: '3. Full Cloud - Deploy', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                          [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
                          [$class: 'BooleanParameterValue', name: 'MANUAL_JOB', value: Boolean.valueOf(MANUAL_JOB)],
@@ -188,12 +185,11 @@ node(SLAVE_NODE_NAME) {
                 //sh 'ls -lart'
                 //sh 'cd runners/manual-examples ; ./openstack-base-xenial-ocata-arm64-manual.sh'
             }
-        }
-        stage("Configure ..... |") {
-            echo "${pipeline_state}"
-            echo "Configure"
+        } else { echo "Skipping Deployment stage" } 
+        if ( PHASES.contains("Configure") && Boolean.valueOf(OPENSTACK) == true && ! pipeline_state.contains("FAILURE")) {
+            stage("Configure     |") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
-            if ( PHASES.contains("Configure") && Boolean.valueOf(OPENSTACK) == true && ! pipeline_state.contains("FAILURE")) {
+            echo "Configuring Openstack Cloud"
             configure_job = build job: '4. Full Cloud - Configure', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
                          [$class: 'StringParameterValue', name: 'KEYSTONE_API_VERSION', value: params.KEYSTONE_API_VERSION],
@@ -201,11 +197,10 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
             pipeline_state = pipeline_state + configure_job.result
             }
-        }
-        stage("Test: ${SELECTED_TESTS.minus("openstack test - ")} ..... |") {
-            echo "${pipeline_state}"
-            echo 'Test Cloud'
-            if ( PHASES.contains("Test") && ! pipeline_state.contains("FAILURE")) {
+        } else { echo "Skipping Configuration stage" } 
+        if ( PHASES.contains("Test") && ! pipeline_state.contains("FAILURE")) {
+            stage("Test: ${SELECTED_TESTS.replaceAll("openstack test - ", "")}     |") {
+            echo 'Testing Cloud Functionality'
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             test_job = build job: '5. Full Cloud - Test', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                          [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
@@ -215,12 +210,11 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
             pipeline_state = pipeline_state + test_job.result
             }
-        }
-       stage("Teardown") {
-            echo "${pipeline_state}"
-            echo 'Teardown'
+        } else { echo "Skipping Test stage" } 
+        if ( PHASES.contains("Teardown") ) {
+            stage("Teardown") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
-            if ( PHASES.contains("Teardown") ) {
+            echo 'Tearing down deployment'
             teardown_job = build job: '6. Full Cloud - Teardown', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: "${params.CLOUD_NAME}"],
                          [$class: 'StringParameterValue', name: 'ARCH', value: "${params.ARCH}"],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
@@ -236,9 +230,9 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'BooleanParameterValue', name: 'DESTROY_MODEL', value: Boolean.valueOf(DESTROY_MODEL)],
                          [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: "${params.BUNDLE_URL}"]]
             }
-        }
+        } else { echo "Skipping Teardown stage" }
     if ( pipeline_state.contains("FAILURE") ) {
         currentBuild.result = 'FAILURE'
-    }
+        }
     }
 }
