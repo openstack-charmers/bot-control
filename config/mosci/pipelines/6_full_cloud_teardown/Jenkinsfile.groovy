@@ -94,6 +94,7 @@ if ( "${params.ARCH}".contains("s390x") ) {
 }
 
 if ( params.SLAVE_NODE_NAME == '') {
+    // This is not valid, since the master doesnt have capabilities to release machines
     ONLY_RELEASE = true
     echo "Slave name not set, will only attempt to release MAAS nodes"
 } else {
@@ -130,7 +131,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                 }
         }
         try {
-            timeout(10) {
+            timeout(20) {
                 node(params.SLAVE_NODE_NAME) {
                     ws("${params.WORKSPACE}") {
                         stage("Teardown: ${MODEL_NAME}") {
@@ -155,6 +156,46 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                 } else {
                                     echo "Leaving model and controller up" 
                                 }
+                            }
+                        }
+                    }
+                }
+                machines = params.S390X_NODES.split(',')
+                if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]" && params.RELEASE_MACHINES ) {
+                    echo "Attempting BARRY to restore and recreate LVM snapshot for ${machines}"
+                    for (int i = 0; i < machines.size(); i++ ) { 
+                        s390x_snapshot_reset(machines[i])           
+                        }
+                    }
+                if ( MODEL_NAME.contains("maas") && params.RELEASE_MACHINES ) {
+                    TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
+                    TAGS = TAGS.minus("tags=")
+                    TAGS = TAGS.replace(" ", "")
+                    TAGS = TAGS.split(",")
+                    if ( params.CLOUD_NAME == 'ruxton' ) {
+                            MAAS_API_KEY = RUXTON_API_KEY 
+                    } else if ( params.CLOUD_NAME == 'icarus' ) {
+                            MAAS_API_KEY = ICARUS_API_KEY
+                           }
+                    primary_tag = TAGS[0]
+                    additional_tags = TAGS.join(",")
+                    stage("MAAS release nodes: ${params.ARCH}, ${params.TAGS}") {
+                        def maas_api_cmd = ""
+                        echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, release nodes: ${params.RELEASE_MACHINES}, force: ${params.FORCE_RELEASE}"
+                        if ( primary_tag != additional_tags ) { 
+                                echo "not same"
+                                maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
+                        }
+                        if ( params.FORCE_RELEASE )  {
+                                echo "force true"
+                                maas_api_cmd = maas_api_cmd + " --force "
+                        } 
+                        if ( params.RELEASE_MACHINES ) {
+                            echo "release true"
+                            maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${params.CLOUD_NAME}-maas -k ${MAAS_API_KEY} --release --tags ${primary_tag} --arch ${ARCH}"
+                            dir("${env.HOME}/tools/openstack-charm-testing/") {
+                                    sleep(60)
+                                    sh "./bin/maas_actions.py ${maas_api_cmd}"
                             }
                         }
                     }
@@ -194,46 +235,3 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                 }
         }
 }        
-
-node('master') {
-machines = params.S390X_NODES.split(',')
-if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]") {
-        echo "Attempting BARRY to restore and recreate LVM snapshot for ${machines}"
-        for (int i = 0; i < machines.size(); i++ ) { 
-            s390x_snapshot_reset(machines[i])           
-            }
-        }
-if ( MODEL_NAME.contains("maas") ) {
-        TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
-        TAGS = TAGS.minus("tags=")
-        TAGS = TAGS.replace(" ", "")
-        TAGS = TAGS.split(",")
-        if ( params.CLOUD_NAME == 'ruxton' ) {
-                MAAS_API_KEY = RUXTON_API_KEY 
-        } else if ( params.CLOUD_NAME == 'icarus' ) {
-                MAAS_API_KEY = ICARUS_API_KEY
-               }
-        primary_tag = TAGS[0]
-        additional_tags = TAGS.join(",")
-        stage("MAAS release nodes: ${params.ARCH}, ${params.TAGS}") {
-                def maas_api_cmd = ""
-                echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, release nodes: ${params.RELEASE_MACHINES}, force: ${params.FORCE_RELEASE}"
-                if ( primary_tag != additional_tags ) { 
-                        echo "not same"
-                        maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
-                }
-                if ( params.FORCE_RELEASE )  {
-                        echo "force true"
-                        maas_api_cmd = maas_api_cmd + " --force "
-                } 
-                if ( params.RELEASE_MACHINES ) {
-                        echo "release true"
-                        maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${params.CLOUD_NAME}-maas -k ${MAAS_API_KEY} --release --tags ${primary_tag} --arch ${ARCH}"
-                        dir("${env.HOME}/tools/openstack-charm-testing/") {
-                                sleep(60)
-                                sh "./bin/maas_actions.py ${maas_api_cmd}"
-                        }
-                }
-                }
-        }
-} 
