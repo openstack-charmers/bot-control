@@ -23,7 +23,7 @@ echo "Slave selection logic has selected ${specific_slave}"
 
 echo "PHASES: ${PHASES}"
 
-if ( params.CLEANUP_ON_FAILURE == true ) { 
+if ( params.CLEANUP_ON_FAILURE ) { 
     prop = false
 } else {
     prop = true
@@ -212,7 +212,7 @@ node(SLAVE_NODE_NAME) {
             }
         } else { echo "Skipping Test stage" } 
         if ( pipeline_state.contains("FAILURE") && params.CLEANUP_ON_FAILURE ) {
-            stage("Failure detected, CLEANUP_ON_FAILURE is True, skipping to Teardown")
+            stage(">>> FAILURE DETECTED - CLEANUP_ON_FAILURE >>>")
         }
         if ( PHASES.contains("Teardown") ) {
             stage("Teardown") {
@@ -236,8 +236,12 @@ node(SLAVE_NODE_NAME) {
         } else { 
         echo "Skipping Teardown stage" 
         }
-        if ( pipeline_state.contains("FAILURE") ) {
+        if ( pipeline_state.contains("FAILURE") && params.CLEANUP_ON_FAILURE ) {
             currentBuild.result = 'FAILURE'
+            stage("Pipeline Failure") {
+                failure_job = build job: 'Failure Job'
+                echo "This stage only appears when a job has failed but is not red because CLEANUP_ON_FAILURE is true"
+            }
         }
     }
 }

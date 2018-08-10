@@ -141,7 +141,8 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                         sh "juju destroy-controller ${MODEL_NAME} --destroy-all-models -y"
                                 } catch (error) {
                                         echo "An error occured:" + error
-                                }
+                                } 
+                                MACHINES_RELEASED = true
                             } else { 
                                 echo "Not destroying controller..." 
                                 if ( "${params.DESTROY_MODEL}" == "true" ) {
@@ -150,7 +151,8 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                         sh "juju destroy-model ${MODEL_NAME} -y"
                                     } catch (error) {
                                         echo "Error destroying model: ${error}"
-                                    }
+                                    } 
+                                    MACHINES_RELEASED = true
                                 } else {
                                     echo "Leaving model and controller up" 
                                 }
@@ -158,13 +160,13 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                         }
                     }
                     machines = params.S390X_NODES.split(',')
-                    if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]" && params.RELEASE_MACHINES ) {
+                    if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]" && params.RELEASE_MACHINES && ! MACHINES_RELEASED ) {
                         echo "Attempting to restore and recreate LVM snapshot for ${machines}"
                         for (int i = 0; i < machines.size(); i++ ) { 
                             s390x_snapshot_reset(machines[i])           
                             }
                         }
-                    if ( MODEL_NAME.contains("maas") && params.RELEASE_MACHINES ) {
+                    if ( MODEL_NAME.contains("maas") && params.RELEASE_MACHINES && ! MACHINES_RELEASED ) {
                         TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
                         TAGS = TAGS.minus("tags=")
                         TAGS = TAGS.replace(" ", "")
