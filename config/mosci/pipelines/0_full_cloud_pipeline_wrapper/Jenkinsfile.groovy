@@ -188,7 +188,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
             }
         }
-        stage("Test: ${SELECTED_TESTS}     |") {
+        stage("Test: ${SELECTED_TESTS.minus("openstack test - ")}     |") {
             echo 'Test Cloud'
             if ( PHASES.contains("Test") ) {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
