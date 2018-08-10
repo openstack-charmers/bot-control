@@ -16,6 +16,7 @@ def s390x_snapshot_reset(reset_machine) {
                         script: "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${reset_machine} /home/ubuntu/snap_root_util.py --restore",
                         returnStatus: true
                 )
+                echo "check_snapshot is ${check_snapshot}"
                 if ( check_snapshot == 0 ) {
                     echo "Restore OK, rebooting machine and creating a new snapshot"
                     sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${reset_machine} sudo shutdown -r 1"
@@ -26,10 +27,7 @@ def s390x_snapshot_reset(reset_machine) {
                     echo "Restore in progress, attempting to create snapshot"
                     s390x_snapshot_create(reset_machine)
                 } else if ( check_snapshot == 2 ) {
-                    echo "No snapshot found, aborting"
-                    // s390x_snapshot_create(reset_machine)
-                    currentBuild.result = 'FAILURE'
-                    error "No snapshot found but machine is already provisioned - cannot recover automatically"
+                    echo "No snapshot found, skipping"
                     return false
                 }
             echo "Unhandled exception: ${check_snapshot}"

@@ -211,6 +211,9 @@ node(SLAVE_NODE_NAME) {
             pipeline_state = pipeline_state + test_job.result
             }
         } else { echo "Skipping Test stage" } 
+        if ( pipeline_state.contains("FAILURE") && params.CLEANUP_ON_FAILURE ) {
+            stage("Failure detected, CLEANUP_ON_FAILURE is True, skipping to Teardown")
+        }
         if ( PHASES.contains("Teardown") ) {
             stage("Teardown") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
@@ -230,9 +233,11 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'BooleanParameterValue', name: 'DESTROY_MODEL', value: Boolean.valueOf(DESTROY_MODEL)],
                          [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: "${params.BUNDLE_URL}"]]
             }
-        } else { echo "Skipping Teardown stage" }
-    if ( pipeline_state.contains("FAILURE") ) {
-        currentBuild.result = 'FAILURE'
+        } else { 
+        echo "Skipping Teardown stage" 
+        }
+        if ( pipeline_state.contains("FAILURE") ) {
+            currentBuild.result = 'FAILURE'
         }
     }
 }
