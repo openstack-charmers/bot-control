@@ -159,44 +159,44 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                             }
                         }
                     }
-                }
-                machines = params.S390X_NODES.split(',')
-                if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]" && params.RELEASE_MACHINES ) {
-                    echo "Attempting BARRY to restore and recreate LVM snapshot for ${machines}"
-                    for (int i = 0; i < machines.size(); i++ ) { 
-                        s390x_snapshot_reset(machines[i])           
-                        }
-                    }
-                if ( MODEL_NAME.contains("maas") && params.RELEASE_MACHINES ) {
-                    TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
-                    TAGS = TAGS.minus("tags=")
-                    TAGS = TAGS.replace(" ", "")
-                    TAGS = TAGS.split(",")
-                    if ( params.CLOUD_NAME == 'ruxton' ) {
-                            MAAS_API_KEY = RUXTON_API_KEY 
-                    } else if ( params.CLOUD_NAME == 'icarus' ) {
-                            MAAS_API_KEY = ICARUS_API_KEY
-                           }
-                    primary_tag = TAGS[0]
-                    additional_tags = TAGS.join(",")
-                    stage("MAAS release nodes") {
-                        try {
-                            MAAS_IDS = sh (
-                                script: "juju machines | grep -v lxd | awk '{print $4}',
-                                returnStdout: true
-                            ).trim()
-                        echo "Releasing: ${MAAS_IDS}"
-                        } catch (error){
-                            echo "Error getting machines from juju: ${error}"
-                        }
-                        def maas_api_cmd = ""
-                        if ( params.RELEASE_MACHINES ) {
-                            MAAS_IDS.split("\n").each { MAAS_ID, count ->
-                                maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${params.CLOUD_NAME}-maas -k ${MAAS_API_KEY} --release --system_id ${MAAS_ID}
+                    machines = params.S390X_NODES.split(',')
+                    if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]" && params.RELEASE_MACHINES ) {
+                        echo "Attempting to restore and recreate LVM snapshot for ${machines}"
+                        for (int i = 0; i < machines.size(); i++ ) { 
+                            s390x_snapshot_reset(machines[i])           
                             }
-                            dir("${env.HOME}/tools/openstack-charm-testing/") {
-                                    sleep(60)
-                                    sh "./bin/maas_actions.py ${maas_api_cmd}"
+                        }
+                    if ( MODEL_NAME.contains("maas") && params.RELEASE_MACHINES ) {
+                        TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
+                        TAGS = TAGS.minus("tags=")
+                        TAGS = TAGS.replace(" ", "")
+                        TAGS = TAGS.split(",")
+                        if ( params.CLOUD_NAME == 'ruxton' ) {
+                                MAAS_API_KEY = RUXTON_API_KEY 
+                        } else if ( params.CLOUD_NAME == 'icarus' ) {
+                                MAAS_API_KEY = ICARUS_API_KEY
+                               }
+                        primary_tag = TAGS[0]
+                        additional_tags = TAGS.join(",")
+                        stage("MAAS release nodes") {
+                            try {
+                                MAAS_IDS = sh (
+                                    script: "juju machines | grep -v lxd | awk '{print \$4}'",
+                                    returnStdout: true
+                                ).trim()
+                            echo "Releasing: ${MAAS_IDS}"
+                            } catch (error){
+                                echo "Error getting machines from juju: ${error}"
+                            }
+                            def maas_api_cmd = ""
+                            if ( params.RELEASE_MACHINES ) {
+                                MAAS_IDS.split("\n").each { MAAS_ID, count ->
+                                    maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${params.CLOUD_NAME}-maas -k ${MAAS_API_KEY} --release --system_id ${MAAS_ID}"
+                                }
+                                dir("${env.HOME}/tools/openstack-charm-testing/") {
+                                        sleep(60)
+                                        sh "./bin/maas_actions.py ${maas_api_cmd}"
+                                }
                             }
                         }
                     }

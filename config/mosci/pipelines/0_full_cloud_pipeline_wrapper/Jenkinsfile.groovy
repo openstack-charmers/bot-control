@@ -25,6 +25,8 @@ echo "PHASES: ${PHASES}"
 
 if ( params.CLEANUP_ON_FAILURE == true ) { 
     prop = false
+} else {
+    prop = true
 }
 
 if ( params.OS_RELEASE_NAME == "" ) {
