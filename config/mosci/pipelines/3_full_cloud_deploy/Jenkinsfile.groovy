@@ -186,10 +186,13 @@ node("${SLAVE_NODE_NAME}") {
             echo "Waiting for deployment to complete..."
             sleep(60)
             try {
-                sh "~/tools/juju-wait/juju-wait -e ${CONMOD}"
+                timeout(60) {
+                    sh "~/tools/juju-wait/juju-wait -e ${CONMOD}"
+                }
             } catch (error) {
-                echo "juju-wait has failed"
-                input "continue stages, or abort?"
+                echo "juju-wait has failed or timed out."
+                //input "continue stages, or abort?"
+                currentBuild.result = 'FAILURE'
             }
             try {
                 CHECK_STATUS = sh (
