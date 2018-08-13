@@ -30,6 +30,7 @@ if ( params.CLEANUP_ON_FAILURE ) {
 }
 
 if ( params.OS_RELEASE_NAME == "" ) {
+    release = ""
     releases = ["icehouse", "juno", "kilo", "librety", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "stable"]
     echo "Trying to get release from bundle url..."
     for ( a in releases ) {
@@ -45,9 +46,10 @@ if ( params.OS_RELEASE_NAME == "" ) {
         release = "unknown"
         }
     echo "Release: ${release}"
-}
+} else { release = params.OS_RELEASE_NAME }
 
 if ( params.DISTRO_NAME == "" ) {
+    distro = ""
     distros = ["trusty", "xenial", "bionic", "cosmic", "stable"]
     echo "Trying to get distro from bundle url..."
     for ( a in distros ) {
@@ -63,7 +65,7 @@ if ( params.DISTRO_NAME == "" ) {
         distro = "unknown"
         }
     echo "Distro: ${distro}"
-}
+} else { distro = params.DISTRO_NAME }
 
 s390xcheck = ["${params.CLOUD_NAME}", "${params.ARCH}"]
 if ( s390xcheck.any { it.contains("390") } ) {
