@@ -94,6 +94,12 @@ node("${SLAVE_NODE_NAME}") {
             dir("${env.HOME}/tools/juju-wait/") {
                 git url: "https://git.launchpad.net/juju-wait" }
             }
+            dir("${env.HOME}/logs/juju/") {
+                sh "touch .placeholder"
+            }
+            dir("${env.HOME}/logs/openstack/") {
+                sh "touch .placeholder"
+            }
             if ( CLOUD_NAME.contains("390") ) {
                 dir("${env.HOME}/tools/zopenstack") {
                     git url: "https://github.com/ubuntu-openstack/zopenstack.git"

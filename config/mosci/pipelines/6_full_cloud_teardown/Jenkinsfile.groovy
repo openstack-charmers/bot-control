@@ -132,6 +132,16 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
             timeout(20) {
                 node(params.SLAVE_NODE_NAME) {
                     ws("${params.WORKSPACE}") {
+                        stage("Archive juju logs") {
+                            try {
+                                sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/"
+                                archiveArtifacts 'crashdumps/*'
+                            } catch (error) {
+                                echo "Error collecting juju-crashdump logs, not continuing with teardown"
+                                currentBuild.result = 'FAILURE'
+                                error "FAILURE"
+                            }
+                        }
                         stage("Teardown: ${MODEL_NAME}") {
                             echo "SLAVE_NODE_NAME: ${params.SLAVE_NODE_NAME}"
                             echo "OPENSTACK_PUBLIC_IP = ${env.OPENSTACK_PUBLIC_IP}"
