@@ -1,8 +1,3 @@
-@NonCPS
-def getBuildUser() {
-    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
-}
-
 if (params.SLAVE_NODE_NAME) {
     specific_slave=params.SLAVE_NODE_NAME
 }
@@ -133,11 +128,6 @@ if ( params.CLOUD_NAME.contains("390") ) {
 
 }*/
 
-node ('master') {
-    stage("Get user id") {
-        BUILD_USER_ID = getBuildUser()        
-    }
-}
 waitUntil {
 node (specific_slave) { 
         echo "Picking ${NODE_NAME} for this job run"
@@ -167,7 +157,7 @@ node(SLAVE_NODE_NAME) {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
         }
         if ( PHASES.contains("Preparation") ) {
-            stage("Preparation: ${params.ARCH}, $distro, $release, $BUILD_USER_ID") {
+            stage("Preparation: ${params.ARCH}, $distro, $release") {
             // Logic for differentiating between MAAS, s390x, or something else (probably oolxd)
             echo "Cloud name set to ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
