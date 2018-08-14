@@ -31,7 +31,7 @@ if ( params.CLOUD_NAME.contains("ruxton") ) {
 CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
 
 def get_neutron_machine_id() {
-    timeout(60)
+    timeout(60) {
         waitUntil {
             // need max retries here
             try {

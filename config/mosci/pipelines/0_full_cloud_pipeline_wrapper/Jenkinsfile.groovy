@@ -101,10 +101,10 @@ node('master') {
 }
 
 try {
-    if ( ! S390X && ! params.PRE_RELEASE_MACHINES ) {
-        node ('master') {
-           ws("${params.WORKSPACE}") {
-                stage("Check ${params.ARCH} @ ${CLOUD_NAME} availability") {
+    node ('master') {
+        ws("${params.WORKSPACE}") {
+            stage("Check machine availability") {
+                if ( ! S390X && ! params.PRE_RELEASE_MACHINES ) {
                     if (fileExists('bundle.yaml')) {
                         sh "rm bundle.yaml"
                     }
@@ -163,11 +163,12 @@ try {
                             }
                         }
                     }
+                } else {
+                    echo "Not trying to count machines: either s390x deploy or PRE_RELEASE_MACHINES = true" 
                 }
             }
         }
-    } else { 
-    echo "Not trying to count machines: either s390x deploy or PRE_RELEASE_MACHINES = true" }
+    } 
 } catch (error) {
     echo "Problem checking number of machines, going blind: ${error}"
 }
