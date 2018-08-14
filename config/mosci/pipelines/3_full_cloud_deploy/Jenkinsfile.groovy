@@ -177,15 +177,16 @@ node("${SLAVE_NODE_NAME}") {
                 }
                 try {
                         echo "Waiting for neutron-gateway to settle so that we can ensure data-port config is correct"
-                        sleep(120)
+                        sleep(60)
                         sh (
-                        script: "juju config neutron-gateway data-port=\"br-ex:${NEUTRON_INTERFACE[-1]}\"",
-                        returnStdout: true
+                            script: "juju config neutron-gateway data-port=\"br-ex:${NEUTRON_INTERFACE[-1]}\"",
+                            returnStdout: true
                         )
                         echo "Resolve neutron-gateway errors if there are any after setting correct data-port"
+                        sleep(60)
                         sh (
-                        script: "for a in \$(juju status neutron-gateway|grep -E 'neutron.*error'|awk '!/jujucharms/ {print \$1}'|tr -d '*'); do echo juju resolved \$a ; juju resolved \$a ; done",
-                        returnStdout: true
+                            script: "for a in \$(juju status neutron-gateway|grep -E 'neutron.*error'|awk '!/jujucharms/ {print \$1}'|tr -d '*'); do echo juju resolved \$a ; juju resolved \$a ; done",
+                            returnStdout: true
                         )
                 } catch (error) {
                         echo "Error setting neutron-gateway data-port: ${error}"
