@@ -97,13 +97,15 @@ if ( params.CLOUD_NAME.contains("390") ) {
 
 */        
 node('master') {
-    stage("Deploying: ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME}")
+    stage("${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME}") {
+        echo "."
+    }
 }
 
 try {
     node ('master') {
         ws("${params.WORKSPACE}") {
-            stage("Check machine availability") {
+            stage("resource check") {
                 if ( ! S390X && ! params.PRE_RELEASE_MACHINES ) {
                     if (fileExists('bundle.yaml')) {
                         sh "rm bundle.yaml"
@@ -124,7 +126,7 @@ try {
                         msg = "including controller"
                     }
                     echo "${BUNDLE_MACHINES} machines required by bundle.yaml ${msg}"
-                    timeout(18000) {
+                    timeout(360) {
                         waitUntil {
                             TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
                             TAGS = TAGS.minus("tags=")
@@ -173,26 +175,29 @@ try {
     echo "Problem checking number of machines, going blind: ${error}"
 }
 
-waitUntil {
-node (specific_slave) { 
-        echo "Picking ${NODE_NAME} for this job run"
-        echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
-        for ( node in jenkins.model.Jenkins.instance.nodes ) {
-                if (node.getNodeName().equals(NODE_NAME)) {
-                        OLD_LABEL=node.getLabelString()
-                        if ( OLD_LABEL == "locked" ) {
-                                return false
-                        }
-                        NEW_LABEL="locked"
-                        SLAVE_NODE_NAME=node.getNodeName()
-                        node.setLabelString(NEW_LABEL)
-                        node.save()
-                        echo "Changing node label from ${OLD_LABEL} to ${NEW_LABEL}"
-                }
+stage ("build slave") {
+    waitUntil {
+    node (specific_slave) { 
+            echo "Picking ${NODE_NAME} for this job run"
+            echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
+            for ( node in jenkins.model.Jenkins.instance.nodes ) {
+                    if (node.getNodeName().equals(NODE_NAME)) {
+                            OLD_LABEL=node.getLabelString()
+                            if ( OLD_LABEL == "locked" ) {
+                                    return false
+                            }
+                            NEW_LABEL="locked"
+                            SLAVE_NODE_NAME=node.getNodeName()
+                            node.setLabelString(NEW_LABEL)
+                            node.save()
+                            echo "Changing node label from ${OLD_LABEL} to ${NEW_LABEL}"
+                    }
+            } 
         } 
-    } 
-return true
+    return true
+    }
 }
+
 pipeline_state = ""
 node(SLAVE_NODE_NAME) {
         ws(workSpace) {
