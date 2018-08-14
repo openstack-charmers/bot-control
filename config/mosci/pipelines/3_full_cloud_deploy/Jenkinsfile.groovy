@@ -116,6 +116,7 @@ node("${SLAVE_NODE_NAME}") {
         //stage('Validate bundle') {
         //    sh "yamllint bundle.yaml"
         //}
+        retries = 0
         stage('Deploy bundle') {
             waitUntil {
                 try {
@@ -133,8 +134,17 @@ node("${SLAVE_NODE_NAME}") {
                             return false
                         }
                     } else {
-                        currentBuild.result = 'FAILURE'
-                        error "bundle deploy error"
+                        retries++
+                        if ( retries == 3 ) {
+                            echo "Exceeded retry limit"
+                            currentBuild.result = 'FAILURE'
+                            error "Exceeded retry limit"
+                            return true
+                        } else {
+                            echo "Bundle deploy error, retrying max. 3 times"
+                            sleep(10)
+                            return false
+                        }
                     }
                 }
             }
