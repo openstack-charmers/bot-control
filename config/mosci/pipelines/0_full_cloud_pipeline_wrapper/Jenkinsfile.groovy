@@ -300,7 +300,7 @@ node(SLAVE_NODE_NAME) {
         } else { echo "Skipping Test stage" } 
         if ( pipeline_state.contains("FAILURE") && params.CLEANUP_ON_FAILURE ) {
             stage("< pipeline failed at last stage")
-        /
+        } 
         if ( PHASES.contains("Teardown") ) {
             stage("[ teardown ]") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
