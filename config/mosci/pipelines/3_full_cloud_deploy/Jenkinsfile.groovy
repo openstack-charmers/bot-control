@@ -31,44 +31,46 @@ if ( params.CLOUD_NAME.contains("ruxton") ) {
 CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
 
 def get_neutron_machine_id() {
+    timeout(60)
         waitUntil {
-                // need max retries here
-                try {
-                        JUJU_MACHINES = sh (
-                        script: "juju machines|grep -v lxd",
+            // need max retries here
+            try {
+                JUJU_MACHINES = sh (
+                script: "juju machines|grep -v lxd",
+                returnStdout: true
+                )
+                if ( JUJU_MACHINES.contains("pending")) {
+                    echo "Machines not ready"
+                    sleep(240)
+                    return false
+                } else {
+                    try {
+                        NEUTRON_ID = sh (
+                        script: "juju status neutron-gateway|awk /started/'{print \$4}'",
                         returnStdout: true
                         )
-                if ( JUJU_MACHINES.contains("pending")) {
-                        echo "Machines not ready"
-                        sleep(240)
-                        return false
-                } else {
-                        try {
-                                NEUTRON_ID = sh (
-                                script: "juju status neutron-gateway|awk /started/'{print \$4}'",
-                                returnStdout: true
-                                )
-                        if ( NEUTRON_ID == '' ) {
-                                echo "Neutron ID error: ${NEUTRON_ID}"
-                                sh "juju  status -m ${CONMOD}"
-                                currentBuild.result = 'FAILURE'
-                                return true
-                        } else {
-                        echo "Got neutron machine id: ${NEUTRON_ID}"
-                        return true
-                        }
-                        } catch (error) {
-                                echo "Error getting neutron gateway machine id"
-                                currentBuild.result = 'FAILURE'
-                                return true
-                        }
-                }
-                } catch (error) {
-                        echo "Error trying to get juju machines"
+                    if ( NEUTRON_ID == '' ) {
+                        echo "Neutron ID error: ${NEUTRON_ID}"
+                        sh "juju  status -m ${CONMOD}"
                         currentBuild.result = 'FAILURE'
                         return true
+                    } else {
+                        echo "Got neutron machine id: ${NEUTRON_ID}"
+                        return true
+                    }
+                    } catch (error) {
+                        echo "Error getting neutron gateway machine id"
+                        currentBuild.result = 'FAILURE'
+                        return true
+                    }
                 }
+            } catch (error) {
+                echo "Error trying to get juju machines"
+                currentBuild.result = 'FAILURE'
+                return true
+            }
         }
+    }
 }
 def get_neutron_interfaces() {
         get_neutron_machine_id()
