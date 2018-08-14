@@ -97,7 +97,7 @@ if ( params.CLOUD_NAME.contains("390") ) {
 
 */        
 node('master') {
-    stage("${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME}") {
+    stage("[ ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME} ]") {
         echo "."
     }
 }
@@ -105,7 +105,7 @@ node('master') {
 try {
     node ('master') {
         ws("${params.WORKSPACE}") {
-            stage("resource check") {
+            stage("[ resource check ]"){
                 if ( ! S390X && ! params.PRE_RELEASE_MACHINES ) {
                     if (fileExists('bundle.yaml')) {
                         sh "rm bundle.yaml"
@@ -175,7 +175,7 @@ try {
     echo "Problem checking number of machines, going blind: ${error}"
 }
 
-stage ("build slave") {
+stage ("[ build slave ]") {
     waitUntil {
     node (specific_slave) { 
             echo "Picking ${NODE_NAME} for this job run"
@@ -207,7 +207,7 @@ node(SLAVE_NODE_NAME) {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
         }
         if ( PHASES.contains("Preparation") ) {
-            stage("Prepare") {
+            stage("[ prepare ]") {
             // Logic for differentiating between MAAS, s390x, or something else (probably oolxd)
             echo "Cloud name set to ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
@@ -229,7 +229,7 @@ node(SLAVE_NODE_NAME) {
             } 
         } else { echo "Skipping Preparation stage" } 
         if ( PHASES.contains("Bootstrap") && ! pipeline_state.contains("FAILURE")) {
-            stage("Bootstrap") {
+            stage("[ bootstrap ]") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             echo "Bootstrapping $ARCH from ${CLOUD_NAME}"
             bootstrap_job = build job: '2. Full Cloud - Bootstrap', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: params.CLOUD_NAME],
@@ -255,7 +255,7 @@ node(SLAVE_NODE_NAME) {
             }
         } else { echo "Skipping Bootstrap stage" } 
         if ( PHASES.contains("Deploy") && ! pipeline_state.contains("FAILURE")) {
-            stage("Deploy") {
+            stage("[ deploy ]") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             echo 'Deploying Bundle'
             deploy_job = build job: '3. Full Cloud - Deploy', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
@@ -274,7 +274,7 @@ node(SLAVE_NODE_NAME) {
             }
         } else { echo "Skipping Deployment stage" } 
         if ( PHASES.contains("Configure") && Boolean.valueOf(OPENSTACK) == true && ! pipeline_state.contains("FAILURE")) {
-            stage("Configure") {
+            stage("[ configure ]") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             echo "Configuring Openstack Cloud"
             configure_job = build job: '4. Full Cloud - Configure', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
@@ -286,7 +286,7 @@ node(SLAVE_NODE_NAME) {
             }
         } else { echo "Skipping Configuration stage" } 
         if ( PHASES.contains("Test") && ! pipeline_state.contains("FAILURE")) {
-            stage("Test: ${SELECTED_TESTS.replaceAll("openstack test - ", "")}") {
+            stage("[ test: ${SELECTED_TESTS.replaceAll("openstack test - ", "")} ]") {
             echo 'Testing Cloud Functionality'
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             test_job = build job: '5. Full Cloud - Test', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
@@ -302,7 +302,7 @@ node(SLAVE_NODE_NAME) {
             stage("!!! FAILURE DETECTED - CLEANUP_ON_FAILURE !!! ")
         }
         if ( PHASES.contains("Teardown") ) {
-            stage("Teardown") {
+            stage("[ teardown ]") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             echo 'Tearing down deployment'
             teardown_job = build job: '6. Full Cloud - Teardown', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: "${params.CLOUD_NAME}"],
@@ -325,7 +325,7 @@ node(SLAVE_NODE_NAME) {
         }
         if ( pipeline_state.contains("FAILURE") && params.CLEANUP_ON_FAILURE ) {
             currentBuild.result = 'FAILURE'
-            stage("Pipeline Failure") {
+            stage("___ pipeline failure ___") {
                 failure_job = build job: 'Failure Job'
                 echo "This stage only appears when a job has failed but is not red because CLEANUP_ON_FAILURE is true"
             }
