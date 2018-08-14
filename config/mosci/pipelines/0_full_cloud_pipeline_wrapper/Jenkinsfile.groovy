@@ -8,6 +8,10 @@ else {
     specific_slave="${params.SLAVE_LABEL}-${ARCH}"
 }
 
+if ( params.CLOUD_NAME.contains("390")) {
+        S390X=true
+}  else { S390X=false }
+
 workSpace="full_pipeline-${env.BUILD_ID}"
 
 echo "Slave selection logic has selected ${specific_slave}"
@@ -92,41 +96,81 @@ if ( params.CLOUD_NAME.contains("390") ) {
         So, we can get all builds, and check if there is already a build with ARCH in it. If yes, wait. If no, build.
 
 */        
-/*node ('master') {
-    ws("${params.WORKSPACE}") {
-        stage('Get bundle') {
-            echo "SLAVE_NODE_NAME: ${SLAVE_NODE_NAME}"
-            echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
-            echo "S390X: ${S390X}"
-            echo "CLOUD_NAME: ${CLOUD_NAME}"
-            if (fileExists('bundle.yaml')) {
-                sh "rm bundle.yaml"
-            }
-            try {
-                sh "curl ${params.BUNDLE_URL} -o bundle.yaml"
-                sh "cat bundle.yaml"
-                return true
-            } catch (error) {
-                echo "Full bundle paste:"
-                writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
-            }
-        }
-        stage('Count machines in bundle') {
-            try {
-                BUNDLE_MACHINES = sh (
-                    script: "python -c 'import yaml,sys;data = yaml.safe_load(sys.stdin);print(len(data["machines"]))' < bundle.yaml",
-                    returnStdout: true
-                )
-            } catch (error) {
-                echo "Error getting machine count from bundle, continuing blind"
-            }
-        }
-        stage('Count available machines') {
-        }
-        python -c 'import yaml,sys;data = yaml.safe_load(sys.stdin);print(len(data["machines"]))' < test.yaml
-        }
+node('master') {
+    stage("Deploying: ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME}")
+}
 
-}*/
+try {
+    if ( ! S390X && ! params.PRE_RELEASE_MACHINES ) {
+        node ('master') {
+           ws("${params.WORKSPACE}") {
+                stage("Check ${params.ARCH} @ ${CLOUD_NAME} availability") {
+                    if (fileExists('bundle.yaml')) {
+                        sh "rm bundle.yaml"
+                    }
+                    try {
+                        sh "curl ${params.BUNDLE_URL} -o bundle.yaml"
+                    } catch (error) {
+                        echo "Full bundle paste:"
+                        writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
+                    }
+                    BUNDLE_MACHINES = sh (
+                        script: "python -c 'import yaml,sys;data = yaml.safe_load(sys.stdin);print(len(data[\"machines\"]))' < bundle.yaml",
+                        returnStdout: true
+                    ).trim().toInteger()
+                    msg = ""
+                    if ( ! params.BOOTSTRAP_CONSTRAINTS.contains("arch") && ! params.BOOTSTRAP_CONSTRAINTS.contains(params.ARCH) ) {
+                        BUNDLE_MACHINES = BUNDLE_MACHINES + 1
+                        msg = "including controller"
+                    }
+                    echo "${BUNDLE_MACHINES} machines required by bundle.yaml ${msg}"
+                    timeout(18000) {
+                        waitUntil {
+                            TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
+                            TAGS = TAGS.minus("tags=")
+                            TAGS = TAGS.replace(" ", "")
+                            TAGS = TAGS.split(",")
+                            if ( params.CLOUD_NAME.contains("ruxton") ) {
+                                    MAAS_API_KEY = params.RUXTON_API_KEY
+                            } else if ( params.CLOUD_NAME.contains("icarus") ) {
+                                    MAAS_API_KEY = params.ICARUS_API_KEY
+                            }
+                            primary_tag = TAGS[0]
+                            additional_tags = TAGS.join(",")
+                            def maas_api_cmd = ""
+                            echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${params.ARCH}"
+                            maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${params.ARCH}"
+                            if ( primary_tag != additional_tags ) {
+                                maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
+                            }
+                            dir("${env.HOME}/tools/openstack-charm-testing/") {
+                                try {
+                                AVAILABLE_MACHINES = sh (
+                                    script: "./bin/maas_actions.py ${maas_api_cmd}",
+                                    returnStdout: true
+                                ).trim().toInteger()
+                                } catch (error) { echo "stuff: ${error}"}
+                                echo "Available machines: ${AVAILABLE_MACHINES}"
+                                echo "Required by bundle: ${BUNDLE_MACHINES}"
+                                if ( AVAILABLE_MACHINES < BUNDLE_MACHINES ) {
+                                    echo "Not enough machines available for bundle, waiting before trying again"
+                                    sleep(600)
+                                    return false
+                                } else { 
+                                    echo "Enough available machines, continuing"
+                                    return true 
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else { 
+    echo "Not trying to count machines: either s390x deploy or PRE_RELEASE_MACHINES = true" }
+} catch (error) {
+    echo "Problem checking number of machines, going blind: ${error}"
+}
 
 waitUntil {
 node (specific_slave) { 
@@ -157,7 +201,7 @@ node(SLAVE_NODE_NAME) {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
         }
         if ( PHASES.contains("Preparation") ) {
-            stage("Preparation: ${params.ARCH}, $distro, $release") {
+            stage("Prepare") {
             // Logic for differentiating between MAAS, s390x, or something else (probably oolxd)
             echo "Cloud name set to ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
@@ -179,7 +223,7 @@ node(SLAVE_NODE_NAME) {
             } 
         } else { echo "Skipping Preparation stage" } 
         if ( PHASES.contains("Bootstrap") && ! pipeline_state.contains("FAILURE")) {
-            stage("|     Bootstrap") {
+            stage("Bootstrap") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             echo "Bootstrapping $ARCH from ${CLOUD_NAME}"
             bootstrap_job = build job: '2. Full Cloud - Bootstrap', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: params.CLOUD_NAME],
@@ -205,7 +249,7 @@ node(SLAVE_NODE_NAME) {
             }
         } else { echo "Skipping Bootstrap stage" } 
         if ( PHASES.contains("Deploy") && ! pipeline_state.contains("FAILURE")) {
-            stage("|     Deploy") {
+            stage("Deploy") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             echo 'Deploying Bundle'
             deploy_job = build job: '3. Full Cloud - Deploy', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
@@ -224,7 +268,7 @@ node(SLAVE_NODE_NAME) {
             }
         } else { echo "Skipping Deployment stage" } 
         if ( PHASES.contains("Configure") && Boolean.valueOf(OPENSTACK) == true && ! pipeline_state.contains("FAILURE")) {
-            stage("|     Configure") {
+            stage("Configure") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             echo "Configuring Openstack Cloud"
             configure_job = build job: '4. Full Cloud - Configure', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
@@ -236,7 +280,7 @@ node(SLAVE_NODE_NAME) {
             }
         } else { echo "Skipping Configuration stage" } 
         if ( PHASES.contains("Test") && ! pipeline_state.contains("FAILURE")) {
-            stage("|     Test: ${SELECTED_TESTS.replaceAll("openstack test - ", "")}") {
+            stage("Test: ${SELECTED_TESTS.replaceAll("openstack test - ", "")}") {
             echo 'Testing Cloud Functionality'
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             test_job = build job: '5. Full Cloud - Test', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
@@ -252,7 +296,7 @@ node(SLAVE_NODE_NAME) {
             stage("!!! FAILURE DETECTED - CLEANUP_ON_FAILURE !!! ")
         }
         if ( PHASES.contains("Teardown") ) {
-            stage("|     Teardown") {
+            stage("Teardown") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             echo 'Tearing down deployment'
             teardown_job = build job: '6. Full Cloud - Teardown', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: "${params.CLOUD_NAME}"],
@@ -275,7 +319,7 @@ node(SLAVE_NODE_NAME) {
         }
         if ( pipeline_state.contains("FAILURE") && params.CLEANUP_ON_FAILURE ) {
             currentBuild.result = 'FAILURE'
-            stage("|     Pipeline Failure") {
+            stage("Pipeline Failure") {
                 failure_job = build job: 'Failure Job'
                 echo "This stage only appears when a job has failed but is not red because CLEANUP_ON_FAILURE is true"
             }
