@@ -107,7 +107,7 @@
         name: OCT_GIT_BRANCH
         trim: false
     - string:
-        default: vNSmAQUASAkVcpFu2N:khmguH2CFh7phsjBBF:vZCKGMea5U9sfrzzWvGwBGv9KDySz3HJ
+        default: ''
         description: API Key for ruxton-maas
         name: RUXTON_API_KEY
         trim: false

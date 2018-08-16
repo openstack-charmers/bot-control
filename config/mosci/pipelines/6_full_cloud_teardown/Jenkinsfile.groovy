@@ -89,7 +89,6 @@ if ( "${params.ARCH}".contains("s390x") ) {
         MODEL_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}"
 } else if ( OVERCLOUD_DEPLOY == true ) {
         MODEL_NAME=params.MODEL_NAME
-}
 } else {
         MODEL_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-maas"
 }

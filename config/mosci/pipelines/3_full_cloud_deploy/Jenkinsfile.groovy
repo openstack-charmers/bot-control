@@ -199,7 +199,7 @@ node("${SLAVE_NODE_NAME}") {
             echo "Waiting for deployment to complete..."
             sleep(60)
             try {
-                timeout(60) {
+                timeout(180) {
                     sh "~/tools/juju-wait/juju-wait -e ${CONMOD}"
                 }
             } catch (error) {
