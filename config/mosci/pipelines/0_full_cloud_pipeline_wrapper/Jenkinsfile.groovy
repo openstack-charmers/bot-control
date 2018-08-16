@@ -102,6 +102,46 @@ node('master') {
     }
 }
 
+def resourceCheck(arch, required) {
+    waitUntil {
+        TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
+        TAGS = TAGS.minus("tags=")
+        TAGS = TAGS.replace(" ", "")
+        TAGS = TAGS.split(",")
+        if ( params.CLOUD_NAME.contains("ruxton") ) {
+                MAAS_API_KEY = params.RUXTON_API_KEY
+        } else if ( params.CLOUD_NAME.contains("icarus") ) {
+                MAAS_API_KEY = params.ICARUS_API_KEY
+        }
+        primary_tag = TAGS[0]
+        additional_tags = TAGS.join(",")
+        def maas_api_cmd = ""
+        echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${arch}"
+        maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch}"
+        if ( primary_tag != additional_tags ) {
+            maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
+        }
+        dir("${env.HOME}/tools/openstack-charm-testing/") {
+            try {
+            AVAILABLE_MACHINES = sh (
+                script: "./bin/maas_actions.py ${maas_api_cmd}",
+                returnStdout: true
+            ).trim().toInteger()
+            } catch (error) { echo "stuff: ${error}"}
+            echo "Available machines: ${AVAILABLE_MACHINES}"
+            echo "Required by bundle: ${required}"
+            if ( AVAILABLE_MACHINES < required ) {
+                echo "Not enough machines available for bundle, waiting before trying again"
+                sleep(600)
+                return false
+            } else { 
+                echo "Enough available machines, continuing"
+                return true 
+            }
+        }
+    }
+}
+
 try {
     node ('master') {
         ws("${params.WORKSPACE}") {
@@ -122,48 +162,20 @@ try {
                     ).trim().toInteger()
                     msg = ""
                     if ( ! params.BOOTSTRAP_CONSTRAINTS.contains("arch") && ! params.BOOTSTRAP_CONSTRAINTS.contains(params.ARCH) ) {
+                        CONTROLLER_ARCH = ""
                         BUNDLE_MACHINES = BUNDLE_MACHINES + 1
                         msg = "including controller"
+                    } else {
+                        CONTROLLER_ARCH = BOOTSTRAP_CONSTRAINTS.split("arch=")[1].split(' ')[0]
+                        msg = "excluding controller, which is an ${CONTROLLER_ARCH} instance"
                     }
                     echo "${BUNDLE_MACHINES} machines required by bundle.yaml ${msg}"
                     timeout(360) {
-                        waitUntil {
-                            TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
-                            TAGS = TAGS.minus("tags=")
-                            TAGS = TAGS.replace(" ", "")
-                            TAGS = TAGS.split(",")
-                            if ( params.CLOUD_NAME.contains("ruxton") ) {
-                                    MAAS_API_KEY = params.RUXTON_API_KEY
-                            } else if ( params.CLOUD_NAME.contains("icarus") ) {
-                                    MAAS_API_KEY = params.ICARUS_API_KEY
-                            }
-                            primary_tag = TAGS[0]
-                            additional_tags = TAGS.join(",")
-                            def maas_api_cmd = ""
-                            echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${params.ARCH}"
-                            maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${params.ARCH}"
-                            if ( primary_tag != additional_tags ) {
-                                maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
-                            }
-                            dir("${env.HOME}/tools/openstack-charm-testing/") {
-                                try {
-                                AVAILABLE_MACHINES = sh (
-                                    script: "./bin/maas_actions.py ${maas_api_cmd}",
-                                    returnStdout: true
-                                ).trim().toInteger()
-                                } catch (error) { echo "stuff: ${error}"}
-                                echo "Available machines: ${AVAILABLE_MACHINES}"
-                                echo "Required by bundle: ${BUNDLE_MACHINES}"
-                                if ( AVAILABLE_MACHINES < BUNDLE_MACHINES ) {
-                                    echo "Not enough machines available for bundle, waiting before trying again"
-                                    sleep(600)
-                                    return false
-                                } else { 
-                                    echo "Enough available machines, continuing"
-                                    return true 
-                                }
-                            }
+                        if ( CONTROLLER_ARCH != "" ) {
+                            echo "Controller arch. ${CONTROLLER_ARCH} is different to deployment arch. ${params.ARCH}, checking MAAS for free controller machines..."
+                            resourceCheck(CONTROLLER_ARCH, 1)
                         }
+                        resourceCheck(params.ARCH, BUNDLE_MACHINES)    
                     }
                 } else {
                     echo "Not trying to count machines: either s390x deploy or PRE_RELEASE_MACHINES = true" 
@@ -171,6 +183,10 @@ try {
             }
         }
     } 
+} catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException error) {
+    echo "Timed out waiting for machines" 
+    currentBuild.result = 'FAILURE'
+    error "FAILURE"
 } catch (error) {
     echo "Problem checking number of machines, going blind: ${error}"
 }
