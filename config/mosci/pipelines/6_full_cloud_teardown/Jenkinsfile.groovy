@@ -87,6 +87,9 @@ def s390x_snapshot_create(snapshot_machine) {
 if ( "${params.ARCH}".contains("s390x") ) { 
         echo "s390x arch, not maas"
         MODEL_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}"
+} else if ( OVERCLOUD_DEPLOY == true ) {
+        MODEL_NAME=params.MODEL_NAME
+}
 } else {
         MODEL_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-maas"
 }
@@ -134,7 +137,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                     ws("${params.WORKSPACE}") {
                         stage("Archive juju logs") {
                             try {
-                                sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/"
+                                sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/${CLOUD_NAME}-${BUILD_ID}.tar.xz"
                                 archiveArtifacts 'crashdumps/*'
                             } catch (error) {
                                 echo "Error collecting juju-crashdump logs, not continuing with teardown"

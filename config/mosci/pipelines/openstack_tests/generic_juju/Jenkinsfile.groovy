@@ -68,7 +68,7 @@ node(params.SLAVE_NODE_NAME) {
     }
 }
 node('master') {
-    stage("Bootstrap for test: ${params.ARCH}") {
+    stage("Bootstrap on overcloud: ${params.ARCH}") {
             bootstrap_job = build job: '2. Full Cloud - Bootstrap', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                             [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH],
                             [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
@@ -81,7 +81,7 @@ node('master') {
                             [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
                             [$class: 'BooleanParameterValue', name: 'OVERCLOUD_DEPLOY', value: Boolean.valueOf(OVERCLOUD_DEPLOY)]]
         }
-        stage("Deploy: ${params.ARCH}") {
+        stage("Deploy on overcloud: ${params.ARCH}") {
             echo 'Deploy'
             deploy_job = build job: '3. Full Cloud - Deploy', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CONTROLLER_NAME],
                          [$class: 'StringParameterValue', name: 'CONTROLLER_NAME', value: params.CONTROLLER_NAME],
@@ -93,21 +93,19 @@ node('master') {
                 //sh 'ls -lart'
                 //sh 'cd runners/manual-examples ; ./openstack-base-xenial-ocata-arm64-manual.sh'
         }
-        /*stage("Teardown: ${params.ARCH}") {
+        stage("Teardown overcloud: ${params.ARCH}") {
             echo 'Teardown'
             deploy_job = build job: '6. Full Cloud - Teardown', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: "${params.CLOUD_NAME}"],
                          [$class: 'StringParameterValue', name: 'ARCH', value: "${params.ARCH}"],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
+                         [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
                          [$class: 'StringParameterValue', name: 'MODEL_CONSTRAINTS', value: params.MODEL_CONSTRAINTS],
-                         [$class: 'StringParameterValue', name: 'MAAS_OWNER', value: params.MAAS_OWNER],
-                         [$class: 'StringParameterValue', name: 'S390X_NODES', value: params.S390X_NODES],
-                         [$class: 'BooleanParameterValue', name: 'RELEASE_MACHINES', value: Boolean.valueOf(RELEASE_MACHINES)],
-                         [$class: 'BooleanParameterValue', name: 'FORCE_RELEASE', value: Boolean.valueOf(FORCE_RELEASE)],
-                         [$class: 'BooleanParameterValue', name: 'OFFLINE_SLAVE', value: Boolean.valueOf(OFFLINE_SLAVE)],
-                         [$class: 'BooleanParameterValue', name: 'DESTROY_SLAVE', value: Boolean.valueOf(DESTROY_SLAVE)],
-                         [$class: 'BooleanParameterValue', name: 'DESTROY_CONTROLLER', value: Boolean.valueOf(DESTROY_CONTROLLER)],
-                         [$class: 'BooleanParameterValue', name: 'DESTROY_MODEL', value: Boolean.valueOf(DESTROY_MODEL)],
-                         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: "${params.BUNDLE_URL}"]]
-        }*/
+                         [$class: 'BooleanParameterValue', name: 'RELEASE_MACHINES', value: False],
+                         [$class: 'BooleanParameterValue', name: 'OFFLINE_SLAVE', value: False],
+                         [$class: 'BooleanParameterValue', name: 'DESTROY_SLAVE', value: False],
+                         [$class: 'BooleanParameterValue', name: 'DESTROY_CONTROLLER', value: True],
+                         [$class: 'BooleanParameterValue', name: 'DESTROY_MODEL', value: True],
+                         [$class: 'BooleanParameterValue', name: 'OVERCLOUD_DEPLOY', value: True]]
+        }
 }

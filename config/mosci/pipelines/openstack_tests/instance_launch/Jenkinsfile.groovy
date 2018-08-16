@@ -149,6 +149,7 @@ node(params.SLAVE_NODE_NAME) {
                         echo "Tried 5 times, aborting"
                         currentBuild.result = 'ABORTED'
                         error "Exceed maximum retries"
+                        return true
                     }
                     echo "Error getting uname from host: ${error}, retrying"
                     sleep(30)
