@@ -101,11 +101,11 @@ node('master') {
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
                          [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
                          [$class: 'StringParameterValue', name: 'MODEL_CONSTRAINTS', value: params.MODEL_CONSTRAINTS],
-                         [$class: 'BooleanParameterValue', name: 'RELEASE_MACHINES', value: False],
-                         [$class: 'BooleanParameterValue', name: 'OFFLINE_SLAVE', value: False],
-                         [$class: 'BooleanParameterValue', name: 'DESTROY_SLAVE', value: False],
-                         [$class: 'BooleanParameterValue', name: 'DESTROY_CONTROLLER', value: True],
-                         [$class: 'BooleanParameterValue', name: 'DESTROY_MODEL', value: True],
-                         [$class: 'BooleanParameterValue', name: 'OVERCLOUD_DEPLOY', value: True]]
+                         [$class: 'BooleanParameterValue', name: 'RELEASE_MACHINES', value: false],
+                         [$class: 'BooleanParameterValue', name: 'OFFLINE_SLAVE', value: false],
+                         [$class: 'BooleanParameterValue', name: 'DESTROY_SLAVE', value: false],
+                         [$class: 'BooleanParameterValue', name: 'DESTROY_CONTROLLER', value: true],
+                         [$class: 'BooleanParameterValue', name: 'DESTROY_MODEL', value: true],
+                         [$class: 'BooleanParameterValue', name: 'OVERCLOUD_DEPLOY', value: true]]
         }
 }
