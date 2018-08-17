@@ -144,7 +144,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                 error "FAILURE"
                             }
                         }
-                        stage("Teardown: ${MODEL_NAME}") {
+                        stage("juju teardown") {
                             echo "SLAVE_NODE_NAME: ${params.SLAVE_NODE_NAME}"
                             echo "OPENSTACK_PUBLIC_IP = ${env.OPENSTACK_PUBLIC_IP}"
                             if ( "${params.DESTROY_CONTROLLER}" == "true" ) {
@@ -216,7 +216,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
             } 
         } catch(error) { echo "Timeout connecting to slave, won't be doing any juju cleanup. You may need to maually release machines." }
         node('master') {
-                stage("Offline Slave: ${params.SLAVE_NODE_NAME}") {
+                stage("Offline Slave") {
                         if ( params.OFFLINE_SLAVE ) {
                                 for (aSlave in hudson.model.Hudson.instance.slaves) {
                                         if ( aSlave.name == params.SLAVE_NODE_NAME ) {
@@ -226,7 +226,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                 }
                         }
                 }
-                stage("Restore label: ${params.SLAVE_NODE_NAME}") {
+                stage("Restore label") {
                     for ( node in jenkins.model.Jenkins.instance.nodes ) {
                         if (node.getNodeName().equals(NODE_NAME)) {
                             NEW_LABEL="serverstack-${params.ARCH}"
@@ -236,7 +236,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                         }
                     }
                 }
-                stage("Delete Slave: ${params.SLAVE_NODE_NAME}") {
+                stage("Delete Slave") {
                         if ( params.DESTROY_SLAVE ) {
                                 for (aSlave in hudson.model.Hudson.instance.slaves) {
                                         if ( aSlave.name == params.SLAVE_NODE_NAME ) {
