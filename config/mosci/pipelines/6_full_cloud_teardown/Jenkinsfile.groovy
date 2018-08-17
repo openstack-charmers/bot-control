@@ -131,12 +131,12 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                 }
         }
         try {
-            timeout(20) {
+            timeout(90) {
                 node(params.SLAVE_NODE_NAME) {
                     ws("${params.WORKSPACE}") {
                         stage("Archive juju logs") {
                             try {
-                                sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/${CLOUD_NAME}-${BUILD_ID}.tar.xz"
+                                sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/${params.ARCH}-${CLOUD_NAME}-${BUILD_ID}.tar.xz"
                                 archiveArtifacts 'crashdumps/*'
                             } catch (error) {
                                 echo "Error collecting juju-crashdump logs, not continuing with teardown"
