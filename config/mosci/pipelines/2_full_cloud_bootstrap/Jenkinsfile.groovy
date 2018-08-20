@@ -36,6 +36,7 @@ def s390x_snapshot_reset(reset_machine) {
             if ( error.message == "No snapshot found" ) { 
                 echo "No snapshot found but machine is already provisioned - cannot recover automatically"
                 currentBuild.result = 'FAILURE'
+                error "FAILED BUILD"
                 return false
             } else {
                 echo "SSH error, retrying"
