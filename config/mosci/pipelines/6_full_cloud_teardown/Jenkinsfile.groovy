@@ -86,11 +86,14 @@ def s390x_snapshot_create(snapshot_machine) {
 
 if ( "${params.ARCH}".contains("s390x") ) { 
         echo "s390x arch, not maas"
-        MODEL_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}"
+        CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}"
+        MODEL_NAME=CONTROLLER_NAME
 } else if ( OVERCLOUD_DEPLOY == true ) {
+        CONTROLLER_NAME=params.CONTROLLER_NAME
         MODEL_NAME=params.MODEL_NAME
 } else {
-        MODEL_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-maas"
+        CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-maas"
+        MODEL_NAME=CONTROLLER_NAME
 }
 
 if ( params.SLAVE_NODE_NAME == '') {
@@ -99,7 +102,7 @@ if ( params.SLAVE_NODE_NAME == '') {
     echo "Slave name not set, will only attempt to release MAAS nodes"
 } else {
         ONLY_RELEASE = false
-        echo "Hunting: ${MODEL_NAME} on ${params.SLAVE_NODE_NAME}"
+        echo "Hunting: ${CONTROLLER_NAME} on ${params.SLAVE_NODE_NAME}"
         
         echo "All node names: " + names
         if ( names.contains(params.SLAVE_NODE_NAME) ) {
@@ -148,9 +151,9 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                             echo "SLAVE_NODE_NAME: ${params.SLAVE_NODE_NAME}"
                             echo "OPENSTACK_PUBLIC_IP = ${env.OPENSTACK_PUBLIC_IP}"
                             if ( "${params.DESTROY_CONTROLLER}" == "true" ) {
-                                echo "Destroying controller and models: ${MODEL_NAME}"
+                                echo "Destroying controller and models: ${CONTROLLER_NAME}"
                                 try {
-                                        sh "juju destroy-controller ${MODEL_NAME} --destroy-all-models -y"
+                                        sh "juju destroy-controller ${CONTROLLER_NAME} --destroy-all-models -y"
                                 } catch (error) {
                                         echo "An error occured:" + error
                                 } 
@@ -178,7 +181,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                             s390x_snapshot_reset(machines[i])           
                             }
                         }
-                    if ( MODEL_NAME.contains("maas") && params.RELEASE_MACHINES && ! MACHINES_RELEASED ) {
+                    if ( CONTROLLER_NAME.contains("maas") && params.RELEASE_MACHINES && ! MACHINES_RELEASED ) {
                         TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
                         TAGS = TAGS.minus("tags=")
                         TAGS = TAGS.replace(" ", "")
