@@ -88,7 +88,7 @@ if ( "${params.ARCH}".contains("s390x") ) {
         echo "s390x arch, not maas"
         CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}"
         MODEL_NAME=CONTROLLER_NAME
-} else if ( OVERCLOUD_DEPLOY == true ) {
+} else if ( params.OVERCLOUD_DEPLOY ) {
         echo "OVERCLOUD_DEPLOY == true"
         CONTROLLER_NAME=params.CONTROLLER_NAME
         MODEL_NAME=params.MODEL_NAME
