@@ -89,11 +89,13 @@ if ( "${params.ARCH}".contains("s390x") ) {
         CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}"
         MODEL_NAME=CONTROLLER_NAME
 } else if ( OVERCLOUD_DEPLOY == true ) {
+        echo "OVERCLOUD_DEPLOY == true"
         CONTROLLER_NAME=params.CONTROLLER_NAME
         MODEL_NAME=params.MODEL_NAME
 } else {
         CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-maas"
         MODEL_NAME=CONTROLLER_NAME
+        echo "MAAS detected, setting controller and model names: ${CONTROLLER_NAME}, ${MODEL_NAME}"
 }
 
 if ( params.SLAVE_NODE_NAME == '') {
