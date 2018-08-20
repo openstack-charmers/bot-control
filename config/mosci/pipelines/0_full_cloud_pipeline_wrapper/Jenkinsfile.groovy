@@ -315,8 +315,11 @@ node(SLAVE_NODE_NAME) {
             }
         } else { echo "Skipping Test stage" } 
         if ( pipeline_state.contains("FAILURE") && params.CLEANUP_ON_FAILURE ) {
+            CRASHDUMP = true
             stage("< pipeline failed at last stage")
-        } 
+        } else { 
+            CRASHDUMP = false 
+        }
         if ( PHASES.contains("Teardown") ) {
             stage("[ teardown ]") {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
@@ -328,6 +331,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'MODEL_CONSTRAINTS', value: params.MODEL_CONSTRAINTS],
                          [$class: 'StringParameterValue', name: 'MAAS_OWNER', value: params.MAAS_OWNER],
                          [$class: 'StringParameterValue', name: 'S390X_NODES', value: params.S390X_NODES],
+                         [$class: 'BooleanParameterValue', name: 'CRASHDUMP', value: Boolean.valueOf(CRASHDUMP)],
                          [$class: 'BooleanParameterValue', name: 'RELEASE_MACHINES', value: Boolean.valueOf(RELEASE_MACHINES)],
                          [$class: 'BooleanParameterValue', name: 'FORCE_RELEASE', value: Boolean.valueOf(FORCE_RELEASE)],
                          [$class: 'BooleanParameterValue', name: 'OFFLINE_SLAVE', value: Boolean.valueOf(OFFLINE_SLAVE)],

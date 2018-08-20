@@ -67,9 +67,10 @@ node(params.SLAVE_NODE_NAME) {
         }
     }
 }
+pipeline_state = ""
 node('master') {
     stage("Bootstrap on overcloud: ${params.ARCH}") {
-            bootstrap_job = build job: '2. Full Cloud - Bootstrap', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
+            bootstrap_job = build job: '2. Full Cloud - Bootstrap', propagate: false, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                             [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH],
                             [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
                             [$class: 'StringParameterValue', name: 'OVERCLOUD_NAME', value: OVERCLOUD_NAME],
@@ -81,17 +82,26 @@ node('master') {
                             [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
                             [$class: 'BooleanParameterValue', name: 'OVERCLOUD_DEPLOY', value: Boolean.valueOf(OVERCLOUD_DEPLOY)]]
         }
-        stage("Deploy on overcloud: ${params.ARCH}") {
-            echo 'Deploy'
-            deploy_job = build job: '3. Full Cloud - Deploy', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CONTROLLER_NAME],
-                         [$class: 'StringParameterValue', name: 'CONTROLLER_NAME', value: params.CONTROLLER_NAME],
-                         [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
-                         [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
-                         [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
-                         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: params.BUNDLE_URL],
-                         [$class: 'BooleanParameterValue', name: 'OVERCLOUD_DEPLOY', value: Boolean.valueOf(OVERCLOUD_DEPLOY)]]
-                //sh 'ls -lart'
-                //sh 'cd runners/manual-examples ; ./openstack-base-xenial-ocata-arm64-manual.sh'
+        pipeline_state = pipeline_state + bootstrap_job.result
+        if ( ! pipeline_state.contains("FAILURE" ) ) {
+            stage("Deploy on overcloud: ${params.ARCH}") {
+                echo 'Deploy'
+                deploy_job = build job: '3. Full Cloud - Deploy', propagate: false, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CONTROLLER_NAME],
+                             [$class: 'StringParameterValue', name: 'CONTROLLER_NAME', value: params.CONTROLLER_NAME],
+                             [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
+                             [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
+                             [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
+                             [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: params.BUNDLE_URL],
+                             [$class: 'BooleanParameterValue', name: 'OVERCLOUD_DEPLOY', value: Boolean.valueOf(OVERCLOUD_DEPLOY)]]
+                    //sh 'ls -lart'
+                    //sh 'cd runners/manual-examples ; ./openstack-base-xenial-ocata-arm64-manual.sh'
+            }
+        } else { echo "Bootstrap failed, skipping deploy and cleaning up"}
+        pipeline_state = pipeline_state + deploy_job.result
+        if ( pipeline_state.contains("FAILURE") ) {
+            CRASHDUMP = true
+        } else {
+            CRASHDUMP = false
         }
         stage("Teardown overcloud: ${params.ARCH}") {
             echo 'Teardown'
@@ -100,6 +110,7 @@ node('master') {
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
                          [$class: 'StringParameterValue', name: 'CONTROLLER_NAME', value: params.CONTROLLER_NAME],
                          [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
+                         [$class: 'BooleanParameterValue', name: 'CRASHDUMP', value: Boolean.valueOf(CRASHDUMP)],
                          [$class: 'BooleanParameterValue', name: 'RELEASE_MACHINES', value: false],
                          [$class: 'BooleanParameterValue', name: 'OFFLINE_SLAVE', value: false],
                          [$class: 'BooleanParameterValue', name: 'DESTROY_SLAVE', value: false],
