@@ -97,10 +97,8 @@ node('master') {
             echo 'Teardown'
             deploy_job = build job: '6. Full Cloud - Teardown', parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: "${params.CLOUD_NAME}"],
                          [$class: 'StringParameterValue', name: 'ARCH', value: "${params.ARCH}"],
-                         [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
                          [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
-                         [$class: 'StringParameterValue', name: 'MODEL_CONSTRAINTS', value: params.MODEL_CONSTRAINTS],
                          [$class: 'BooleanParameterValue', name: 'RELEASE_MACHINES', value: false],
                          [$class: 'BooleanParameterValue', name: 'OFFLINE_SLAVE', value: false],
                          [$class: 'BooleanParameterValue', name: 'DESTROY_SLAVE', value: false],
