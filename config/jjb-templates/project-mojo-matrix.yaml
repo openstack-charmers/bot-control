@@ -897,7 +897,7 @@
           - "xenial-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
-          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          - "bionic-rocky"
           # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
@@ -940,7 +940,7 @@
           - "xenial-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
-          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          - "bionic-rocky"
           # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
@@ -983,7 +983,7 @@
           - "xenial-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
-          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          - "bionic-rocky"
           # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
@@ -1066,7 +1066,7 @@
           # - "xenial-pike"   # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
-          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          - "bionic-rocky"
           # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
@@ -1109,7 +1109,7 @@
           - "xenial-pike"
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
-          # - "bionic-rocky"   # Same ceph version as Bionic distro
+          - "bionic-rocky"
           # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
     builders:
       - trigger-builds:
