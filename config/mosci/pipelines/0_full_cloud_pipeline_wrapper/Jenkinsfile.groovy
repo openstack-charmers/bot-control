@@ -132,7 +132,7 @@ def resourceCheck(arch, required) {
             echo "Required by bundle: ${required}"
             if ( AVAILABLE_MACHINES < required ) {
                 echo "Not enough machines available for bundle, waiting before trying again"
-                sleep(600)
+                sleep(300)
                 return false
             } else { 
                 echo "Enough available machines, continuing"
