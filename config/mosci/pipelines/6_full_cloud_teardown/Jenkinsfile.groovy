@@ -140,14 +140,16 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                 node(params.SLAVE_NODE_NAME) {
                     ws("${params.WORKSPACE}") {
                         stage("Archive juju logs") {
-                            try {
-                                sh "juju switch ${MODEL_NAME}"
-                                sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/${MODEL_NAME}-${BUILD_ID}.tar.xz"
-                                archiveArtifacts 'crashdumps/*'
-                            } catch (error) {
-                                echo "Error collecting juju-crashdump logs, not continuing with teardown"
-                                currentBuild.result = 'FAILURE'
-                                error "FAILURE"
+                            if ( params.CRASHDUMP ) {
+                                try {
+                                    sh "juju switch ${MODEL_NAME}"
+                                    sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/${MODEL_NAME}-${BUILD_ID}.tar.xz"
+                                    archiveArtifacts 'crashdumps/*'
+                                } catch (error) {
+                                    echo "Error collecting crashdump logs, stopping teardown in case manual log collection is required"
+                                    currentBuild.result = 'FAILURE'
+                                    error "FAILURE"
+                                }
                             }
                         }
                         stage("juju teardown") {
