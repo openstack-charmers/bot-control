@@ -141,6 +141,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                     ws("${params.WORKSPACE}") {
                         stage("Archive juju logs") {
                             try {
+                                sh "juju switch ${MODEL_NAME}"
                                 sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/${params.ARCH}-${CLOUD_NAME}-${BUILD_ID}.tar.xz"
                                 archiveArtifacts 'crashdumps/*'
                             } catch (error) {
