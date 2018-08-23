@@ -42,7 +42,7 @@ node(params.SLAVE_NODE_NAME) {
                     }
                 }
         stage("API checks") {
-            sh "${SRCCMD} ; openstack catalog list ; openstack image list ; openstack network list"
+            sh "${SRCCMD} ; openstack catalog list ; openstack image list ; sleep 60 ; openstack network list"
         }
         stage("Launch the instance") {
             echo "Getting image name to launch instance with:"
