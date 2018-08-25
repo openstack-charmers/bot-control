@@ -35,7 +35,7 @@ if ( params.CLEANUP_ON_FAILURE ) {
 
 if ( params.OS_RELEASE_NAME == "" ) {
     release = ""
-    releases = ["icehouse", "juno", "kilo", "librety", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "stable"]
+    releases = ["icehouse", "juno", "kilo", "librety", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "jewel", "luminous", "mimic", "stable"]
     echo "Trying to get release from bundle url..."
     for ( a in releases ) {
         if ( params.BUNDLE_URL.contains(a) ) {
