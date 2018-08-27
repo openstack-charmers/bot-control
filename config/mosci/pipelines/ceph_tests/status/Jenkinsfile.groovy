@@ -17,9 +17,10 @@ node(params.SLAVE_NODE_NAME) {
             stage('Get first ceph-mon node ID') {
                 try {
                     MON_NAME = sh (
-                        script: "juju status ceph-mon grep ceph-mon/|head -n1",
+                        script: "juju status ceph-mon|grep ceph-mon/|head -n1|awk '{print \$1}'|tr -d '*'",
                         returnStdout: true
-                    ) 
+                    ).trim()
+                echo "Checking ${MON_NAME}"
                 } catch (error) {
                     echo "Couldn't get first ceph-mon unit name: ${error}"
                 } 
@@ -28,10 +29,16 @@ node(params.SLAVE_NODE_NAME) {
                 echo "Get ceph status"
                 try {
                     CEPH_STATUS = sh (
-                        script: "sudo ceph -s",
+                        script: "juju run --unit ${MON_NAME} \"sudo ceph -s\"",
                         returnStdout: true
                     )
-                echo "CEPH_STATUS: ${CEPH_STATUS}
+                echo "CEPH_STATUS: ${CEPH_STATUS}"
+                if ( CEPH_STATUS.contains("HEALTH_OK") ) {
+                    echo "ceph status HEALTH_OK, SUCCESS"
+                } else {
+                    echo "ceph status HEALTH_WARN or error, FAILURE"
+                    currentBuild.result = 'FAILURE'
+                }
                 } catch (error) {
                     echo "ceph status (ceph -s) failed: ${error}"
                     currentBuild.result = 'FAILURE'

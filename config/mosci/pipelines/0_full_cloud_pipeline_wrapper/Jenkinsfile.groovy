@@ -71,6 +71,25 @@ if ( params.DISTRO_NAME == "" ) {
     echo "Distro: ${distro}"
 } else { distro = params.DISTRO_NAME }
 
+if ( params.BUNDLE_TYPE == "" ) {
+    bundletype = ""
+    bundletypes = ["ceph-base", "openstack-base", "openstack-lxd", "openstack-refstack", "openstack-telemetry"]
+    echo "Trying to get bundle type (e.g. base, telemetry) from bundle url..."
+    for ( a in bundletypes ) {
+        if ( params.BUNDLE_URL.contains(a) ) {
+            bundletype = a
+        }
+    }
+    try {
+        if ( bundletype == "" ) {
+            bundletype = "unknown"
+        }
+    } catch (error) {    
+        bundletype = "unknown"
+        }
+    echo "Bundle Type: ${bundletype}"
+} else { distro = params.BUNDLE_TYPE }
+
 s390xcheck = ["${params.CLOUD_NAME}", "${params.ARCH}"]
 if ( s390xcheck.any { it.contains("390") } ) {
         if ( ! s390xcheck.every { it.contains("390") } ) {
@@ -97,7 +116,7 @@ if ( params.CLOUD_NAME.contains("390") ) {
 
 */        
 node('master') {
-    stage("[ ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME} ]") {
+    stage("[ ${bundletype}: ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME} ]") {
         echo "."
     }
 }
