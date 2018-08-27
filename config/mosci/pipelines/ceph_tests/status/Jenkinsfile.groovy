@@ -37,10 +37,22 @@ node(params.SLAVE_NODE_NAME) {
                     echo "ceph status HEALTH_OK, SUCCESS"
                 } else {
                     echo "ceph status HEALTH_WARN or error, FAILURE"
+                    try {
+                        sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/ceph-status-${BUILD_ID}.tar.xz"
+                        archiveArtifacts 'crashdumps/*'
+                    } catch(error) {
+                        echo "Error getting crashdump"
+                    }
                     currentBuild.result = 'FAILURE'
                 }
                 } catch (error) {
                     echo "ceph status (ceph -s) failed: ${error}"
+                    try {
+                        sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/ceph-status-${BUILD_ID}.tar.xz"
+                        archiveArtifacts 'crashdumps/*'
+                    } catch(errorInside) {
+                        echo "Error getting crashdump"
+                    }
                     currentBuild.result = 'FAILURE'
                 }
             }

@@ -156,8 +156,8 @@ def s390x_add_machine(add_machines) {
                                 return false
                             } else {
                                 echo "Machine is already provisioned, but PRE_RELEASE_MACHINES is not true. Aborting."
-                                currentBuild.result = 'ABORTED'
-                                error "ABORTED"
+                                currentBuild.result = 'FAILED'
+                                error "FAILED"
                                 return true
                             } 
                     } else if ( error.contains("Host key verification failed") ) {
