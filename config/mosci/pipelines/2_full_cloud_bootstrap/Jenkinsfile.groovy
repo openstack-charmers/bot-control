@@ -124,7 +124,7 @@ if ( params.CLOUD_NAME.contains("390")) {
 def s390x_add_machine(add_machines) {
     echo "s390x_add_machine"
     for (int i = 0; i < add_machines.size(); i++ ) { 
-        timeout(120) {
+        timeout(90) {
             waitUntil {
                 def check_model = sh (
                     script: "juju status > juju_model",
@@ -241,73 +241,75 @@ node(params.SLAVE_NODE_NAME) {
             } 
         }
         stage('Bootstrap controller') {
-            echo "${env.SLAVE_NODE_NAME}"
-            echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
-            dir("${env.HOME}/cloud-credentials") {
-                echo "Ensure cloud-credentials directory exists"
-                sh "touch .placeholder"
-            }
-            dir("${env.HOME}/tools/charm-test-infra") {
-                if ( params.OVERCLOUD_DEPLOY ) { CONTROLLER_NAME = params.CONTROLLER_NAME }
-                try {
-                    CHECK_JUJU = sh (
-                        script: "juju controllers",
-                        returnStdout: true
-                    )
-                    if ( CHECK_JUJU.contains(CONTROLLER_NAME) ) {
-                        echo "Found existing controller ${CONTROLLER_NAME}."
-                        EXISTING_CONTROLLER = true
-                    } else { 
-                        EXISTING_CONTROLLER = false 
-                    }
-                } catch (error) {
-                    echo "WARNING: no existing juju controllers found."
-                    EXISTING_CONTROLLER = false
+            timeout(params.BOOTSTRAP_TIMEOUT) {
+                echo "${env.SLAVE_NODE_NAME}"
+                echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
+                dir("${env.HOME}/cloud-credentials") {
+                    echo "Ensure cloud-credentials directory exists"
+                    sh "touch .placeholder"
                 }
-                if ( params.KEYSTONE_AUTH_URL == '' ) {
-                        KSXCMD = "true"
-                } else { KSXCMD = "export OS_AUTH_URL=${params.KEYSTONE_AUTH_URL}" }
-                if ( ! S390X && EXISTING_CONTROLLER && ( params.PRE_RELEASE_MACHINES && BOOTSTRAP_CONSTRAINTS.contains(ARCH) ) || ( params.FORCE_NEW_CONTROLLER ) ) {
-                    if ( params.FORCE_NEW_CONTROLLER) { 
-                        echo "INFO: FORCE_NEW_CONTROLLER = true" 
-                    } else {
-                        echo "Existing controller found, PRE_RELEASE_MACHINES is true, BOOTSTRAP_CONSTRAINTS contains ${ARCH}"
-                        echo "This means you have probably released the controller machine, so we will run kill-controller."
-                    }
+                dir("${env.HOME}/tools/charm-test-infra") {
+                    if ( params.OVERCLOUD_DEPLOY ) { CONTROLLER_NAME = params.CONTROLLER_NAME }
                     try {
-                        KILL_C = sh (
-                            script: "juju kill-controller ${CONTROLLER_NAME} -y",
+                        CHECK_JUJU = sh (
+                            script: "juju controllers",
                             returnStdout: true
                         )
+                        if ( CHECK_JUJU.contains(CONTROLLER_NAME) ) {
+                            echo "Found existing controller ${CONTROLLER_NAME}."
+                            EXISTING_CONTROLLER = true
+                        } else { 
+                            EXISTING_CONTROLLER = false 
+                        }
                     } catch (error) {
-                        echo "Error killing controller ${CONTROLLER_NAME}: ${error}"
+                        echo "WARNING: no existing juju controllers found."
+                        EXISTING_CONTROLLER = false
                     }
-                }
-                if ( params.OVERCLOUD_DEPLOY ) {
-                    echo "OVERCLOUD_DEPLOY is true"
-                    SRCCMD = "#!/bin/bash\nsource ${env.HOME}/tools/openstack-charm-testing/rcs/openrc"
-                    // create a clouds.yaml for this overcloud with keystone endpoint
-                    // env.OS_PROJECT_NAME=params.CLOUD_NAME
-                    // env.CLOUD_NAME="overcloud"
-                    // env.OS_PROJECT_NAME=MODEL_NAME
-                    BOOTSTRAP_CONSTRAINTS="arch=${ARCH}"
-                    MODEL_CONSTRAINTS="arch=${ARCH}"
-                    // env.OS_PROJECT_NAME="${params.ARCH}-mosci"
-                    MODEL_NAME=params.MODEL_NAME
-                    echo "MODEL_NAME: ${MODEL_NAME}, CONTROLLER_NAME: ${CONTROLLER_NAME}"
-                    sh "cp juju-configs/clouds.yaml ${env.HOME}/cloud-credentials/"
-                    sh "sed -i '0,/serverstack:/s/serverstack:/overcloud:/g' juju-configs/clouds.yaml"
-                    sh "sed -i '0,/serverstack:/s/serverstack:/RegionOne:/g' juju-configs/clouds.yaml"
-                    sh "cat juju-configs/clouds.yaml"
-                    sh "juju switch ${OVERCLOUD_NAME}:${OVERCLOUD_NAME}"
-                    echo "${KSXCMD}"
-                    sh "${SRCCMD} ; ./juju-openstack-controller-mosci.sh"
-                    sh "cp ${env.HOME}/cloud-credentials/clouds.yaml juju-configs/"
-                } else {
-                    env.MODEL_NAME=MODEL_NAME
-                    echo "MODEL_NAME: ${env.MODEL_NAME}, CONTROLLER_NAME: ${env.CONTROLLER_NAME}"
-                    env.OS_PROJECT_NAME="${params.ARCH}-mosci"
-                    sh "./juju-maas-controller-mosci.sh"
+                    if ( params.KEYSTONE_AUTH_URL == '' ) {
+                            KSXCMD = "true"
+                    } else { KSXCMD = "export OS_AUTH_URL=${params.KEYSTONE_AUTH_URL}" }
+                    if ( ! S390X && EXISTING_CONTROLLER && ( params.PRE_RELEASE_MACHINES && BOOTSTRAP_CONSTRAINTS.contains(ARCH) ) || ( params.FORCE_NEW_CONTROLLER ) ) {
+                        if ( params.FORCE_NEW_CONTROLLER) { 
+                            echo "INFO: FORCE_NEW_CONTROLLER = true" 
+                        } else {
+                            echo "Existing controller found, PRE_RELEASE_MACHINES is true, BOOTSTRAP_CONSTRAINTS contains ${ARCH}"
+                            echo "This means you have probably released the controller machine, so we will run kill-controller."
+                        }
+                        try {
+                            KILL_C = sh (
+                                script: "juju kill-controller ${CONTROLLER_NAME} -y",
+                                returnStdout: true
+                            )
+                        } catch (error) {
+                            echo "Error killing controller ${CONTROLLER_NAME}: ${error}"
+                        }
+                    }
+                    if ( params.OVERCLOUD_DEPLOY ) {
+                        echo "OVERCLOUD_DEPLOY is true"
+                        SRCCMD = "#!/bin/bash\nsource ${env.HOME}/tools/openstack-charm-testing/rcs/openrc"
+                        // create a clouds.yaml for this overcloud with keystone endpoint
+                        // env.OS_PROJECT_NAME=params.CLOUD_NAME
+                        // env.CLOUD_NAME="overcloud"
+                        // env.OS_PROJECT_NAME=MODEL_NAME
+                        BOOTSTRAP_CONSTRAINTS="arch=${ARCH}"
+                        MODEL_CONSTRAINTS="arch=${ARCH}"
+                        // env.OS_PROJECT_NAME="${params.ARCH}-mosci"
+                        MODEL_NAME=params.MODEL_NAME
+                        echo "MODEL_NAME: ${MODEL_NAME}, CONTROLLER_NAME: ${CONTROLLER_NAME}"
+                        sh "cp juju-configs/clouds.yaml ${env.HOME}/cloud-credentials/"
+                        sh "sed -i '0,/serverstack:/s/serverstack:/overcloud:/g' juju-configs/clouds.yaml"
+                        sh "sed -i '0,/serverstack:/s/serverstack:/RegionOne:/g' juju-configs/clouds.yaml"
+                        sh "cat juju-configs/clouds.yaml"
+                        sh "juju switch ${OVERCLOUD_NAME}:${OVERCLOUD_NAME}"
+                        echo "${KSXCMD}"
+                        sh "${SRCCMD} ; ./juju-openstack-controller-mosci.sh"
+                        sh "cp ${env.HOME}/cloud-credentials/clouds.yaml juju-configs/"
+                    } else {
+                        env.MODEL_NAME=MODEL_NAME
+                        echo "MODEL_NAME: ${env.MODEL_NAME}, CONTROLLER_NAME: ${env.CONTROLLER_NAME}"
+                        env.OS_PROJECT_NAME="${params.ARCH}-mosci"
+                        sh "./juju-maas-controller-mosci.sh"
+                    }
                 }
             }
         }

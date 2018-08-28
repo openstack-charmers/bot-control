@@ -189,7 +189,7 @@ try {
                         msg = "excluding controller, which is an ${CONTROLLER_ARCH} instance"
                     }
                     echo "${BUNDLE_MACHINES} machines required by bundle.yaml ${msg}"
-                    timeout(360) {
+                    timeout(params.RESOURCE_CHECK_TIMEOUT) {
                         if ( CONTROLLER_ARCH != "" ) {
                             echo "Controller arch. ${CONTROLLER_ARCH} is different to deployment arch. ${params.ARCH}, checking MAAS for free controller machines..."
                             resourceCheck(CONTROLLER_ARCH, 1)
@@ -276,6 +276,7 @@ node(SLAVE_NODE_NAME) {
                             [$class: 'StringParameterValue', name: 'S390X_NODES', value: params.S390X_NODES],
                             [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
                             [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
+                            [$class: 'StringParameterValue', name: 'BOOTSTRAP_TIMEOUT', value: params.BOOTSTRAP_TIMEOUT],
                             [$class: 'StringParameterValue', name: 'MODEL_CONSTRAINTS', value: params.MODEL_CONSTRAINTS],
                             [$class: 'StringParameterValue', name: 'BOOTSTRAP_CONSTRAINTS', value: params.BOOTSTRAP_CONSTRAINTS],
                             [$class: 'StringParameterValue', name: 'OVERRIDE_MODEL_CONFIG', value: params.OVERRIDE_MODEL_CONFIG],
