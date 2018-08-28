@@ -164,7 +164,7 @@ def resourceCheck(arch, required) {
 try {
     node ('master') {
         ws("${params.WORKSPACE}") {
-            stage("[ resource check ]"){
+            stage("\t[ resource check ]"){
                 if ( ! S390X && ! params.PRE_RELEASE_MACHINES && ! params.SKIP_RESOURCE_CHECK ) {
                     if (fileExists('bundle.yaml')) {
                         sh "rm bundle.yaml"
