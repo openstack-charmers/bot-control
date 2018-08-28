@@ -321,7 +321,8 @@ node(SLAVE_NODE_NAME) {
             }
         } else { echo "Skipping Configuration stage" } 
         if ( PHASES.contains("Test") && ! pipeline_state.contains("FAILURE")) {
-            stage("[ test: ${SELECTED_TESTS.replaceAll("pipeline test - ", "")} ]") {
+            // stage("[ test: ${SELECTED_TESTS.replaceAll("pipeline test - ", "")} ]") {
+            stage("[ test: ${SELECTED_TESTS.replaceAll(~/pipeline.*- /, "")} ]") {
             echo 'Testing Cloud Functionality'
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             test_job = build job: '5. Full Cloud - Test', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
