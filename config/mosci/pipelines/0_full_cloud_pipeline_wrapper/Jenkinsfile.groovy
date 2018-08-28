@@ -235,6 +235,7 @@ stage ("[ build slave ]") {
 
 pipeline_state = ""
 node(SLAVE_NODE_NAME) {
+        timestamps {
         ws(workSpace) {
         environment {
             MODEL_CONSTRAINTS="${MODEL_CONSTRAINTS}"
@@ -371,5 +372,6 @@ node(SLAVE_NODE_NAME) {
                 echo "This stage only appears when a job has failed but is not red because CLEANUP_ON_FAILURE is true"
             }
         }
+    }
     }
 }
