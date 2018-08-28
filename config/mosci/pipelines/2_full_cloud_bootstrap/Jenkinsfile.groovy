@@ -241,7 +241,7 @@ node(params.SLAVE_NODE_NAME) {
             } 
         }
         stage('Bootstrap controller') {
-            timeout(params.BOOTSTRAP_TIMEOUT) {
+            timeout(params.BOOTSTRAP_TIMEOUT.toInteger()) {
                 echo "${env.SLAVE_NODE_NAME}"
                 echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
                 dir("${env.HOME}/cloud-credentials") {

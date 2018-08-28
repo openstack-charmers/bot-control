@@ -189,7 +189,7 @@ try {
                         msg = "excluding controller, which is an ${CONTROLLER_ARCH} instance"
                     }
                     echo "${BUNDLE_MACHINES} machines required by bundle.yaml ${msg}"
-                    timeout(params.RESOURCE_CHECK_TIMEOUT) {
+                    timeout(params.RESOURCE_CHECK_TIMEOUT.toInteger()) {
                         if ( CONTROLLER_ARCH != "" ) {
                             echo "Controller arch. ${CONTROLLER_ARCH} is different to deployment arch. ${params.ARCH}, checking MAAS for free controller machines..."
                             resourceCheck(CONTROLLER_ARCH, 1)
