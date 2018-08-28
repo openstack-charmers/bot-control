@@ -165,7 +165,7 @@ try {
     node ('master') {
         ws("${params.WORKSPACE}") {
             stage("[ resource check ]"){
-                if ( ! S390X && ! params.PRE_RELEASE_MACHINES ) {
+                if ( ! S390X && ! params.PRE_RELEASE_MACHINES && ! params.SKIP_RESOURCE_CHECK ) {
                     if (fileExists('bundle.yaml')) {
                         sh "rm bundle.yaml"
                     }
@@ -322,7 +322,7 @@ node(SLAVE_NODE_NAME) {
         } else { echo "Skipping Configuration stage" } 
         if ( PHASES.contains("Test") && ! pipeline_state.contains("FAILURE")) {
             // stage("[ test: ${SELECTED_TESTS.replaceAll("pipeline test - ", "")} ]") {
-            stage("[ test: ${SELECTED_TESTS.replaceAll(~/pipeline.*- /, "")} ]") {
+            stage("[ test: ${SELECTED_TESTS.replaceAll(~/pipeline test - *[^-]* - /, "")} ]") {
             echo 'Testing Cloud Functionality'
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             test_job = build job: '5. Full Cloud - Test', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
