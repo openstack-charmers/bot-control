@@ -155,6 +155,40 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                         stage("juju teardown") {
                             echo "SLAVE_NODE_NAME: ${params.SLAVE_NODE_NAME}"
                             echo "OPENSTACK_PUBLIC_IP = ${env.OPENSTACK_PUBLIC_IP}"
+                            echo "Resolving any errored hooks before destroying controller"
+                            echo "Max 5 retries"
+                            retries = 0 
+                            waitUntil { 
+                                if ( retries == 5 ) {
+                                    echo "Max retries reached, skipping."
+                                    return true
+                                } else {
+                                    echo "Retry: ${retries}" 
+                                }
+                                try {
+                                    CHECK_ERR = sh ( 
+                                        script: "juju status --relations=false|grep -E '/.*error'",
+                                        returnStatus: true 
+                                    )
+                                    if ( CHECK_ERR == 0 ) {
+                                        RESOLVING = sh (
+                                            script: "for a in \$(juju status --relations=false|grep -E '/.*error'|awk '{print \$1}'|tr -d '*'); do juju resolved --no-retry \$a ; juju remove-unit \$a ; done",
+                                            returnStdout: true
+                                        ).trim()
+                                        echo "Resolving: ${RESOLVING}"
+                                        sleep(60)
+                                        echo "Checking for errors again..."
+                                        retries++
+                                        return false
+                                    } else {
+                                        return true
+                                    }
+                                } catch(error) {
+                                    echo "Error checking or resolving broken hooks: ${error}"
+                                    echo "controller may not be successfully destroyed within the timeout period."
+                                    return true 
+                                }
+                            }
                             if ( "${params.DESTROY_CONTROLLER}" == "true" ) {
                                 echo "Destroying controller and models: ${CONTROLLER_NAME}"
                                 try {
