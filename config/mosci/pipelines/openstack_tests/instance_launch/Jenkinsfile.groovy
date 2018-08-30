@@ -152,12 +152,6 @@ node(params.SLAVE_NODE_NAME) {
                         return true
                     }
                     echo "Error getting uname from host: ${error}, retrying"
-                    try {
-                        sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/openstack_instance_launch-${BUILD_ID}.tar.xz"
-                        archiveArtifacts 'crashdumps/*'
-                    } catch(errorInside) {
-                        echo "Error getting crashdump"
-                    }
                     sleep(30)
                     return false
                 }
