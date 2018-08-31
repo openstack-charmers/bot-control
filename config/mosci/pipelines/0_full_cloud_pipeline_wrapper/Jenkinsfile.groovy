@@ -73,7 +73,7 @@ if ( params.DISTRO_NAME == "" ) {
 
 if ( params.BUNDLE_TYPE == "" ) {
     bundletype = ""
-    bundletypes = ["ceph-base", "openstack-base", "openstack-lxd", "openstack-refstack", "openstack-telemetry"]
+    bundletypes = ["ceph-base", "openstack-base", "openstack-lxd", "openstack-refstack", "openstack-telemetry", "zopenstack"]
     echo "Trying to get bundle type (e.g. base, telemetry) from bundle url..."
     for ( a in bundletypes ) {
         if ( params.BUNDLE_URL.contains(a) ) {
