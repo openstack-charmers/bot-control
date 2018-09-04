@@ -125,65 +125,63 @@ def s390x_add_machine(add_machines) {
     echo "s390x_add_machine"
     for (int i = 0; i < add_machines.size(); i++ ) { 
         try {
-            timeout(90) {
-                waitUntil {
-                    def check_model = sh (
-                        script: "juju status > juju_model",
-                        returnStatus: true
+            waitUntil {
+                def check_model = sh (
+                    script: "juju status > juju_model",
+                    returnStatus: true
+                )
+                if ( check_model != 0 ) {
+                    echo "Something went wrong getting juju status: ${check_model}"
+                }
+                juju_model = readFile('juju_model').trim()
+                if ( juju_model.contains("${add_machines[i]}") ) {
+                    echo "${add_machines[i]} already in model, skipping" 
+                    return true
+                }
+                def exitcode = sh (
+                    script: "#!/bin/bash \nset -o pipefail ; juju add-machine ssh:ubuntu@${add_machines[i]} --debug 2>&1 | tee add_machines",
+                    returnStatus: true
                     )
-                    if ( check_model != 0 ) {
-                        echo "Something went wrong getting juju status: ${check_model}"
+                if ( exitcode == 0 ) {
+                    echo "exitcode ok is ${exitcode}"
+                    return true
+                } else {
+                    error = readFile('add_machines').trim()
+                    if ( error.contains("ERROR machine is already provisioned" ) ) {
+                        echo "exitcode already provisioned is ${exitcode}, PRE_RELEASE_MACHINES = ${PRE_RELEASE_MACHINES}"
+                        if ( PRE_RELEASE_MACHINES == 'true' ) {
+                            echo "Machine is already provisioned, PRE_RELEASE_MACHINES is true, releasing..."
+                            def mac_res = s390x_snapshot_reset(add_machines[i])
+                            if ( ! mac_res ) { return true }
+                                return false
+                            } else {
+                                echo "Machine is already provisioned, but PRE_RELEASE_MACHINES is not true. Aborting."
+                                currentBuild.result = 'FAILED'
+                                error "FAILED"
+                                return true
+                            } 
+                    } else if ( error.contains("Host key verification failed") ) {
+                        currentBuild.result = 'FAILURE'
+                        error "Problem with host key, aborting build as out of order machines may cause bundle issues"
+                    } else if ( error.contains("No route to host") || error.contains("Connection refused") ) {
+                        echo "${add_machines[i]} is not ready, waiting before retrying" 
+                        echo "max retries = infinite"
+                        sleep(120)
+                        return false
+                    } else if ( error.contains("Permission denied") ) {
+                        echo "Permission denied, probably rebuilding from preseed, retrying"
+                        sleep(120)
+                        return false
+                    } else if ( error.contains("Connection timed out") ) {
+                        echo "Connection timed out, perhaps redeploying?"
+                        sleep(120)
+                        return false
                     }
-                    juju_model = readFile('juju_model').trim()
-                    if ( juju_model.contains("${add_machines[i]}") ) {
-                        echo "${add_machines[i]} already in model, skipping" 
-                        return true
-                    }
-                    def exitcode = sh (
-                        script: "#!/bin/bash \nset -o pipefail ; juju add-machine ssh:ubuntu@${add_machines[i]} --debug 2>&1 | tee add_machines",
-                        returnStatus: true
-                        )
-                    if ( exitcode == 0 ) {
-                        echo "exitcode ok is ${exitcode}"
-                        return true
-                    } else {
-                        error = readFile('add_machines').trim()
-                        if ( error.contains("ERROR machine is already provisioned" ) ) {
-                            echo "exitcode already provisioned is ${exitcode}, PRE_RELEASE_MACHINES = ${PRE_RELEASE_MACHINES}"
-                            if ( PRE_RELEASE_MACHINES == 'true' ) {
-                                echo "Machine is already provisioned, PRE_RELEASE_MACHINES is true, releasing..."
-                                def mac_res = s390x_snapshot_reset(add_machines[i])
-                                if ( ! mac_res ) { return true }
-                                    return false
-                                } else {
-                                    echo "Machine is already provisioned, but PRE_RELEASE_MACHINES is not true. Aborting."
-                                    currentBuild.result = 'FAILED'
-                                    error "FAILED"
-                                    return true
-                                } 
-                        } else if ( error.contains("Host key verification failed") ) {
-                            currentBuild.result = 'FAILURE'
-                            error "Problem with host key, aborting build as out of order machines may cause bundle issues"
-                        } else if ( error.contains("No route to host") || error.contains("Connection refused") ) {
-                            echo "${add_machines[i]} is not ready, waiting before retrying" 
-                            echo "max retries = infinite"
-                            sleep(120)
-                            return false
-                        } else if ( error.contains("Permission denied") ) {
-                            echo "Permission denied, probably rebuilding from preseed, retrying"
-                            sleep(120)
-                            return false
-                        } else if ( error.contains("Connection timed out") ) {
-                            echo "Connection timed out, perhaps redeploying?"
-                            sleep(120)
-                            return false
-                        }
-                    echo "some other error with attempting to add ${add_machines[i]} - perhaps redeploying?"
-                    echo "exitcode is ${exitcode}"
-                    currentBuild.result = 'FAILURE'
-                    error "unhandled exception"
-                    return true 
-                    }
+                echo "some other error with attempting to add ${add_machines[i]} - perhaps redeploying?"
+                echo "exitcode is ${exitcode}"
+                currentBuild.result = 'FAILURE'
+                error "unhandled exception"
+                return true 
                 }
             }
         } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException error) {
@@ -352,19 +350,21 @@ node(params.SLAVE_NODE_NAME) {
         if ( S390X || S390X_NODES != '' ) {
             echo "S390X, S390X_NODES: ${S390X}, ${S390X_NODES}"
             stage('Add s390x lpars') {
-                machines = S390X_NODES.split(',')
-                if ( machines != '' ) {
-                        echo "s390x lpars: ${S390X_NODES}"
-                } else { 
-                    currentBuild.result='FAILURE'
-                    error "No s390x lpars selected for this deployment, but cloud is s390x. Aborting."
+                timeout(90) {
+                    machines = S390X_NODES.split(',')
+                    if ( machines != '' ) {
+                            echo "s390x lpars: ${S390X_NODES}"
+                    } else { 
+                        currentBuild.result='FAILURE'
+                        error "No s390x lpars selected for this deployment, but cloud is s390x. Aborting."
+                    }
+                    if ( params.PRE_RELEASE_MACHINES == 'true' ) {
+                        echo "Pre-releasing machines: ${machines}"
+                        s390x_snapshot_remove(machines)                        
+                    }
+                    echo "Adding machines: ${machines}"
+                    s390x_add_machine(machines)
                 }
-                if ( params.PRE_RELEASE_MACHINES == 'true' ) {
-                    echo "Pre-releasing machines: ${machines}"
-                    s390x_snapshot_remove(machines)                        
-                }
-                echo "Adding machines: ${machines}"
-                s390x_add_machine(machines)
             }
         }
     }
