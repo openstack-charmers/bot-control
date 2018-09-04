@@ -106,15 +106,17 @@ node("${SLAVE_NODE_NAME}") {
                 }
             }
         stage('Wait for juju to be installed') {
-            waitUntil {
-                try {
-                    sh "ls -lart /usr/bin/juju"
-                    sh "hash -r ; juju --version"
-                    return true
-                } catch (error) {
-                    echo "Error checking juju: ${error} - snap may still be installing"
-                    sleep(60)
-                    return false
+            timeout(30) {
+                waitUntil {
+                    try {
+                        sh "ls -lart /usr/bin/juju"
+                        sh "hash -r ; juju --version"
+                        return true
+                    } catch (error) {
+                        echo "Error checking juju: ${error} - snap may still be installing"
+                        sleep(60)
+                        return false
+                    }
                 }
             }
         }
