@@ -214,7 +214,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                         }
                     }
                     machines = params.S390X_NODES.split(',')
-                    if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]" && params.RELEASE_MACHINES && ! MACHINES_RELEASED ) {
+                    if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]" && params.RELEASE_MACHINES ) {
                         echo "Attempting to restore and recreate LVM snapshot for ${machines}"
                         for (int i = 0; i < machines.size(); i++ ) { 
                             s390x_snapshot_reset(machines[i])           
