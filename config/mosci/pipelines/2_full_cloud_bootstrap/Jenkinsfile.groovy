@@ -316,6 +316,7 @@ node(params.SLAVE_NODE_NAME) {
                     }
                 }
             }
+            echo "Exited bootstrap timeout block"
         }
         stage('Override controller config') {
             if ( params.OVERRIDE_CONTROLLER_CONFIG != "" ) {
@@ -365,6 +366,7 @@ node(params.SLAVE_NODE_NAME) {
                     echo "Adding machines: ${machines}"
                     s390x_add_machine(machines)
                 }
+                echo "Exited add lpar timeout block"
             }
         }
     }
