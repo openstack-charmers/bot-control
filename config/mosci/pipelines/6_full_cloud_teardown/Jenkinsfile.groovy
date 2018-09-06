@@ -84,7 +84,7 @@ def s390x_snapshot_create(snapshot_machine) {
         }
 }
 
-if ( "${params.ARCH}".contains("s390x") ) { 
+if ( "${params.ARCH}".contains("s390x") && ! params.OVERCLOUD_DEPLOY ) { 
         echo "s390x arch, not maas"
         CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}"
         MODEL_NAME=CONTROLLER_NAME

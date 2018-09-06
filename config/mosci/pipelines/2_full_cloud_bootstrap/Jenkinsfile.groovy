@@ -138,12 +138,47 @@ def s390x_add_machine(add_machines) {
                     echo "${add_machines[i]} already in model, skipping" 
                     return true
                 }
+                check_retries = 0
+                waitUntil {
+                    if ( check_retries == 1 ) {
+                        echo "Already rebooted ${add_machines[i]}, skipping"
+                        return true
+                    }
+                    try {
+                        def check_snap_root = sh (
+                            script: "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${add_machines[i]} \"sudo lvs -a|grep snap-root\"",
+                            returnStatus: true
+                        )
+                        if ( check_snap_root == 255 ) {
+                            echo "SSH problem, exitcode: ${check_snap_root}, trying again"
+                            sleep(60)
+                            return false
+                        } else if ( check_snap_root == 1 ) {
+                            try {
+                                check_retries = 1
+                                sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${add_machines[i]} \"sudo reboot\""
+                            } catch (error) {
+                                echo "Handling ssh reboot error code: ${error}"
+                            }
+                            echo "Waiting for reboot"
+                            sleep(60)
+                            return false
+                        } else if ( check_snap_root == 0 ) { 
+                            echo "snap-root found on ${add_machines[i]}"
+                            return true
+                        }
+                    } catch (error_two) {
+                        echo "Machine not ready for SSH snap-root exists check, waiting and trying again: ${error_two}"
+                        sleep(120)
+                        return false
+                    }
+                } 
                 def exitcode = sh (
                     script: "#!/bin/bash \nset -o pipefail ; juju add-machine ssh:ubuntu@${add_machines[i]} --debug 2>&1 | tee add_machines",
                     returnStatus: true
                     )
                 if ( exitcode == 0 ) {
-                    echo "exitcode ok is ${exitcode}"
+                    //echo "exitcode ok is ${exitcode}"
                     return true
                 } else {
                     error = readFile('add_machines').trim()
