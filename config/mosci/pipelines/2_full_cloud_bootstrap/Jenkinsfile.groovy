@@ -3,6 +3,16 @@ if ( params.S390X_NODES == null || params.S390X_NODES == "none") {
 } else {
     S390X_NODES = params.S390X_NODES
 }
+
+def s390x_rm_swift_img(reset_machine) {
+    echo "Cleaning /mnt/swift/*"
+    try {
+        sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${reset_machine} \"rm -rf /mnt/swift/*\""
+    } catch (error) {
+        echo "Erroring with rm -rf /mnt/swift/*: ${error}"
+    }
+}
+
 def s390x_snapshot_reset(reset_machine) {
         echo "Attempting to restore an LVM snapshot. If we do not find one, we will create one."
         dir("${env.HOME}/tools/openstack-charm-testing/") {
@@ -186,6 +196,7 @@ def s390x_add_machine(add_machines) {
                         echo "exitcode already provisioned is ${exitcode}, PRE_RELEASE_MACHINES = ${PRE_RELEASE_MACHINES}"
                         if ( PRE_RELEASE_MACHINES == 'true' ) {
                             echo "Machine is already provisioned, PRE_RELEASE_MACHINES is true, releasing..."
+                            s390x_rm_swift_img(add_machines[i])
                             def mac_res = s390x_snapshot_reset(add_machines[i])
                             if ( ! mac_res ) { return true }
                                 return false

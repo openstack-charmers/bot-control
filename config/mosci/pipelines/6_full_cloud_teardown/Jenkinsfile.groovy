@@ -6,6 +6,15 @@ def nodeNames() {
 
 def names = nodeNames()
 
+def s390x_rm_swift_img(reset_machine) {
+    echo "Cleaning /mnt/swift/*"
+    try {
+        sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${reset_machine} \"rm -rf /mnt/swift/*\""
+    } catch (error) {
+        echo "Erroring with rm -rf /mnt/swift/*: ${error}"
+    }
+}
+
 def s390x_snapshot_reset(reset_machine) {
         echo "Attempting to restore an LVM snapshot. If we do not find one, we will create one."
         dir("${env.HOME}/tools/openstack-charm-testing/") {
@@ -217,6 +226,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                     if ( machines[0] != "none" && machines[0] != "" && machines[0] != "[]" && params.RELEASE_MACHINES ) {
                         echo "Attempting to restore and recreate LVM snapshot for ${machines}"
                         for (int i = 0; i < machines.size(); i++ ) { 
+                            s390x_rm_swift_img(machines[i])
                             s390x_snapshot_reset(machines[i])           
                             }
                         }
