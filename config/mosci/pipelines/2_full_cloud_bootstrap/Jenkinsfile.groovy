@@ -7,7 +7,7 @@ if ( params.S390X_NODES == null || params.S390X_NODES == "none") {
 def s390x_rm_swift_img(reset_machine) {
     echo "Cleaning /mnt/swift/*"
     try {
-        sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${reset_machine} \"rm -rf /mnt/swift/*\""
+        sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${reset_machine} \"sudo rm -rf /mnt/swift/*\""
     } catch (error) {
         echo "Erroring with rm -rf /mnt/swift/*: ${error}"
     }
@@ -189,6 +189,7 @@ def s390x_add_machine(add_machines) {
                     )
                 if ( exitcode == 0 ) {
                     //echo "exitcode ok is ${exitcode}"
+                    s390x_rm_swift_img(add_machines[i])
                     return true
                 } else {
                     error = readFile('add_machines').trim()

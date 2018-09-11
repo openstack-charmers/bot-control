@@ -9,7 +9,7 @@ def names = nodeNames()
 def s390x_rm_swift_img(reset_machine) {
     echo "Cleaning /mnt/swift/*"
     try {
-        sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${reset_machine} \"rm -rf /mnt/swift/*\""
+        sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${reset_machine} \"sudo rm -rf /mnt/swift/*\""
     } catch (error) {
         echo "Erroring with rm -rf /mnt/swift/*: ${error}"
     }
