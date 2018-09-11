@@ -35,7 +35,7 @@ if ( params.CLEANUP_ON_FAILURE ) {
 
 if ( params.OS_RELEASE_NAME == "" ) {
     release = ""
-    releases = ["icehouse", "juno", "kilo", "librety", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "jewel", "luminous", "mimic", "stable"]
+    releases = ["stable", "icehouse", "juno", "kilo", "librety", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "jewel", "luminous", "mimic"]
     echo "Trying to get release from bundle url..."
     for ( a in releases ) {
         if ( params.BUNDLE_URL.contains(a) ) {
@@ -54,7 +54,7 @@ if ( params.OS_RELEASE_NAME == "" ) {
 
 if ( params.DISTRO_NAME == "" ) {
     distro = ""
-    distros = ["trusty", "xenial", "bionic", "cosmic", "stable"]
+    distros = ["stable", "trusty", "xenial", "bionic", "cosmic"]
     echo "Trying to get distro from bundle url..."
     for ( a in distros ) {
         if ( params.BUNDLE_URL.contains(a) ) {
