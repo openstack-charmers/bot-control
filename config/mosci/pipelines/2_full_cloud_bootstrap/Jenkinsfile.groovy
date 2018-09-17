@@ -134,107 +134,109 @@ if ( params.CLOUD_NAME.contains("390")) {
 def s390x_add_machine(add_machines) {
     echo "s390x_add_machine"
     for (int i = 0; i < add_machines.size(); i++ ) { 
-        try {
-            waitUntil {
-                def check_model = sh (
-                    script: "juju status > juju_model",
-                    returnStatus: true
-                )
-                if ( check_model != 0 ) {
-                    echo "Something went wrong getting juju status: ${check_model}"
-                }
-                juju_model = readFile('juju_model').trim()
-                if ( juju_model.contains("${add_machines[i]}") ) {
-                    echo "${add_machines[i]} already in model, skipping" 
-                    return true
-                }
-                check_retries = 0
+        timeout(240) {
+            try {
                 waitUntil {
-                    if ( check_retries == 1 ) {
-                        echo "Already rebooted ${add_machines[i]}, skipping"
+                    def check_model = sh (
+                        script: "juju status > juju_model",
+                        returnStatus: true
+                    )
+                    if ( check_model != 0 ) {
+                        echo "Something went wrong getting juju status: ${check_model}"
+                    }
+                    juju_model = readFile('juju_model').trim()
+                    if ( juju_model.contains("${add_machines[i]}") ) {
+                        echo "${add_machines[i]} already in model, skipping" 
                         return true
                     }
-                    try {
-                        def check_snap_root = sh (
-                            script: "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${add_machines[i]} \"sudo lvs -a|grep snap-root\"",
-                            returnStatus: true
-                        )
-                        if ( check_snap_root == 255 ) {
-                            echo "SSH problem, exitcode: ${check_snap_root}, trying again"
-                            sleep(60)
-                            return false
-                        } else if ( check_snap_root == 1 ) {
-                            try {
-                                check_retries = 1
-                                sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${add_machines[i]} \"sudo reboot\""
-                            } catch (error) {
-                                echo "Handling ssh reboot error code: ${error}"
-                            }
-                            echo "Waiting for reboot"
-                            sleep(60)
-                            return false
-                        } else if ( check_snap_root == 0 ) { 
-                            echo "snap-root found on ${add_machines[i]}"
+                    check_retries = 0
+                    waitUntil {
+                        if ( check_retries == 1 ) {
+                            echo "Already rebooted ${add_machines[i]}, skipping"
                             return true
                         }
-                    } catch (error_two) {
-                        echo "Machine not ready for SSH snap-root exists check, waiting and trying again: ${error_two}"
-                        sleep(120)
-                        return false
-                    }
-                } 
-                def exitcode = sh (
-                    script: "#!/bin/bash \nset -o pipefail ; juju add-machine ssh:ubuntu@${add_machines[i]} --debug 2>&1 | tee add_machines",
-                    returnStatus: true
-                    )
-                if ( exitcode == 0 ) {
-                    //echo "exitcode ok is ${exitcode}"
-                    s390x_rm_swift_img(add_machines[i])
-                    return true
-                } else {
-                    error = readFile('add_machines').trim()
-                    if ( error.contains("ERROR machine is already provisioned" ) ) {
-                        echo "exitcode already provisioned is ${exitcode}, PRE_RELEASE_MACHINES = ${PRE_RELEASE_MACHINES}"
-                        if ( PRE_RELEASE_MACHINES == 'true' ) {
-                            echo "Machine is already provisioned, PRE_RELEASE_MACHINES is true, releasing..."
-                            s390x_rm_swift_img(add_machines[i])
-                            def mac_res = s390x_snapshot_reset(add_machines[i])
-                            if ( ! mac_res ) { return true }
+                        try {
+                            def check_snap_root = sh (
+                                script: "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${add_machines[i]} \"sudo lvs -a|grep snap-root\"",
+                                returnStatus: true
+                            )
+                            if ( check_snap_root == 255 ) {
+                                echo "SSH problem, exitcode: ${check_snap_root}, trying again"
+                                sleep(60)
                                 return false
-                            } else {
-                                echo "Machine is already provisioned, but PRE_RELEASE_MACHINES is not true. Aborting."
-                                currentBuild.result = 'FAILED'
-                                error "FAILED"
+                            } else if ( check_snap_root == 1 ) {
+                                try {
+                                    check_retries = 1
+                                    sh "ssh -i ~/.ssh/id_rsa_mosci ubuntu@${add_machines[i]} \"sudo reboot\""
+                                } catch (error) {
+                                    echo "Handling ssh reboot error code: ${error}"
+                                }
+                                echo "Waiting for reboot"
+                                sleep(60)
+                                return false
+                            } else if ( check_snap_root == 0 ) { 
+                                echo "snap-root found on ${add_machines[i]}"
                                 return true
-                            } 
-                    } else if ( error.contains("Host key verification failed") ) {
-                        currentBuild.result = 'FAILURE'
-                        error "Problem with host key, aborting build as out of order machines may cause bundle issues"
-                    } else if ( error.contains("No route to host") || error.contains("Connection refused") ) {
-                        echo "${add_machines[i]} is not ready, waiting before retrying" 
-                        echo "max retries = infinite"
-                        sleep(120)
-                        return false
-                    } else if ( error.contains("Permission denied") ) {
-                        echo "Permission denied, probably rebuilding from preseed, retrying"
-                        sleep(120)
-                        return false
-                    } else if ( error.contains("Connection timed out") ) {
-                        echo "Connection timed out, perhaps redeploying?"
-                        sleep(120)
-                        return false
+                            }
+                        } catch (error_two) {
+                            echo "Machine not ready for SSH snap-root exists check, waiting and trying again: ${error_two}"
+                            sleep(120)
+                            return false
+                        }
+                    } 
+                    def exitcode = sh (
+                        script: "#!/bin/bash \nset -o pipefail ; juju add-machine ssh:ubuntu@${add_machines[i]} --debug 2>&1 | tee add_machines",
+                        returnStatus: true
+                        )
+                    if ( exitcode == 0 ) {
+                        //echo "exitcode ok is ${exitcode}"
+                        s390x_rm_swift_img(add_machines[i])
+                        return true
+                    } else {
+                        error = readFile('add_machines').trim()
+                        if ( error.contains("ERROR machine is already provisioned" ) ) {
+                            echo "exitcode already provisioned is ${exitcode}, PRE_RELEASE_MACHINES = ${PRE_RELEASE_MACHINES}"
+                            if ( PRE_RELEASE_MACHINES == 'true' ) {
+                                echo "Machine is already provisioned, PRE_RELEASE_MACHINES is true, releasing..."
+                                s390x_rm_swift_img(add_machines[i])
+                                def mac_res = s390x_snapshot_reset(add_machines[i])
+                                if ( ! mac_res ) { return true }
+                                    return false
+                                } else {
+                                    echo "Machine is already provisioned, but PRE_RELEASE_MACHINES is not true. Aborting."
+                                    currentBuild.result = 'FAILED'
+                                    error "FAILED"
+                                    return true
+                                } 
+                        } else if ( error.contains("Host key verification failed") ) {
+                            currentBuild.result = 'FAILURE'
+                            error "Problem with host key, aborting build as out of order machines may cause bundle issues"
+                        } else if ( error.contains("No route to host") || error.contains("Connection refused") ) {
+                            echo "${add_machines[i]} is not ready, waiting before retrying" 
+                            echo "max retries = infinite"
+                            sleep(120)
+                            return false
+                        } else if ( error.contains("Permission denied") ) {
+                            echo "Permission denied, probably rebuilding from preseed, retrying"
+                            sleep(120)
+                            return false
+                        } else if ( error.contains("Connection timed out") ) {
+                            echo "Connection timed out, perhaps redeploying?"
+                            sleep(120)
+                            return false
+                        }
+                    echo "some other error with attempting to add ${add_machines[i]} - perhaps redeploying?"
+                    echo "exitcode is ${exitcode}"
+                    currentBuild.result = 'FAILURE'
+                    error "unhandled exception"
+                    return true 
                     }
-                echo "some other error with attempting to add ${add_machines[i]} - perhaps redeploying?"
-                echo "exitcode is ${exitcode}"
-                currentBuild.result = 'FAILURE'
-                error "unhandled exception"
-                return true 
                 }
+            } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException error) {
+                echo "Timed out attempting to add nodes, failing build."
+                currentBuild.result = 'FAILURE'
+                error "FAILED"
             }
-        } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException error) {
-            echo "Timed out attempting to add nodes, failing build."
-            currentBuild.result = 'FAILURE'
-            error "FAILED"
         }
     }
 }
