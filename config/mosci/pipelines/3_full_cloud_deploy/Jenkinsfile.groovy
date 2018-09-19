@@ -195,6 +195,21 @@ node("${SLAVE_NODE_NAME}") {
                 echo "This is not an openstack deployment or is s390x, not configuring neutron gateway dataport"
             }
         }
+        stage('Executing post deploy commands') {
+            if ( params.POST_DEPLOY_CMD != "" ) {
+                try {
+                    PDCMD = sh (
+                        script: params.POST_DEPLOY_CMD,
+                        returnStdout: true
+                    )
+                echo "POST_DEPLOY_CMD: ${PDCMD}"
+                } catch (error) {
+                    echo "Error running POST_DEPLOY_CMD: ${error}" 
+                } 
+            } else {
+                echo "POST_DEPLOY_CMD undefined, skipping"
+            }
+        }
         stage('Wait for deploy to complete') {
             echo "Waiting for deployment to complete..."
             sleep(60)
