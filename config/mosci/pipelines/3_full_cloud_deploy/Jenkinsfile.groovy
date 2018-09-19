@@ -197,11 +197,12 @@ node("${SLAVE_NODE_NAME}") {
         }
         stage('Executing post deploy commands') {
             if ( params.POST_DEPLOY_CMD != "" ) {
+                echo "Executing: ${params.POST_DEPLOY_CMD}"
                 try {
                     PDCMD = sh (
                         script: params.POST_DEPLOY_CMD,
                         returnStdout: true
-                    )
+                    ).trim()
                 echo "POST_DEPLOY_CMD: ${PDCMD}"
                 } catch (error) {
                     echo "Error running POST_DEPLOY_CMD: ${error}" 
