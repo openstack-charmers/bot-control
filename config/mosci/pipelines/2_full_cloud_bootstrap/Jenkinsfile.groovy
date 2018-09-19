@@ -134,7 +134,7 @@ if ( params.CLOUD_NAME.contains("390")) {
 def s390x_add_machine(add_machines) {
     echo "s390x_add_machine"
     for (int i = 0; i < add_machines.size(); i++ ) { 
-        timeout(240) {
+        timeout(60) {
             try {
                 waitUntil {
                     def check_model = sh (
