@@ -41,7 +41,12 @@ node(params.SLAVE_NODE_NAME) {
         stage("Run tempest test") {
             env.HTTP_PROXY="http://squid.internal:3128"
             env.HTTPS_PROXY="http://squid.internal:3128"
-            dir("${env.HOME}/tools/openstack-charm-testing/tempest") {
+            if ( params.ARCH == "s390x" ) {
+                tempestdir = "${env.HOME}/tools/zopenstack/tools/2-configure/tempest"
+            } else {
+                tempestdir = "${env.HOME}/tools/openstack-charm-testing/tempest"
+            }
+            dir(tempestdir) {
             if ( params.TEST_TYPE == "all-plugin" ) {
                 for ( i = 0 ; i < params.TEST_CLASSES.size() ; i++ ) {
                     cmd = "all-plugin -- ${params.TEST_CLASSES[i]}"
