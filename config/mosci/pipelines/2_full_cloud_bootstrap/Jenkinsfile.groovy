@@ -162,7 +162,7 @@ def s390x_add_machine(add_machines) {
                             )
                             if ( check_snap_root == 255 ) {
                                 echo "SSH problem, exitcode: ${check_snap_root}, trying again"
-                                sleep(60)
+                                sleep(300)
                                 return false
                             } else if ( check_snap_root == 1 ) {
                                 try {
