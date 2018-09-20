@@ -9,7 +9,7 @@ if ("${params.SLAVE_NODE_NAME}" == '') {
 
 // Simple test to launch a single openstack instance
 
-if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' ) {
+if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='virtual' ) {
                 CLOUD_NAME="${CLOUD_NAME}-maas"
 }
 

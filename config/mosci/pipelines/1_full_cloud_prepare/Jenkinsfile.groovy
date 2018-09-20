@@ -6,7 +6,7 @@ def nodeNames() {
 
 def names = nodeNames()
 
-if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' ) {
+if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='virtual' ) {
                 CLOUD_NAME="${CLOUD_NAME}-maas"
 }
 
@@ -147,7 +147,9 @@ node("${SLAVE_NODE_NAME}") {
                 } else if ( SHORT_NAME == "icarus" ) {
                         echo "short name is icarus"
                         MAAS_API_KEY = params.ICARUS_API_KEY
-                        }
+                } else if ( SHORT_NAME == "virtual" ) {
+                        echo "short name is virtual"
+                        MAAS_API_KEY = params.VIRTUAL_API_KEY
                 }
             if ("${CHECK_AUTH}" != '') {
                 sh "pwd"
@@ -163,7 +165,7 @@ node("${SLAVE_NODE_NAME}") {
                     def MAAS_API_KEY="${get_maas_api_key}"
                 }
                 dir("${env.HOME}/tools/charm-test-infra") {
-                    sh "sed -i 's/{{ maas_oauth_ruxton }}/${MAAS_API_KEY}/g' juju-configs/credentials.yaml"
+                    sh "sed -i 's/{{ maas_oauth_${SHORT_NAME}}}/${MAAS_API_KEY}/g' juju-configs/credentials.yaml"
                     sh "cat juju-configs/credentials.yaml"
                 }
                 dir("${env.HOME}/cloud-credentials/") {

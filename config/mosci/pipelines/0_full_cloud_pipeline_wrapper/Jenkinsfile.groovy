@@ -131,6 +131,8 @@ def resourceCheck(arch, required) {
                 MAAS_API_KEY = params.RUXTON_API_KEY
         } else if ( params.CLOUD_NAME.contains("icarus") ) {
                 MAAS_API_KEY = params.ICARUS_API_KEY
+        } else if ( params.CLOUD_NAME.contains("virtual") ) {
+                MAAS_API_KEY = params.VIRTUAL_API_KEY
         }
         primary_tag = TAGS[0]
         additional_tags = TAGS.join(",")

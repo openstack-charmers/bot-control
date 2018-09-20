@@ -122,7 +122,7 @@ else {
 
 echo "BOOTSTRAP_CONSTRAINTS=${BOOTSTRAP_CONSTRAINTS}"
 
-if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' ) {
+if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' || params.CLOUD_NAME=='virtual' ) {
                 CLOUD_NAME="${params.CLOUD_NAME}-maas"
                 env.CLOUD_NAME="${params.CLOUD_NAME}-maas"
                 MAAS=true
@@ -269,7 +269,9 @@ node(params.SLAVE_NODE_NAME) {
                             MAAS_API_KEY = params.RUXTON_API_KEY 
                     } else if ( params.CLOUD_NAME.contains("icarus") ) {
                             MAAS_API_KEY =params.ICARUS_API_KEY
-                           }
+                    } else if ( params.CLOUD_NAME.contains("virtual") ) {
+                            MAAS_API_KEY = params.VIRTUAL_API_KEY
+                    }
                     primary_tag = TAGS[0]
                     additional_tags = TAGS.join(",")
                     if ( params.PRE_RELEASE_MACHINES ) {

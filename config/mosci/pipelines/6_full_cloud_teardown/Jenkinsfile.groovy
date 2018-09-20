@@ -239,7 +239,9 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                 MAAS_API_KEY = RUXTON_API_KEY 
                         } else if ( params.CLOUD_NAME == 'icarus' ) {
                                 MAAS_API_KEY = ICARUS_API_KEY
-                               }
+                        } else if ( params.CLOUD_NAME == 'virtual' ) {
+                                MAAS_API_KEY = VIRTUAL_API_KEY
+                        }
                         primary_tag = TAGS[0]
                         additional_tags = TAGS.join(",")
                         stage("MAAS release nodes") {

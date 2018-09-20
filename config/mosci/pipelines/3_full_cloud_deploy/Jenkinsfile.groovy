@@ -9,7 +9,7 @@ if ( params.OVERCLOUD_DEPLOY == true ) {
     CONTROLLER_NAME=params.CONTROLLER_NAME
     MODEL_NAME=params.MODEL_NAME
 } else {
-    if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' ) {
+    if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' || params.CLOUD_NAME=='virtual') {
         CLOUD_NAME="${params.CLOUD_NAME}-maas"
     } else { 
         CLOUD_NAME=params.CLOUD_NAME 
@@ -25,6 +25,8 @@ if ( params.CLOUD_NAME.contains("ruxton") ) {
     MAAS_API_KEY = params.RUXTON_API_KEY
 } else if ( params.CLOUD_NAME.contains("icarus") ) {
     MAAS_API_KEY = params.ICARUS_API_KEY
+} else if ( params.CLOUD_NAME.contains("virtual") ) {
+    MAAS_API_KEY = params.VIRTUAL_API_KEY
 }
 
 
