@@ -92,7 +92,7 @@ node("${SLAVE_NODE_NAME}") {
                 git url: "${params.OCT_GIT_REPO}", branch: "${params.OCT_GIT_BRANCH}"
             }
             dir("${env.HOME}/tools/juju-wait/") {
-                git url: "https://git.launchpad.net/juju-wait" }
+                git url: "https://git.launchpad.net/juju-wait" 
             }
             dir("${env.HOME}/logs/juju/") {
                 sh "touch .placeholder"
@@ -105,6 +105,7 @@ node("${SLAVE_NODE_NAME}") {
                     git url: "https://github.com/ubuntu-openstack/zopenstack.git"
                 }
             }
+        }
         stage('Wait for juju to be installed') {
             timeout(30) {
                 waitUntil {
@@ -120,59 +121,60 @@ node("${SLAVE_NODE_NAME}") {
                 }
             }
         }
-    if ( CLOUD_NAME.contains("maas") ) {
-        stage('Check MAAS credentials') {
-            dir("${env.HOME}/cloud-credentials/") {
-                echo "Using credentials file"
-                if ( fileExists('./credentials.yaml') ) {
-                    if ( fileExists("${env.HOME}/tools/charm-test-infra/") ) {
-                        sh "cp ./credentials.yaml ${env.HOME}/tools/charm-test-infra/juju-configs/" 
+        if ( CLOUD_NAME.contains("maas") ) {
+            stage('Check MAAS credentials') {
+                dir("${env.HOME}/cloud-credentials/") {
+                    echo "Using credentials file"
+                    if ( fileExists('./credentials.yaml') ) {
+                        if ( fileExists("${env.HOME}/tools/charm-test-infra/") ) {
+                            sh "cp ./credentials.yaml ${env.HOME}/tools/charm-test-infra/juju-configs/" 
+                        }
                     }
                 }
-            }
-            dir("${env.HOME}/tools/charm-test-infra") {
-            SHORT_NAME=CLOUD_NAME.split('-')[0]
-            try { CHECK_AUTH=sh (
-                    script: "grep maas_oauth_${SHORT_NAME} juju-configs/credentials.yaml",
-                    returnStdout: true
-                    ).trim()
-            }
-            catch(all) {
-                CHECK_AUTH=''
-            }
-            echo "${CHECK_AUTH}"
-            if ( SHORT_NAME == "ruxton" ) {
-                echo "short name is ruxton"
-                MAAS_API_KEY = params.RUXTON_API_KEY
-                } else if ( SHORT_NAME == "icarus" ) {
-                        echo "short name is icarus"
-                        MAAS_API_KEY = params.ICARUS_API_KEY
-                } else if ( SHORT_NAME == "virtual" ) {
-                        echo "short name is virtual"
-                        MAAS_API_KEY = params.VIRTUAL_API_KEY
-                }
-            if ("${CHECK_AUTH}" != '') {
-                sh "pwd"
-                if ( "${MAAS_API_KEY}" != '') {
-                    echo "FOUND MAAS API KEY"
-                }
-                else {
-                    def get_maas_api_key = input(
-                        id: 'get_maas_api_key', message: 'MAAS API KEY for ${CLOUD_NAME}', parameters: [
-                        [$class: 'TextParameterDefinition', defaultValue: 'secret', description: 'API KEY', name: 'API_KEY']])
-                    echo ("API KEY: "+get_maas_api_key)
-                    echo "DID NOT FIND MAAS API KEY"
-                    def MAAS_API_KEY="${get_maas_api_key}"
-                }
                 dir("${env.HOME}/tools/charm-test-infra") {
-                    sh "sed -i 's/{{ maas_oauth_${SHORT_NAME}}}/${MAAS_API_KEY}/g' juju-configs/credentials.yaml"
-                    sh "cat juju-configs/credentials.yaml"
-                }
-                dir("${env.HOME}/cloud-credentials/") {
-                    sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/credentials.yaml ."
+                    SHORT_NAME=CLOUD_NAME.split('-')[0]
+                    try { CHECK_AUTH=sh (
+                            script: "grep maas_oauth_${SHORT_NAME} juju-configs/credentials.yaml",
+                            returnStdout: true
+                            ).trim()
+                    }
+                    catch(all) {
+                        CHECK_AUTH=''
+                    }
+                    echo "${CHECK_AUTH}"
+                    if ( SHORT_NAME == "ruxton" ) {
+                        echo "short name is ruxton"
+                        MAAS_API_KEY = params.RUXTON_API_KEY
+                    } else if ( SHORT_NAME == "icarus" ) {
+                                echo "short name is icarus"
+                                MAAS_API_KEY = params.ICARUS_API_KEY
+                    } else if ( SHORT_NAME == "virtual" ) {
+                                echo "short name is virtual"
+                                MAAS_API_KEY = params.VIRTUAL_API_KEY
+                    }
+                    if ("${CHECK_AUTH}" != '') {
+                        sh "pwd"
+                        if ( "${MAAS_API_KEY}" != '') {
+                            echo "FOUND MAAS API KEY"
+                        } else {
+                            def get_maas_api_key = input(
+                                id: 'get_maas_api_key', message: 'MAAS API KEY for ${CLOUD_NAME}', parameters: [
+                                [$class: 'TextParameterDefinition', defaultValue: 'secret', description: 'API KEY', name: 'API_KEY']]
+                            )
+                            echo ("API KEY: " + get_maas_api_key)
+                            echo "DID NOT FIND MAAS API KEY"
+                            def MAAS_API_KEY="${get_maas_api_key}"
+                        }
+                    }
+                    dir("${env.HOME}/tools/charm-test-infra") {
+                        sh "sed -i 's/{{ maas_oauth_ruxton }}/${MAAS_API_KEY}/g' juju-configs/credentials.yaml"
+                        sh "cat juju-configs/credentials.yaml"
+                    }
+                    dir("${env.HOME}/cloud-credentials/") {
+                        sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/credentials.yaml ."
+                    }
                 }
             }
         }
     }
-}
 }
