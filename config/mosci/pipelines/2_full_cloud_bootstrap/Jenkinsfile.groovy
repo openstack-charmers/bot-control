@@ -178,10 +178,11 @@ def s390x_add_machine(add_machines) {
                                 echo "snap-root found on ${add_machines[i]}"
                                 return true
                             }
-                        } catch (error_two) {
-                            echo "Machine not ready for SSH snap-root exists check, waiting and trying again: ${error_two}"
-                            sleep(120)
-                            return false
+                        } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException error_flow) {
+                            echo "Timed out attempting to add node, failing build."
+                            currentBuild.result = 'FAILURE'
+                            error "FAILED"
+                            return true
                         }
                     } 
                     def exitcode = sh (
