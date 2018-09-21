@@ -167,7 +167,7 @@ node("${SLAVE_NODE_NAME}") {
                         }
                     }
                     dir("${env.HOME}/tools/charm-test-infra") {
-                        sh "sed -i 's/{{ maas_oauth_ruxton }}/${MAAS_API_KEY}/g' juju-configs/credentials.yaml"
+                        sh "sed -i 's/{{ maas_oauth_${SHORT_NAME} }}/${MAAS_API_KEY}/g' juju-configs/credentials.yaml"
                         sh "cat juju-configs/credentials.yaml"
                     }
                     dir("${env.HOME}/cloud-credentials/") {
