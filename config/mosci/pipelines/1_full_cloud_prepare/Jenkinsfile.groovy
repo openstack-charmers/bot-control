@@ -6,7 +6,7 @@ def nodeNames() {
 
 def names = nodeNames()
 
-if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='virtual' ) {
+if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='amontons' ) {
                 CLOUD_NAME="${CLOUD_NAME}-maas"
 }
 
@@ -148,9 +148,9 @@ node("${SLAVE_NODE_NAME}") {
                     } else if ( SHORT_NAME == "icarus" ) {
                                 echo "short name is icarus"
                                 MAAS_API_KEY = params.ICARUS_API_KEY
-                    } else if ( SHORT_NAME == "virtual" ) {
-                                echo "short name is virtual"
-                                MAAS_API_KEY = params.VIRTUAL_API_KEY
+                    } else if ( SHORT_NAME == "amontons" ) {
+                                echo "short name is amontons"
+                                MAAS_API_KEY = params.AMONTONS_API_KEY
                     }
                     if ("${CHECK_AUTH}" != '') {
                         sh "pwd"

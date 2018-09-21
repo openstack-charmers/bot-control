@@ -5,7 +5,7 @@ if ("${params.SLAVE_NODE_NAME}" == '') {
 
 // Simple test to check ceph status
 
-if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='virtual' ) {
+if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='amontons' ) {
                 CLOUD_NAME="${CLOUD_NAME}-maas"
 }
 

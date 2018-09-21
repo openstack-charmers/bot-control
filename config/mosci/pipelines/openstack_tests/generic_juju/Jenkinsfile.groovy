@@ -6,7 +6,7 @@ if ("${params.SLAVE_NODE_NAME}" == '') {
     echo "SLAVE_NODE_NAME must be defined, cannot configure on new slave"
     currentBuild.result = 'FAILURE'
 }
-if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='virtual' ) {
+if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='amontons' ) {
                 CLOUD_NAME="${CLOUD_NAME}-maas"
 }
 
