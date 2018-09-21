@@ -116,8 +116,8 @@ node("${SLAVE_NODE_NAME}") {
                 writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
             } 
             if ( params.BUNDLE_OVERLAYS != '' ) {
-                echo "Overlays found: ${params.BUNDLE_OVERLAYS.split(',')}"
-                OVERLAYS = params.BUNDLE_OVERLAYS.split(',')
+                OVERLAYS = params.BUNDLE_OVERLAYS.split(',|\n')
+                echo "Overlays found: ${OVERLAYS}"
                 OVERLAY_COUNT = OVERLAYS.size()
                 for ( int i = 0 ; i < OVERLAY_COUNT ; i++ ) { 
                         filename = OVERLAYS[i].split('/').last()

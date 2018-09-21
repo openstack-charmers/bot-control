@@ -305,7 +305,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
                          [$class: 'StringParameterValue', name: 'NEUTRON_DATAPORT', value: NEUTRON_DATAPORT],
                          [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: "${params.BUNDLE_URL}"],
-                         [$class: 'StringParameterValue', name: 'BUNDLE_OVERLAYS', value: "${params.BUNDLE_OVERLAYS}"],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_OVERLAYS', value: "${params.BUNDLE_OVERLAYS.replaceAll('\n', ',')}"],
                          [$class: 'StringParameterValue', name: 'BUNDLE_PASTE', value: params.BUNDLE_PASTE],
                          [$class: 'StringParameterValue', name: 'DEPLOY_TIMEOUT', value: params.DEPLOY_TIMEOUT],
                          [$class: 'StringParameterValue', name: 'OVERRIDE_BUNDLE_CONFIG', value: params.OVERRIDE_BUNDLE_CONFIG]]
