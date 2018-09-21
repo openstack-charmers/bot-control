@@ -88,7 +88,7 @@ if ( params.BUNDLE_TYPE == "" ) {
         bundletype = "unknown"
         }
     echo "Bundle Type: ${bundletype}"
-} else { distro = params.BUNDLE_TYPE }
+} else { bundletype = params.BUNDLE_TYPE }
 
 s390xcheck = ["${params.CLOUD_NAME}", "${params.ARCH}"]
 if ( s390xcheck.any { it.contains("390") } ) {
@@ -305,6 +305,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
                          [$class: 'StringParameterValue', name: 'NEUTRON_DATAPORT', value: NEUTRON_DATAPORT],
                          [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: "${params.BUNDLE_URL}"],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_OVERLAYS', value: "${params.BUNDLE_OVERLAYS}"],
                          [$class: 'StringParameterValue', name: 'BUNDLE_PASTE', value: params.BUNDLE_PASTE],
                          [$class: 'StringParameterValue', name: 'DEPLOY_TIMEOUT', value: params.DEPLOY_TIMEOUT],
                          [$class: 'StringParameterValue', name: 'OVERRIDE_BUNDLE_CONFIG', value: params.OVERRIDE_BUNDLE_CONFIG]]
