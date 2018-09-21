@@ -45,9 +45,9 @@ node(params.SLAVE_NODE_NAME) {
             sh "${SRCCMD} ; openstack catalog list ; openstack image list ; sleep 60 ; openstack network list"
         }
         stage("Launch the instance") {
-            echo "Getting image name to launch instance with:"
+            echo "Getting ${params.GUEST_IMAGE} image name to launch instance with:"
             try {
-                CMD = "${SRCCMD} ; openstack image list | grep -v cirros|awk /active/'{print \$4}'"
+                CMD = "${SRCCMD} ; openstack image list | grep ${params.GUEST_IMAGE} | awk /active/'{print \$4}'"
                 IMAGE_NAME = sh (
                 script: CMD,
                 returnStdout: true
