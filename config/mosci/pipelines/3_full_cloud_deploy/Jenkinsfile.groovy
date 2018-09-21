@@ -110,18 +110,19 @@ node("${SLAVE_NODE_NAME}") {
             try {
                 sh "curl ${params.BUNDLE_URL} -o bundle.yaml"
                 sh "cat bundle.yaml"
-                return true
+                // return true
             } catch (error) {
                 echo "Full bundle paste:"
                 writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
             } 
             if ( params.BUNDLE_OVERLAYS != '' ) {
-                OVERLAY_COUNT = OVERLAYS.size
-                OVERLAYS = params.BUNDLE_OVERLAYS.split('\n')
+                echo "Overlays found: ${params.BUNDLE_OVERLAYS.split(',')}"
+                OVERLAYS = params.BUNDLE_OVERLAYS.split(',')
+                OVERLAY_COUNT = OVERLAYS.size()
                 for ( int i = 0 ; i < OVERLAY_COUNT ; i++ ) { 
                         filename = OVERLAYS[i].split('/').last()
-                        curl OVERLAYS[i] -o overlay_${i}.yaml
-                        OVERLAY_STRING = OVERLAY_STRING + "--overlay overlay_${i}.yaml"
+                        sh "curl ${OVERLAYS[i]} -o overlay_${i}.yaml"
+                        OVERLAY_STRING = OVERLAY_STRING + "--overlay overlay_${i}.yaml "
                 }
             }
         }
