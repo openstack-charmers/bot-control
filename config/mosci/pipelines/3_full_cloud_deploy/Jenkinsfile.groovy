@@ -103,6 +103,7 @@ node("${SLAVE_NODE_NAME}") {
             echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
             echo "S390X: ${S390X}"
             echo "CLOUD_NAME: ${CLOUD_NAME}"
+            OVERLAY_STRING = ""
             if (fileExists('bundle.yaml')) {
                 sh "rm bundle.yaml"
             }
@@ -114,6 +115,15 @@ node("${SLAVE_NODE_NAME}") {
                 echo "Full bundle paste:"
                 writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
             } 
+            if ( params.BUNDLE_OVERLAYS != '' ) {
+                OVERLAY_COUNT = OVERLAYS.size
+                OVERLAYS = params.BUNDLE_OVERLAYS.split('\n')
+                for ( int i = 0 ; i < OVERLAY_COUNT ; i++ ) { 
+                        filename = OVERLAYS[i].split('/').last()
+                        curl OVERLAYS[i] -o overlay_${i}.yaml
+                        OVERLAY_STRING = OVERLAY_STRING + "--overlay overlay_${i}.yaml"
+                }
+            }
         }
         //stage('Validate bundle') {
         //    sh "yamllint bundle.yaml"
@@ -122,7 +132,7 @@ node("${SLAVE_NODE_NAME}") {
         stage('Deploy bundle') {
             waitUntil {
                 try {
-                    sh "juju deploy bundle.yaml --map-machines=existing --model=${CONMOD}"
+                    sh "juju deploy bundle.yaml --map-machines=existing --model=${CONMOD} ${OVERLAY_STRING}"
                     return true
                 } catch (error) {
                     if ( params.MANUAL_JOB == true ) {
