@@ -1,7 +1,7 @@
 if (params.SLAVE_NODE_NAME) {
     specific_slave=params.SLAVE_NODE_NAME
 }
-else if (params.PERSIST_SLAVE) {
+else if (params.PERSIST_SLAVE && ! params.LXD ) {
     specific_slave="${params.SLAVE_LABEL}-${ARCH}-persist"
 } 
 else {
@@ -11,6 +11,22 @@ else {
 if ( params.CLOUD_NAME.contains("390")) {
         S390X=true
 }  else { S390X=false }
+
+if ( params.CLOUD_NAME.contains("ruxton") ) {
+        MAAS_API_KEY = params.RUXTON_API_KEY
+} else if ( params.CLOUD_NAME.contains("icarus") ) {
+        MAAS_API_KEY = params.ICARUS_API_KEY
+} else if ( params.CLOUD_NAME.contains("amontons") ) {
+        MAAS_API_KEY = params.AMONTONS_API_KEY
+}
+
+TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ").minus("tags=").replace(" ", "").split(",")
+primary_tag = TAGS[0]
+additional_tags = TAGS.join(",")
+def maas_api_cmd = ""
+echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${arch}"
+
+
 
 workSpace="full_pipeline-${env.BUILD_ID}"
 
@@ -106,6 +122,13 @@ if ( params.CLOUD_NAME.contains("390") ) {
         MODEL_CONSTRAINTS="arch=s390x"
 }
 
+if ( params.LXD ) {
+    if ( params.NEUTRON_DATAPORT == "" ) {
+        echo "NEUTRON_DATAPORT must be set for LXD deployment - defaulting to br-ex:eth1"
+        NEUTRON_DATAPORT = "br-ex:eth1"  
+    }
+}
+
 /* Throttle the job here.
 
         This job needs to check if other jobs of ARCH are running, and if so, wait until they aren't.
@@ -115,29 +138,25 @@ if ( params.CLOUD_NAME.contains("390") ) {
         So, we can get all builds, and check if there is already a build with ARCH in it. If yes, wait. If no, build.
 
 */        
-node('master') {
+node ('master') {
     stage("[ ${bundletype}: ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME} ]") {
+        configFileProvider(
+            [configFile(fileId: '9e04159f-e485-4c54-9eff-806efa36e1ee', targetLocation: '~/tools/')]
+            ) 
+        { echo hi }
         echo "."
     }
 }
 
 def resourceCheck(arch, required) {
     waitUntil {
-        TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
-        TAGS = TAGS.minus("tags=")
+        /* TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
+        TAGS = TAGS.minus("tags=").replace(" ", "").split(",")
         TAGS = TAGS.replace(" ", "")
         TAGS = TAGS.split(",")
-        if ( params.CLOUD_NAME.contains("ruxton") ) {
-                MAAS_API_KEY = params.RUXTON_API_KEY
-        } else if ( params.CLOUD_NAME.contains("icarus") ) {
-                MAAS_API_KEY = params.ICARUS_API_KEY
-        } else if ( params.CLOUD_NAME.contains("amontons") ) {
-                MAAS_API_KEY = params.AMONTONS_API_KEY
-        }
-        primary_tag = TAGS[0]
         additional_tags = TAGS.join(",")
         def maas_api_cmd = ""
-        echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${arch}"
+        echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${arch}" */
         maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch}"
         if ( primary_tag != additional_tags ) {
             maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
@@ -191,12 +210,17 @@ try {
                         msg = "excluding controller, which is an ${CONTROLLER_ARCH} instance"
                     }
                     echo "${BUNDLE_MACHINES} machines required by bundle.yaml ${msg}"
-                    timeout(params.RESOURCE_CHECK_TIMEOUT.toInteger()) {
-                        if ( CONTROLLER_ARCH != "" ) {
-                            echo "Controller arch. ${CONTROLLER_ARCH} is different to deployment arch. ${params.ARCH}, checking MAAS for free controller machines..."
-                            resourceCheck(CONTROLLER_ARCH, 1)
+                    if ( ! params.LXD ) {
+                        timeout(params.RESOURCE_CHECK_TIMEOUT.toInteger()) {
+                            if ( CONTROLLER_ARCH != "" ) {
+                                echo "Controller arch. ${CONTROLLER_ARCH} is different to deployment arch. ${params.ARCH}, checking MAAS for free controller machines..."
+                                resourceCheck(CONTROLLER_ARCH, 1)
+                            }
+                            resourceCheck(params.ARCH, BUNDLE_MACHINES)    
                         }
-                        resourceCheck(params.ARCH, BUNDLE_MACHINES)    
+                    } else {
+                        echo "This is an LXD deployment, so we only need one machine of ${params.ARCH}"
+                        resourceCheck(params.ARCH, 1)
                     }
                 } else {
                     echo "Not trying to count machines: either s390x deploy or PRE_RELEASE_MACHINES = true" 
@@ -217,10 +241,99 @@ try {
         OPENSTACK_PUBLIC_IP = "unknown"     
     }
 } catch (error) {
-   OPENSTACK_PUBLIC_IP = "oolxd" 
+   OPENSTACK_PUBLIC_IP = "lxd" 
+}
+
+def getSystemIP(MAAS_ID) {
+    dir("${env.HOME}/tools/openstack-charm-testing/") {
+        maas_api_cmd =  "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --interfaces ${MAAS_ID} --getips"
+        try {
+            SYSTEM_IP = sh (
+                script: "./bin/maas_actions.py ${maas_api_cmd}|grep -vi no_ip_assigned|head -n1",
+                returnStdout: true
+            ).trim().tokenize().last()
+            echo "Got first IP: ${SYSTEM_IP}"
+            echo "Somehow set OPENSTACK_PUBLIC_IP to this IP in all jobs - I guess I can pass it as a param."
+            return SYSTEM_IP
+        } catch (error) {
+            echo "Couldn't get IP for ${MAAS_ID}: ${error}"
+            currentBuild.result = 'FAILURE' 
+            error "FAILING"
+        }
+    }
+}
+
+def initLXDHost(IP_ADDRESS) {
+    // wait for host to come up (deployment to be complete and SSH ready)
+    sh "ssh ubuntu@${IP_ADDRESS}"
+    /* here we should ssh to the host, create a jenkins user, configure it. basically run the cloud-init script from managed files
+    at he end, lets create a 'initialised' file, so we know if this has already been done, and if we need to re-do it
+    */
 }
 
 stage ("[ build slave ]") {
+    node ('master') {
+        lxdonline = false
+        // if params.LXD here to check if there is already a slave with this label - but actually it doesnt matter if there is, 
+        // because if there is it will continue. if there is no slave with this label... 
+        if ( params.LXD ) {
+            echo "params.LXD is true, checking lxd-${ARCH}"
+            for ( node in jenkins.model.Jenkins.instance.nodes ) {
+                if ( node.getNodeName().contains("lxd-${ARCH}")) {
+                    if ( node.getChannel() != null ) {
+                        echo "node ${node.getNodeName()} is online, continuing"
+                        specific_slave = node.getNodeName()
+                        lxdonline = true
+                        return true
+                    }
+                }
+            }
+            if ( lxdonline != true ) {
+                echo "node lxd-${ARCH} is not online - provisioning one from MAAS" 
+                maas_api_cmd = "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch} --output"
+                if ( primary_tag != additional_tags ) {
+                    maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
+                }
+                dir("${env.HOME}/tools/openstack-charm-testing/") {
+                     timeout(params.RESOURCE_CHECK_TIMEOUT.toInteger()) {
+                        waitUntil {
+                            try {
+                                MAAS_SYSID = sh (
+                                    script: "./bin/maas_actions.py ${maas_api_cmd}",
+                                    returnStdout: true
+                                ).trim().tokenize().last()
+                                echo "MAAS_SYSID: ${MAAS_SYSID}"
+                                if ( MAAS_SYSID == "0" ) {
+                                    echo "No machines available, wait for 1 minute before retrying"
+                                    sleep(60)
+                                    return false
+                                }
+                                return true
+                            } catch (error) {
+                                echo "Error picking LXD host to provision with maas: ${error}"
+                                currentBuild.result = 'FAILURE' 
+                                error "FAILING"
+                            }
+                        } 
+                    }
+                    maas_api_cmd = "--deploy -o ${params.MAAS_OWNER} -k ${MAAS_API_KEY} -m ${CLOUD_NAME}-maas --tags ${primary_tag} --system_id ${MAAS_SYSID} "
+                    try {
+                        MAAS_DEPLOY = sh (
+                            script: "./bin/maas_actions.py ${maas_api_cmd}",
+                            returnStdout: true
+                        ).trim()
+                        echo "Deployed ${MAAS_SYSID}: ${MAAS_DEPLOY}"
+                        sleep(30)
+                        initLXDHost(getSystemIP(MAAS_SYSID))
+                    } catch (error) {
+                        echo "Error deploying machine ${MAAS_SYSID}: ${error}"
+                        currentBuild.result = 'FAILURE'
+                        error "FAILING"
+                    }
+                } 
+            } 
+        } 
+    }
     waitUntil {
     node (specific_slave) { 
             echo "Picking ${NODE_NAME} for this job run"
@@ -253,10 +366,11 @@ node(SLAVE_NODE_NAME) {
         }
         if ( PHASES.contains("Preparation") ) {
             stage("[ prepare ]") {
-            // Logic for differentiating between MAAS, s390x, or something else (probably oolxd)
+            // Logic for differentiating between MAAS, s390x, or something else (probably lxd)
             echo "Cloud name set to ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             prep_job = build job: '1. Full Cloud - Prepare', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CTI_GIT_REPO', value: "${params.CTI_GIT_REPO}"],
+                       [$class: 'BooleanParameterValue', name: 'LXD', value: params.LXD],
                        [$class: 'StringParameterValue', name: 'CTI_GIT_BRANCH', value: "${params.CTI_GIT_BRANCH}"],
                        [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
                        [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
@@ -282,6 +396,7 @@ node(SLAVE_NODE_NAME) {
                             [$class: 'BooleanParameterValue', name: 'FORCE_NEW_CONTROLLER', value: Boolean.valueOf(FORCE_NEW_CONTROLLER)],
                             [$class: 'BooleanParameterValue', name: 'PRE_RELEASE_MACHINES', value: Boolean.valueOf(PRE_RELEASE_MACHINES)],
                             [$class: 'BooleanParameterValue', name: 'BOOTSTRAP_ON_SLAVE', value: Boolean.valueOf(BOOTSTRAP_ON_SLAVE)],
+                            [$class: 'BooleanParameterValue', name: 'LXD', value: params.LXD],
                             [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH],
                             [$class: 'StringParameterValue', name: 'S390X_NODES', value: params.S390X_NODES],
                             [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
@@ -365,6 +480,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'MODEL_CONSTRAINTS', value: params.MODEL_CONSTRAINTS],
                          [$class: 'StringParameterValue', name: 'MAAS_OWNER', value: params.MAAS_OWNER],
                          [$class: 'StringParameterValue', name: 'S390X_NODES', value: params.S390X_NODES],
+                         [$class: 'BooleanParameterValue', name: 'LXD', value: params.LXD],
                          [$class: 'BooleanParameterValue', name: 'CRASHDUMP', value: Boolean.valueOf(CRASHDUMP)],
                          [$class: 'BooleanParameterValue', name: 'RELEASE_MACHINES', value: Boolean.valueOf(RELEASE_MACHINES)],
                          [$class: 'BooleanParameterValue', name: 'FORCE_RELEASE', value: Boolean.valueOf(FORCE_RELEASE)],
