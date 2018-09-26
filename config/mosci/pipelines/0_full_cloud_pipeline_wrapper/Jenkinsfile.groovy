@@ -212,6 +212,14 @@ try {
     echo "Problem checking number of machines, going blind: ${error}"
 }
 
+try {
+    if ( OPENSTACK_PUBLIC_IP == "" ) {
+        OPENSTACK_PUBLIC_IP = "unknown"     
+    }
+} catch (error) {
+   OPENSTACK_PUBLIC_IP = "oolxd" 
+}
+
 stage ("[ build slave ]") {
     waitUntil {
     node (specific_slave) { 
