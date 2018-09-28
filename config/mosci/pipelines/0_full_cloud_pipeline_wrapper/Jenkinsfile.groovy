@@ -50,9 +50,21 @@ if ( params.CLEANUP_ON_FAILURE ) {
     prop = true
 }
 
-if ( params.OS_RELEASE_NAME == "" ) {
-    release = ""
-    releases = ["stable", "icehouse", "juno", "kilo", "librety", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "jewel", "luminous", "mimic"]
+bundle_guessed = false
+echo "BUNDLE_TYPE: ${BUNDLE_TYPE}"
+
+if ( params.RELEASE_NAME != "" && params.DISTRO_NAME != "" && params.BUNDLE_TYPE != "" ) {
+    if ( params.BUNDLE_URL == "" && params.BUNDLE_PASTE == "" && params.BUNDLE_REPO == "" && params.BUNDLE_FILE == "" ) {
+        echo "No bundle specified, pasted, uploaded - trying to construct URL from RELEASE_NAME, DISTRO_NAME and BUNDLE_TYPE"
+        BUNDLE_STR = "${params.BUNDLE_TYPE}-${params.DISTRO_NAME}-${params.RELEASE_NAME}"
+        BUNDLE_URL = "https://raw.githubusercontent.com/openstack-charmers/openstack-bundles/master/development/${BUNDLE_STR}/bundle.yaml" 
+        bundle_guessed = true
+        echo "Guessing URL: ${BUNDLE_URL}"
+    }
+}
+
+if ( bundle_guessed != true && params.RELEASE_NAME == "" ) {
+    releases = ["stable", "icehouse", "juno", "kilo", "liberty", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "jewel", "luminous", "mimic"]
     echo "Trying to get release from bundle url..."
     for ( a in releases ) {
         if ( params.BUNDLE_URL.contains(a) ) {
@@ -66,10 +78,10 @@ if ( params.OS_RELEASE_NAME == "" ) {
     } catch (error) {    
         release = "unknown"
         }
-    echo "Release: ${release}"
-} else { release = params.OS_RELEASE_NAME }
+} else { release = params.RELEASE_NAME }
+echo "Release: ${release}"
 
-if ( params.DISTRO_NAME == "" ) {
+if ( bundle_guessed != true && params.DISTRO_NAME == "" ) {
     distro = ""
     distros = ["stable", "trusty", "xenial", "bionic", "cosmic"]
     echo "Trying to get distro from bundle url..."
@@ -85,10 +97,10 @@ if ( params.DISTRO_NAME == "" ) {
     } catch (error) {    
         distro = "unknown"
         }
-    echo "Distro: ${distro}"
 } else { distro = params.DISTRO_NAME }
+echo "Distro: ${distro}"
 
-if ( params.BUNDLE_TYPE == "" ) {
+if ( bundle_guessed != true && params.BUNDLE_TYPE == "" ) {
     bundletype = ""
     bundletypes = ["ceph-base", "openstack-base", "openstack-lxd", "openstack-refstack", "openstack-telemetry", "zopenstack"]
     echo "Trying to get bundle type (e.g. base, telemetry) from bundle url..."
@@ -104,8 +116,8 @@ if ( params.BUNDLE_TYPE == "" ) {
     } catch (error) {    
         bundletype = "unknown"
         }
-    echo "Bundle Type: ${bundletype}"
 } else { bundletype = params.BUNDLE_TYPE }
+echo "Bundle Type: ${bundletype}"
 
 s390xcheck = ["${params.CLOUD_NAME}", "${params.ARCH}"]
 if ( s390xcheck.any { it.contains("390") } ) {
@@ -139,8 +151,13 @@ if ( params.LXD ) {
         So, we can get all builds, and check if there is already a build with ARCH in it. If yes, wait. If no, build.
 
 */        
+if ( params.DISPLAY_NAME == "" ) {
+    DISPLAY_NAME = "[ ${bundletype}: ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME} ]"
+} else {
+    DISPLAY_NAME = "[ ${params.DISPLAY_NAME} - ${bundletype}: ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME} ]"
+}
 node ('master') {
-    stage("[ ${bundletype}: ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME} ]") {
+    stage("${DISPLAY_NAME}") {
         configFileProvider(
             [configFile(fileId: '9e04159f-e485-4c54-9eff-806efa36e1ee', targetLocation: '~/tools/')]
             ) { echo "." }
@@ -155,12 +172,16 @@ def resourceCheck(arch, required, bootstrap) {
         TAGS = TAGS.split(",")
         additional_tags = TAGS.join(",")
         echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${arch}" */
-        if ( bootstrap ) { primary_tag = bootstrap_tag }
-        maas_api_cmd = ""
-        maas_api_cmd = maas_api_cmd + " -o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch}"
-        if ( primary_tag != additional_tags ) {
-            maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
+        if ( bootstrap ) { 
+        check_tag = bootstrap_tag 
+        } else { 
+        check_tag = primary_tag
         }
+        maas_api_cmd = ""
+        maas_api_cmd = maas_api_cmd + " -o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${check_tag} --arch ${arch}"
+        /*if ( primary_tag != additional_tags ) {
+            maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
+        }*/
         dir("${env.HOME}/tools/openstack-charm-testing/") {
             try {
             AVAILABLE_MACHINES = sh (
@@ -191,7 +212,7 @@ try {
                         sh "rm bundle.yaml"
                     }
                     try {
-                        sh "curl ${params.BUNDLE_URL} -o bundle.yaml"
+                        sh "curl ${BUNDLE_URL} -o bundle.yaml"
                     } catch (error) {
                         echo "Full bundle paste:"
                         writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
@@ -285,9 +306,9 @@ stage ("[ build slave ]") {
             if ( lxdonline != true ) {
                 echo "node lxd-${ARCH} is not online - provisioning one from MAAS" 
                 maas_api_cmd = " -o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch} --output"
-                if ( primary_tag != additional_tags ) {
+                /*if ( primary_tag != additional_tags ) {
                     maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
-                }
+                }*/
                 dir("${env.HOME}/tools/openstack-charm-testing/") {
                      timeout(params.RESOURCE_CHECK_TIMEOUT.toInteger()) {
                         waitUntil {
@@ -428,7 +449,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'POST_DEPLOY_CMD', value: params.POST_DEPLOY_CMD],
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
                          [$class: 'StringParameterValue', name: 'NEUTRON_DATAPORT', value: NEUTRON_DATAPORT],
-                         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: "${params.BUNDLE_URL}"],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: BUNDLE_URL],
                          [$class: 'StringParameterValue', name: 'BUNDLE_OVERLAYS', value: "${params.BUNDLE_OVERLAYS.replaceAll('\n', ',')}"],
                          [$class: 'StringParameterValue', name: 'BUNDLE_PASTE', value: params.BUNDLE_PASTE],
                          [$class: 'StringParameterValue', name: 'DEPLOY_TIMEOUT', value: params.DEPLOY_TIMEOUT],
@@ -489,7 +510,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'BooleanParameterValue', name: 'DESTROY_SLAVE', value: Boolean.valueOf(DESTROY_SLAVE)],
                          [$class: 'BooleanParameterValue', name: 'DESTROY_CONTROLLER', value: Boolean.valueOf(DESTROY_CONTROLLER)],
                          [$class: 'BooleanParameterValue', name: 'DESTROY_MODEL', value: Boolean.valueOf(DESTROY_MODEL)],
-                         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: "${params.BUNDLE_URL}"]]
+                         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: BUNDLE_URL]]
             }
         } else { 
         echo "Skipping Teardown stage" 
