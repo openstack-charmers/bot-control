@@ -143,8 +143,6 @@ node ('master') {
         configFileProvider(
             [configFile(fileId: '9e04159f-e485-4c54-9eff-806efa36e1ee', targetLocation: '~/tools/')]
             ) 
-        { echo hi }
-        echo "."
     }
 }
 
