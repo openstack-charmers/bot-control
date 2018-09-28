@@ -21,9 +21,10 @@ if ( params.CLOUD_NAME.contains("ruxton") ) {
 }
 
 TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ").minus("tags=").replace(" ", "").split(",")
+bootstrap_tag = BOOTSTRAP_CONSTRAINTS.split("tags=")[1].split(" ")[0]
 primary_tag = TAGS[0]
 additional_tags = TAGS.join(",")
-def maas_api_cmd = ""
+maas_api_cmd = ""
 echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${arch}"
 
 
@@ -142,20 +143,21 @@ node ('master') {
     stage("[ ${bundletype}: ${distro}-${release} on ${params.ARCH} @ ${CLOUD_NAME} ]") {
         configFileProvider(
             [configFile(fileId: '9e04159f-e485-4c54-9eff-806efa36e1ee', targetLocation: '~/tools/')]
-            ) 
+            ) { echo "." }
     }
 }
 
-def resourceCheck(arch, required) {
+def resourceCheck(arch, required, bootstrap) {
     waitUntil {
         /* TAGS = MODEL_CONSTRAINTS.minus("arch=" + params.ARCH + " ")
         TAGS = TAGS.minus("tags=").replace(" ", "").split(",")
         TAGS = TAGS.replace(" ", "")
         TAGS = TAGS.split(",")
         additional_tags = TAGS.join(",")
-        def maas_api_cmd = ""
         echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${arch}" */
-        maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch}"
+        if ( bootstrap ) { primary_tag = bootstrap_tag }
+        maas_api_cmd = ""
+        maas_api_cmd = maas_api_cmd + " -o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch}"
         if ( primary_tag != additional_tags ) {
             maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
         }
@@ -212,13 +214,13 @@ try {
                         timeout(params.RESOURCE_CHECK_TIMEOUT.toInteger()) {
                             if ( CONTROLLER_ARCH != "" ) {
                                 echo "Controller arch. ${CONTROLLER_ARCH} is different to deployment arch. ${params.ARCH}, checking MAAS for free controller machines..."
-                                resourceCheck(CONTROLLER_ARCH, 1)
+                                resourceCheck(CONTROLLER_ARCH, 1, true)
                             }
-                            resourceCheck(params.ARCH, BUNDLE_MACHINES)    
+                            resourceCheck(params.ARCH, BUNDLE_MACHINES, false)    
                         }
                     } else {
                         echo "This is an LXD deployment, so we only need one machine of ${params.ARCH}"
-                        resourceCheck(params.ARCH, 1)
+                        resourceCheck(params.ARCH, 1, false)
                     }
                 } else {
                     echo "Not trying to count machines: either s390x deploy or PRE_RELEASE_MACHINES = true" 
@@ -234,17 +236,11 @@ try {
     echo "Problem checking number of machines, going blind: ${error}"
 }
 
-try {
-    if ( OPENSTACK_PUBLIC_IP == "" ) {
-        OPENSTACK_PUBLIC_IP = "unknown"     
-    }
-} catch (error) {
-   OPENSTACK_PUBLIC_IP = "lxd" 
-}
+
 
 def getSystemIP(MAAS_ID) {
     dir("${env.HOME}/tools/openstack-charm-testing/") {
-        maas_api_cmd =  "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --interfaces ${MAAS_ID} --getips"
+        maas_api_cmd =  " -o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --interfaces ${MAAS_ID} --getips"
         try {
             SYSTEM_IP = sh (
                 script: "./bin/maas_actions.py ${maas_api_cmd}|grep -vi no_ip_assigned|head -n1",
@@ -288,7 +284,7 @@ stage ("[ build slave ]") {
             }
             if ( lxdonline != true ) {
                 echo "node lxd-${ARCH} is not online - provisioning one from MAAS" 
-                maas_api_cmd = "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch} --output"
+                maas_api_cmd = " -o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch} --output"
                 if ( primary_tag != additional_tags ) {
                     maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
                 }
@@ -314,7 +310,7 @@ stage ("[ build slave ]") {
                             }
                         } 
                     }
-                    maas_api_cmd = "--deploy -o ${params.MAAS_OWNER} -k ${MAAS_API_KEY} -m ${CLOUD_NAME}-maas --tags ${primary_tag} --system_id ${MAAS_SYSID} "
+                    maas_api_cmd = " --deploy -o ${params.MAAS_OWNER} -k ${MAAS_API_KEY} -m ${CLOUD_NAME}-maas --tags ${primary_tag} --system_id ${MAAS_SYSID} "
                     try {
                         MAAS_DEPLOY = sh (
                             script: "./bin/maas_actions.py ${maas_api_cmd}",
@@ -335,6 +331,13 @@ stage ("[ build slave ]") {
     waitUntil {
     node (specific_slave) { 
             echo "Picking ${NODE_NAME} for this job run"
+            try {
+                if ( OPENSTACK_PUBLIC_IP == "" ) {
+                    OPENSTACK_PUBLIC_IP = "unknown"     
+                }
+            } catch (error) {
+               OPENSTACK_PUBLIC_IP = "lxd" 
+            }            
             echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
             for ( node in jenkins.model.Jenkins.instance.nodes ) {
                     if (node.getNodeName().equals(NODE_NAME)) {
