@@ -53,8 +53,8 @@ if ( params.CLEANUP_ON_FAILURE ) {
 bundle_guessed = false
 echo "BUNDLE_TYPE: ${BUNDLE_TYPE}"
 
-if ( params.RELEASE_NAME != "" && params.DISTRO_NAME != "" && params.BUNDLE_TYPE != "" ) {
-    if ( params.BUNDLE_URL == "" && params.BUNDLE_PASTE == "" && params.BUNDLE_REPO == "" && params.BUNDLE_FILE == "" ) {
+if ( params.BUNDLE_URL == "" && params.BUNDLE_PASTE == "" && params.BUNDLE_REPO == "" && params.BUNDLE_FILE == "" ) {
+    if ( params.RELEASE_NAME != "" && params.DISTRO_NAME != "" && params.BUNDLE_TYPE != "" ) {
         echo "No bundle specified, pasted, uploaded - trying to construct URL from RELEASE_NAME, DISTRO_NAME and BUNDLE_TYPE"
         BUNDLE_STR = "${params.BUNDLE_TYPE}-${params.DISTRO_NAME}-${params.RELEASE_NAME}"
         BUNDLE_URL = "https://raw.githubusercontent.com/openstack-charmers/openstack-bundles/master/development/${BUNDLE_STR}/bundle.yaml" 
