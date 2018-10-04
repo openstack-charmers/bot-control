@@ -18,7 +18,7 @@ node('master') {
     for (int i = 0; i < SLAVES.size(); i++ ) { 
         print "slave: ${SLAVES[i]}"
         stage ("Teardown: ${SLAVES[i]}") {
-            ARCH = SLAVES[i].split('-')[0]
+            ARCH = SLAVES[i].split('-')[1]
             print "ARCH: ${ARCH}"
             echo "ARCH: ${ARCH}, CLOUD_NAME: ${CLOUD_NAME}, SLAVE_NODE_NAME: ${SLAVES[i]}"
             // If this is an s390x deployment, we need to get the list of LPARs via ssh so we can populate S390X_NODES and reset their snapshots.
