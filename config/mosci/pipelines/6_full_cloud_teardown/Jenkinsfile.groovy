@@ -137,10 +137,12 @@ if ( ONLY_RELEASE != true ) {
 echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
         for (aSlave in hudson.model.Hudson.instance.slaves) {
                 if ( aSlave.name == params.SLAVE_NODE_NAME ) {
-                        def computer = aSlave.computer
                         if ( aSlave.getComputer().isOffline() ) {
+                                def computer = aSlave.computer
                                 echo "${params.SLAVE_NODE_NAME} is offline, bringing it online to delete juju models/controllers"
-                                computer.connect(true)
+                                aSlave.getComputer().setTemporarilyOffline(false);
+                                result = computer.connect(true)
+                                echo "Result of attempt: ${result}"
                         }
                 }
         }
