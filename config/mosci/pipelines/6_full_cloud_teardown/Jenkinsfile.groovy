@@ -147,6 +147,20 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
         try {
             timeout(90) {
                 node(params.SLAVE_NODE_NAME) {
+                    if ( params.CLOUD_NAME == "autodetect" ) {
+                        try {
+                            CLOUD_NAME = sh (
+                                script: "juju controllers|awk /mosci/'{print \$1}'",
+                                returnStdout: true
+                            ).trim()
+                        } catch (error) {
+                            echo "Error getting CLOUD_NAME"
+                            currentBuild.result = 'FAILURE'
+                            error "FAIURE"
+                        }
+                    } else {
+                        CLOUD_NAME = params.CLOUD_NAME
+                    }
                     ws("${params.WORKSPACE}") {
                         stage("Archive juju logs") {
                             //if ( params.CRASHDUMP ) {
@@ -235,11 +249,11 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                         TAGS = TAGS.minus("tags=")
                         TAGS = TAGS.replace(" ", "")
                         TAGS = TAGS.split(",")
-                        if ( params.CLOUD_NAME == 'ruxton' ) {
+                        if ( CLOUD_NAME == 'ruxton' ) {
                                 MAAS_API_KEY = RUXTON_API_KEY 
-                        } else if ( params.CLOUD_NAME == 'icarus' ) {
+                        } else if ( CLOUD_NAME == 'icarus' ) {
                                 MAAS_API_KEY = ICARUS_API_KEY
-                        } else if ( params.CLOUD_NAME == 'amontons' ) {
+                        } else if ( CLOUD_NAME == 'amontons' ) {
                                 MAAS_API_KEY = AMONTONS_API_KEY
                         }
                         primary_tag = TAGS[0]
@@ -257,7 +271,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                             def maas_api_cmd = ""
                             if ( params.RELEASE_MACHINES ) {
                                 MAAS_IDS.split("\n").each { MAAS_ID, count ->
-                                    maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${params.CLOUD_NAME}-maas -k ${MAAS_API_KEY} --release --system_id ${MAAS_ID}"
+                                    maas_api_cmd = maas_api_cmd + "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --release --system_id ${MAAS_ID}"
                                 }
                                 dir("${env.HOME}/tools/openstack-charm-testing/") {
                                         sleep(60)
