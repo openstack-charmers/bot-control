@@ -54,7 +54,7 @@ bundle_guessed = false
 echo "BUNDLE_TYPE: ${BUNDLE_TYPE}"
 
 if ( params.BUNDLE_URL == "" && params.BUNDLE_PASTE == "" && params.BUNDLE_REPO == "" && params.BUNDLE_FILE == "" ) {
-    if ( params.RELEASE_NAME != "" && params.DISTRO_NAME != "" && params.BUNDLE_TYPE != "" ) {
+    if ( ! params.RELEASE_NAME.contains("undefined") && ! params.DISTRO_NAME.contains("undefined") && ! params.BUNDLE_TYPE.contains("undefined") ) {
         echo "No bundle specified, pasted, uploaded - trying to construct URL from RELEASE_NAME, DISTRO_NAME and BUNDLE_TYPE"
         BUNDLE_STR = "${params.BUNDLE_TYPE}-${params.DISTRO_NAME}-${params.RELEASE_NAME}"
         BUNDLE_URL = "https://raw.githubusercontent.com/openstack-charmers/openstack-bundles/master/development/${BUNDLE_STR}/bundle.yaml" 
@@ -63,7 +63,7 @@ if ( params.BUNDLE_URL == "" && params.BUNDLE_PASTE == "" && params.BUNDLE_REPO 
     }
 }
 
-if ( bundle_guessed != true && params.RELEASE_NAME == "" ) {
+if ( bundle_guessed != true && params.RELEASE_NAME.contains("undefined") ) {
     releases = ["stable", "icehouse", "juno", "kilo", "liberty", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "jewel", "luminous", "mimic"]
     echo "Trying to get release from bundle url..."
     for ( a in releases ) {
@@ -81,7 +81,7 @@ if ( bundle_guessed != true && params.RELEASE_NAME == "" ) {
 } else { release = params.RELEASE_NAME }
 echo "Release: ${release}"
 
-if ( bundle_guessed != true && params.DISTRO_NAME == "" ) {
+if ( bundle_guessed != true && params.DISTRO_NAME.contains("undefined") ) {
     distro = ""
     distros = ["stable", "trusty", "xenial", "bionic", "cosmic"]
     echo "Trying to get distro from bundle url..."
@@ -100,7 +100,7 @@ if ( bundle_guessed != true && params.DISTRO_NAME == "" ) {
 } else { distro = params.DISTRO_NAME }
 echo "Distro: ${distro}"
 
-if ( bundle_guessed != true && params.BUNDLE_TYPE == "" ) {
+if ( bundle_guessed != true && params.BUNDLE_TYPE.contains("undefined") ) {
     bundletype = ""
     bundletypes = ["ceph-base", "openstack-base", "openstack-lxd", "openstack-refstack", "openstack-telemetry", "zopenstack"]
     echo "Trying to get bundle type (e.g. base, telemetry) from bundle url..."

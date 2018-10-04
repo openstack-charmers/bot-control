@@ -36,7 +36,7 @@ node('master') {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
         }
         stage("Preparation: ${params.ARCH}") {
-            // Logic for differentiating between MAAS, s390x, or something else (probably oolxd)
+            // Logic for differentiating between MAAS, s390x, or something else (probably lxd) 
             echo "Cloud name set to ${CLOUD_NAME}"
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             if ( PHASES.contains("Preparation") ) {
