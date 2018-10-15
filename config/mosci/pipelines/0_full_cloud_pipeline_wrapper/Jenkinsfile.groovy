@@ -453,6 +453,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'StringParameterValue', name: 'BUNDLE_OVERLAYS', value: "${params.BUNDLE_OVERLAYS.replaceAll('\n', ',')}"],
                          [$class: 'StringParameterValue', name: 'BUNDLE_PASTE', value: params.BUNDLE_PASTE],
                          [$class: 'StringParameterValue', name: 'DEPLOY_TIMEOUT', value: params.DEPLOY_TIMEOUT],
+                         [$class: 'StringParameterValue', name: 'MODIFY_BUNDLE', value: params.MODIFY_BUNDLE],
                          [$class: 'StringParameterValue', name: 'OVERRIDE_BUNDLE_CONFIG', value: params.OVERRIDE_BUNDLE_CONFIG]]
             pipeline_state = pipeline_state + deploy_job.result
                 //sh 'ls -lart'

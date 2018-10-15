@@ -130,6 +130,24 @@ node("${SLAVE_NODE_NAME}") {
         //    sh "yamllint bundle.yaml"
         //}
         retries = 0
+        stage('Modify bundle') {
+            echo "Make changes to bundle according to MODIFY_BUNDLE"
+            if ( params.MODIFY_BUNDLE != "" ) {
+                CONFIG_LINES = params.MODIFY_BUNDLE.split('\n')
+                for ( int i = 0 ; i < CONFIG_LINES.size() ; i++ ) {
+                    FIND = CONFIG_LINES[i].split(',')[0]
+                    REPLACE = CONFIG_LINES[i].split(',')[1]
+                    try {
+                        FIND_REPLACE = sh (
+                            script: "sed -i \"s|${FIND}|${REPLACE}|g\" bundle.yaml",
+                            returnStdout: true
+                        )
+                    } catch (error) {
+                        echo "WARNING: error overriding bundle config: ${error}"
+                    }
+                }
+            }
+        }
         stage('Deploy bundle') {
             waitUntil {
                 try {
@@ -163,6 +181,7 @@ node("${SLAVE_NODE_NAME}") {
             }
         }
         stage('Override bundle config') {
+            echo "Deprecated - use MODIFY_BUNDLE"
             if ( params.OVERRIDE_BUNDLE_CONFIG != "" ) {
                 CONFIG_LINES = params.OVERRIDE_BUNDLE_CONFIG.split('\n')
                 for ( int i = 0 ; i < CONFIG_LINES.size() ; i++ ) {
