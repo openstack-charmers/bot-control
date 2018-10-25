@@ -23,13 +23,13 @@
           - aodh
           - barbican
           - barbican-softhsm
+          - barbican-vault
           - ceilometer
           - ceilometer-agent
-          - ceph
           - ceph-fs
+          - ceph-mon
           - ceph-osd
           - ceph-proxy
-          - ceph-mon
           - ceph-radosgw
           - cinder
           - cinder-backup
@@ -46,19 +46,19 @@
           - lxd
           - manila
           - manila-generic
-          - murano
           - neutron-api
           - neutron-api-odl
           - neutron-dynamic-routing
           - neutron-gateway
           - neutron-openvswitch
+          - nova-cell-controller
           - nova-cloud-controller
           - nova-compute
           - nova-compute-proxy
+          - octavia
           - odl-controller
           - openstack-dashboard
           - openvswitch-odl
-          - panko
           - percona-cluster
           - rabbitmq-server
           - swift-proxy
