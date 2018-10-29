@@ -1239,3 +1239,36 @@
             MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
             DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_series_upgrade_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(12-15) * * 4"  # Once weekly Wednesday Afternoon
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_series_upgrade
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-mitaka"
+          - "xenial-queens"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
