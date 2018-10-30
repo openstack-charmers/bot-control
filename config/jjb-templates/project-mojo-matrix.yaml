@@ -22,6 +22,7 @@
           - "trusty-distro"
           - "xenial-distro"
           - "bionic-distro"
+          - "cosmic-distro"
     builders:
       - trigger-builds:
         - project:
@@ -64,7 +65,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
-          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -78,6 +79,7 @@
 
 - job:
     name: test_mojo_stable_matrix
+    disabled: true  # Disable for 18.11 freeze, re-enable after 18.11 release.  https://github.com/openstack-charmers/openstack-mojo-specs/issues/64
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -146,7 +148,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
-          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -229,7 +231,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
-          # - "cosmic-rocky"  # pending https://bugs.launchpad.net/juju/+bug/1781301
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -243,6 +245,7 @@
 
 - job:
     name: test_mojo_ssl_stable_matrix
+    disabled: true  # Disable for 18.11 freeze, re-enable after 18.11 release.  https://github.com/openstack-charmers/openstack-mojo-specs/issues/64
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -325,6 +328,7 @@
 
 - job:
     name: test_mojo_ksv3_stable_matrix
+    disabled: true  # Disable for 18.11 freeze, re-enable after 18.11 release.  https://github.com/openstack-charmers/openstack-mojo-specs/issues/64
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -390,6 +394,7 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
+          - "bionic-queens"
     builders:
       - trigger-builds:
         - project:
@@ -403,6 +408,7 @@
 
 - job:
     name: test_mojo_openstack_upgrade_stable_matrix
+    disabled: true  # Disable for 18.11 freeze, re-enable after 18.11 release.  https://github.com/openstack-charmers/openstack-mojo-specs/issues/64
     disabled: true  # There is not currently a mojo spec for this
     project-type: matrix
     description: |
@@ -469,6 +475,9 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
+          - "xenial-queens"
+          - "bionic-queens"
+          - "bionic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -482,6 +491,7 @@
 
 - job:
     name: test_mojo_charm_upgrade_matrix
+    disabled: true  # Duplicate and additional coverage is provided by the stable_to_next_ha spec.  No need to run this.
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -508,6 +518,9 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
+          - "xenial-queens"
+          - "bionic-queens"
+          - "bionic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -650,6 +663,7 @@
 
 - job:
     name: test_mojo_vrrp_ha_stable_matrix
+    disabled: true  # Disable for 18.11 freeze, re-enable after 18.11 release.  https://github.com/openstack-charmers/openstack-mojo-specs/issues/64
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -866,7 +880,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
-          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -909,7 +923,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
-          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -952,7 +966,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
-          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -1035,7 +1049,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
-          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -1078,7 +1092,7 @@
           # - "xenial-queens"  # Same ceph version as Pike UCA
           - "bionic-queens"
           - "bionic-rocky"
-          # - "cosmic-rocky"   # pending https://bugs.launchpad.net/juju/+bug/1781301
+          - "cosmic-rocky"
     builders:
       - trigger-builds:
         - project:
