@@ -1254,3 +1254,37 @@
             MOJO_SPEC=$MOJO_SPEC
             U_OS=$U_OS
             DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
+    name: test_mojo_cells_master_matrix
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: false
+    node: task
+    triggers:
+        - timed: "H H(12-15) * * 5"  # Once weekly Friday Afternoon
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_cells
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "bionic-queens"
+          - "bionic-rocky"
+          # - "cosmic-rocky"  # Hold interim release validation of this, prioritize LTS
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
