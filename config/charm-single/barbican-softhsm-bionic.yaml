@@ -1,0 +1,2 @@
+barbican:
+  openstack-origin: cloud:bionic-rocky
