@@ -1,0 +1,2 @@
+# The barbican-vault charm does not have `xenial` series support and the
+# `charm-single` job assumes every charm does.
