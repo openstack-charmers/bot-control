@@ -43,6 +43,7 @@
       - nova-compute
       - nova-compute-proxy
       - octavia
+      - octavia-dashboard
       - odl-controller
       - openstack-dashboard
       - openvswitch-odl
