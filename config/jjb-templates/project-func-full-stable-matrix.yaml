@@ -1,21 +1,21 @@
 # OpenStack Charm CI
 - job:
-    name: test_charm_amulet_smoke_master_matrix
+    name: test_charm_func_full_stable_matrix
     project-type: matrix
     description: |
-        <p>Exercise charm amulet smoke tests from charms at master.</p>
+        <p>Exercise charm func full tests from charms at the stable branch.</p>
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
       sequential: true
     node: task
     triggers:
-        - timed: "H H(17-23) * * 0"  # Once weekly on Sunday nights
+        - timed: "0 H(0-8) */15 * *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
          name: GIT_BRANCH
          values:
-          - master
+          - stable/18.11
       - axis:
          type: user-defined
          name: BASE_NAME
@@ -23,13 +23,13 @@
           - aodh
           - barbican
           - barbican-softhsm
-          - barbican-vault
           - ceilometer
           - ceilometer-agent
+          - ceph
           - ceph-fs
-          - ceph-mon
           - ceph-osd
           - ceph-proxy
+          - ceph-mon
           - ceph-radosgw
           - cinder
           - cinder-backup
@@ -46,29 +46,27 @@
           - lxd
           - manila
           - manila-generic
+          - murano
           - neutron-api
           - neutron-api-odl
-          - neutron-dynamic-routing
           - neutron-gateway
           - neutron-openvswitch
-          - nova-cell-controller
           - nova-cloud-controller
           - nova-compute
           - nova-compute-proxy
-          - octavia
           - odl-controller
           - openstack-dashboard
           - openvswitch-odl
+          - panko
           - percona-cluster
           - rabbitmq-server
           - swift-proxy
           - swift-storage
           - tempest
-          - vault
     builders:
       - trigger-builds:
         - project:
-            - "test_charm_amulet_smoke"
+            - "test_charm_func_full"
           current-parameters: true
           block: true
           predefined-parameters: |

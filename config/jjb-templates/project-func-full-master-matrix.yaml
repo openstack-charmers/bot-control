@@ -1,9 +1,9 @@
 # OpenStack Charm CI
 - job:
-    name: test_charm_amulet_full_master_matrix
+    name: test_charm_func_full_master_matrix
     project-type: matrix
     description: |
-        <p>Exercise charm amulet full tests from charms at master.</p>
+        <p>Exercise charm func full tests from charms at master.</p>
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
       sequential: true
@@ -68,7 +68,7 @@
     builders:
       - trigger-builds:
         - project:
-            - "test_charm_amulet_full"
+            - "test_charm_func_full"
           current-parameters: true
           block: true
           predefined-parameters: |

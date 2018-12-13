@@ -1,21 +1,21 @@
 # OpenStack Charm CI
 - job:
-    name: test_charm_amulet_smoke_stable_matrix
+    name: test_charm_func_smoke_master_matrix
     project-type: matrix
     description: |
-        <p>Exercise charm amulet smoke tests from charms at the stable branch.</p>
+        <p>Exercise charm func smoke tests from charms at master.</p>
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+        - timed: "H H(17-23) * * 0"  # Once weekly on Sunday nights
     axes:
       - axis:
          type: user-defined
          name: GIT_BRANCH
          values:
-          - stable/18.11
+          - master
       - axis:
          type: user-defined
          name: BASE_NAME
@@ -23,13 +23,13 @@
           - aodh
           - barbican
           - barbican-softhsm
+          - barbican-vault
           - ceilometer
           - ceilometer-agent
-          - ceph
           - ceph-fs
+          - ceph-mon
           - ceph-osd
           - ceph-proxy
-          - ceph-mon
           - ceph-radosgw
           - cinder
           - cinder-backup
@@ -46,19 +46,19 @@
           - lxd
           - manila
           - manila-generic
-          - murano
           - neutron-api
           - neutron-api-odl
           - neutron-dynamic-routing
           - neutron-gateway
           - neutron-openvswitch
+          - nova-cell-controller
           - nova-cloud-controller
           - nova-compute
           - nova-compute-proxy
+          - octavia
           - odl-controller
           - openstack-dashboard
           - openvswitch-odl
-          - panko
           - percona-cluster
           - rabbitmq-server
           - swift-proxy
@@ -68,7 +68,7 @@
     builders:
       - trigger-builds:
         - project:
-            - "test_charm_amulet_smoke"
+            - "test_charm_func_smoke"
           current-parameters: true
           block: true
           predefined-parameters: |
