@@ -4,11 +4,15 @@
         - shell: |
             #!/bin/bash -ue
             . ~/oscirc
-            git clone
+            ## TODO What is $CO_DIR
+            git clone $BUNDLE_REPO $CO_DIR -b $BUNDLE_BRANCH --depth=1
+            cd $CO_DIR
+            _zaza_workdir="$(mktemp -d)""
+            tox -e func --workdir=$_zaza_workdir
 
 - job:
     name: zaza_runner
-    # display-name: "Mojo Test Runner"
+    # display-name: "Zaza Test Runner"
     project-type: freestyle
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -39,7 +43,7 @@
       - string:
           name: BUNDLE_REPO
           default: "git://github.com/openstack-charmers/openstack-bundles.git"
-          description: Git repo for Mojo OpenStack Specs
+          description: Git repo for Bundle
       - string:
           name: BUNDLE_BRANCH
           default: "master"
@@ -57,7 +61,7 @@
       - archive_artifacts
 
 - job:
-    name: test_file_assertions_ceph
+    name: test_file_assertions_ceph_matrix
     disabled: false
     project-type: matrix
     description: |
@@ -86,7 +90,7 @@
             DISPLAY_NAME=$BUNDLE_REPO/$BUNDLE_BRANCH $BUNDLE_PATH
 
 - job:
-    name: test_file_assertions_openstack_base
+    name: test_file_assertions_openstack_base_matrix
     disabled: false
     project-type: matrix
     description: |
