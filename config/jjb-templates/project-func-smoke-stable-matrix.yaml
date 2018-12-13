@@ -1,9 +1,9 @@
 # OpenStack Charm CI
 - job:
-    name: test_charm_amulet_full_stable_matrix
+    name: test_charm_func_smoke_stable_matrix
     project-type: matrix
     description: |
-        <p>Exercise charm amulet full tests from charms at the stable branch.</p>
+        <p>Exercise charm func smoke tests from charms at the stable branch.</p>
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
       sequential: true
@@ -49,6 +49,7 @@
           - murano
           - neutron-api
           - neutron-api-odl
+          - neutron-dynamic-routing
           - neutron-gateway
           - neutron-openvswitch
           - nova-cloud-controller
@@ -63,10 +64,11 @@
           - swift-proxy
           - swift-storage
           - tempest
+          - vault
     builders:
       - trigger-builds:
         - project:
-            - "test_charm_amulet_full"
+            - "test_charm_func_smoke"
           current-parameters: true
           block: true
           predefined-parameters: |
