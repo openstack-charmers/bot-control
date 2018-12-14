@@ -4,11 +4,7 @@
         - shell: |
             #!/bin/bash -ue
             . ~/oscirc
-            ## TODO What is $CO_DIR
-            git clone $BUNDLE_REPO $CO_DIR -b $BUNDLE_BRANCH --depth=1
-            cd $CO_DIR
-            _zaza_workdir="$(mktemp -d)""
-            tox -e func --workdir=$_zaza_workdir
+            ${OSCI_ROOT}/run/job-parts/build_func_test.sh
 
 - job:
     name: zaza_runner
@@ -37,15 +33,15 @@
           # matrix-configs: true
     parameters:
       - string:
-          name: BUNDLE_PATH
+          name: TEST_PATH
           default: "development/ceph-base-bionic-mimic"
           description: Bundle Path
       - string:
-          name: BUNDLE_REPO
+          name: GIT_REPO
           default: "git://github.com/openstack-charmers/openstack-bundles.git"
           description: Git repo for Bundle
       - string:
-          name: BUNDLE_BRANCH
+          name: GIT_BRANCH
           default: "master"
           description: Git branch for Bundle repo
       - NO_POST_DESTROY
@@ -53,7 +49,7 @@
     wrappers:
       - timestamps
       - build-name:
-          name: '#${BUILD_NUMBER} ${ENV,var="BUNDLE_REPO"} ${ENV,var="BUNDLE_PATH"}'
+          name: '#${BUILD_NUMBER} ${ENV,var="GIT_REPO"} ${ENV,var="TEST_PATH"}'
     builders:
       - prep_osci_repo_if_necessary
       - build_zaza_runner
@@ -74,7 +70,7 @@
     axes:
       - axis:
          type: user-defined
-         name: BUNDLE_PATH
+         name: TEST_PATH
          values:
           - "development/ceph-base-bionic-mimic"
     builders:
@@ -84,10 +80,10 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            BUNDLE_REPO=$BUNDLE_REPO
-            BUNDLE_PATH=$BUNDLE_PATH
-            BUNDLE_BRANCH=$BUNDLE_BRANCH
-            DISPLAY_NAME=$BUNDLE_REPO/$BUNDLE_BRANCH $BUNDLE_PATH
+            GIT_REPO=$GIT_REPO
+            TEST_PATH=$TEST_PATH
+            GIT_BRANCH=$GIT_BRANCH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
 
 - job:
     name: test_file_assertions_openstack_base_matrix
@@ -103,7 +99,7 @@
     axes:
       - axis:
          type: user-defined
-         name: BUNDLE_PATH
+         name: TEST_PATH
          values:
           - "development/openstack-base-bionic-rocky"
     builders:
@@ -113,7 +109,7 @@
           current-parameters: true
           block: true
           predefined-parameters: |
-            BUNDLE_REPO=$BUNDLE_REPO
-            BUNDLE_PATH=$BUNDLE_PATH
-            BUNDLE_BRANCH=$BUNDLE_BRANCH
-            DISPLAY_NAME=$BUNDLE_REPO/$BUNDLE_BRANCH $BUNDLE_PATH
+            GIT_REPO=$GIT_REPO
+            TEST_PATH=$TEST_PATH
+            GIT_BRANCH=$GIT_BRANCH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
