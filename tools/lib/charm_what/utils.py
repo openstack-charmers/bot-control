@@ -107,7 +107,7 @@ def whatis(asset_path):
         return 'layer'
     elif is_charm_interface(asset_path):
         return 'interface'
-    elif is_func_bundle(aset_path):
+    elif is_func_bundle(asset_path):
         return 'bundle (func)'
     else:
         return None
