@@ -57,8 +57,8 @@
       - archive_artifacts
 
 - job:
-    name: test_file_assertions_ceph_matrix
-    disabled: false
+    name: test_func_ceph_base_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -86,8 +86,8 @@
             DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
 
 - job:
-    name: test_file_assertions_openstack_base_matrix
-    disabled: false
+    name: test_func_openstack_base_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
