@@ -44,6 +44,10 @@
           name: GIT_BRANCH
           default: "master"
           description: Git branch for Bundle repo
+      - string:
+          name: BASE_NAME
+          default: "func"
+          description: Affects the checkout/clone directory (CO_DIR) in UOSCI.  Does not need to be detailed or specific, but it must be set.
       - NO_POST_DESTROY
       - DISPLAY_NAME
     wrappers:
