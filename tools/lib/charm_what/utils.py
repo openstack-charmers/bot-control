@@ -84,6 +84,15 @@ def is_charm_layer(asset_path):
     )
 
 
+def is_func_bundle(asset_path):
+    '''Return True is the contents of asset_path appear to
+    be a testable Juju bundle.'''
+    return (
+        f_exists(asset_path, 'bundle.yaml') and
+        f_exists(asset_path, 'tests', 'tests.yaml')
+    )
+
+
 def whatis(asset_path):
     '''Attempt to determine if the contents of asset_path appear
     to be a classic charm, a built charm, a layer, or
@@ -98,5 +107,7 @@ def whatis(asset_path):
         return 'layer'
     elif is_charm_interface(asset_path):
         return 'interface'
+    elif is_func_bundle(aset_path):
+        return 'bundle (func)'
     else:
         return None
