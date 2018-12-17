@@ -73,6 +73,7 @@
          name: TEST_PATH
          values:
           - "development/ceph-base-bionic-mimic"
+    parameters:
       - string:
           name: GIT_REPO
           default: "git://github.com/openstack-charmers/openstack-bundles.git"
@@ -110,6 +111,7 @@
          name: TEST_PATH
          values:
           - "development/openstack-base-bionic-rocky"
+    parameters:
       - string:
           name: GIT_REPO
           default: "git://github.com/openstack-charmers/openstack-bundles.git"
