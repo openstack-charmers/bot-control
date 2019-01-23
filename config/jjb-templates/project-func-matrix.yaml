@@ -34,7 +34,7 @@
     parameters:
       - string:
           name: TEST_PATH
-          default: "development/ceph-base-bionic-mimic"
+          default: "development/test-ceph"
           description: Bundle Path
       - string:
           name: GIT_REPO
