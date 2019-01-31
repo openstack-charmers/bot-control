@@ -70,13 +70,17 @@
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+        - timed: "H H(04-08) * * 6"  # Once weekly on Friday Evening / Saturday Morning
     axes:
       - axis:
          type: user-defined
          name: TEST_PATH
          values:
+          - "development/ceph-base-xenial-jewel"
+          - "development/ceph-base-xenial-luminous"
+          - "development/ceph-base-bionic-luminous"
           - "development/ceph-base-bionic-mimic"
+          - "development/ceph-base-cosmic-mimic"
     parameters:
       - string:
           name: GIT_REPO
@@ -108,13 +112,20 @@
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+        - timed: "H H(08-12) * * 5"  # Once weekly on Friday Morning
     axes:
       - axis:
          type: user-defined
          name: TEST_PATH
          values:
+          - "development/openstack-base-xenial-mitaka"
+          - "development/openstack-base-xenial-newton"
+          - "development/openstack-base-xenial-ocata"
+          - "development/openstack-base-xenial-pike"
+          - "development/openstack-base-xenial-queens"
+          - "development/openstack-base-bionic-queens"
           - "development/openstack-base-bionic-rocky"
+          - "development/openstack-base-cosmic-rocky"
     parameters:
       - string:
           name: GIT_REPO
