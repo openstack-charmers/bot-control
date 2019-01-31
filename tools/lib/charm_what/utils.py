@@ -85,7 +85,7 @@ def is_charm_layer(asset_path):
 
 
 def is_func_bundle(asset_path):
-    '''Return True is the contents of asset_path appear to
+    '''Return True if the contents of asset_path appear to
     be a testable Juju bundle.'''
     return (
         f_exists(asset_path, 'bundle.yaml') and
