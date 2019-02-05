@@ -1,0 +1,148 @@
+- builder:
+    name: build_zaza_runner
+    builders:
+        - shell: |
+            #!/bin/bash -ue
+            . ~/oscirc
+            ${OSCI_ROOT}/run/job-parts/build_func_test.sh
+
+- job:
+    name: zaza_runner
+    # display-name: "Zaza Test Runner"
+    project-type: freestyle
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    node: slave
+    disabled: false
+    concurrent: true
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 60
+          artifact-num-to-keep: 500
+      - throttle:
+          max-per-node: 1
+          max-total: 3
+          option: project
+          # NOTE(beisner): One can use either strategy/option (project or category).
+          #     Category (from Jenkins master global config) wins over any max
+          #     throttle values set here.  Leaving in place as an example, however.
+          # categories:
+          #   - overclouds
+          # option: category
+          # matrix-builds: false
+          # matrix-configs: true
+    parameters:
+      - string:
+          name: TEST_PATH
+          default: "development/test-ceph"
+          description: Bundle Path
+      - string:
+          name: GIT_REPO
+          default: "git://github.com/openstack-charmers/openstack-bundles.git"
+          description: Git repo for Bundle
+      - string:
+          name: GIT_BRANCH
+          default: "master"
+          description: Git branch for Bundle repo
+      - string:
+          name: BASE_NAME
+          default: "func"
+          description: Affects the checkout/clone directory (CO_DIR) in UOSCI.  Does not need to be detailed or specific, but it must be set.
+      - NO_POST_DESTROY
+      - DISPLAY_NAME
+    wrappers:
+      - timestamps
+      - build-name:
+          name: '#${BUILD_NUMBER} ${ENV,var="GIT_REPO"} ${ENV,var="TEST_PATH"}'
+    builders:
+      - prep_osci_repo_if_necessary
+      - build_zaza_runner
+    publishers:
+      - archive_artifacts
+
+- job:
+    name: test_func_ceph_base_matrix
+    disabled: true
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "H H(04-08) * * 6"  # Once weekly on Friday Evening / Saturday Morning
+    axes:
+      - axis:
+         type: user-defined
+         name: TEST_PATH
+         values:
+          - "development/ceph-base-xenial-jewel"
+          - "development/ceph-base-xenial-luminous"
+          - "development/ceph-base-bionic-luminous"
+          - "development/ceph-base-bionic-mimic"
+          - "development/ceph-base-cosmic-mimic"
+    parameters:
+      - string:
+          name: GIT_REPO
+          default: "git://github.com/openstack-charmers/openstack-bundles.git"
+          description: Git repo for Bundle
+      - string:
+          name: GIT_BRANCH
+          default: "master"
+          description: Git branch for Bundle repo
+    builders:
+      - trigger-builds:
+        - project:
+            - "zaza_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            GIT_REPO=$GIT_REPO
+            TEST_PATH=$TEST_PATH
+            GIT_BRANCH=$GIT_BRANCH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
+
+- job:
+    name: test_func_openstack_base_matrix
+    disabled: true
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: "H H(08-12) * * 5"  # Once weekly on Friday Morning
+    axes:
+      - axis:
+         type: user-defined
+         name: TEST_PATH
+         values:
+          - "development/openstack-base-xenial-mitaka"
+          - "development/openstack-base-xenial-newton"
+          - "development/openstack-base-xenial-ocata"
+          - "development/openstack-base-xenial-pike"
+          - "development/openstack-base-xenial-queens"
+          - "development/openstack-base-bionic-queens"
+          - "development/openstack-base-bionic-rocky"
+          - "development/openstack-base-cosmic-rocky"
+    parameters:
+      - string:
+          name: GIT_REPO
+          default: "git://github.com/openstack-charmers/openstack-bundles.git"
+          description: Git repo for Bundle
+      - string:
+          name: GIT_BRANCH
+          default: "master"
+          description: Git branch for Bundle repo
+    builders:
+      - trigger-builds:
+        - project:
+            - "zaza_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            GIT_REPO=$GIT_REPO
+            TEST_PATH=$TEST_PATH
+            GIT_BRANCH=$GIT_BRANCH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH

@@ -46,3 +46,17 @@
       - job
       - last-success
       - last-failure
+
+- view:
+    name: FuncMatrix
+    description: |
+      <p>Matrix jobs</p>
+    view-type: list
+    regex: "test_func.*matrix.*||zaza_runner.*"
+    columns:
+      - status
+      - build-button
+      - weather
+      - job
+      - last-success
+      - last-failure
