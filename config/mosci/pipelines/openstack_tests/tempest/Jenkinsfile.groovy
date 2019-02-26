@@ -26,16 +26,16 @@ def test_runner(TEST_CMD) {
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
         dir("${env.HOME}/tools/openstack-charm-testing/") {
-        /*stage('Get OS Env vars') {
+        stage('Configure tempest') {
                 echo "SLAVE_NODE_NAME: ${SLAVE_NODE_NAME}"
                 echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
                     try {
                     ENVARS = sh (
-                        script: "#!/bin/bash \nsource ./novarcv3_project ; env|grep OS_",
+                        script: "tools/configure_tempest.sh",
                         returnStdout: true
                     ) 
                     } catch (error) {
-                        echo "Error getting env vars: ${error}"
+                        echo "error configuring tempest ${error}"
                     }
                 }*/
         stage("Run tempest test") {
