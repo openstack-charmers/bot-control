@@ -15,7 +15,7 @@ SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 def test_runner(TEST_CMD) {
     try {
         TEST_RUN = sh (
-            script: "tox -e ${TEST_CMD}",
+            script: "tox -e ${TEST_CMD} > ${TEST_CMD}_output.log",
             returnStdout: true
         )
     } catch (error) {
@@ -61,6 +61,7 @@ node(params.SLAVE_NODE_NAME) {
         }
         stage("Get logs") {
             echo "get some logs"
+            sh "cat ${TEST_TYPE}_output.log"
         }
         stage("Clean up") {
             echo "some cleanup may be required between tests"
