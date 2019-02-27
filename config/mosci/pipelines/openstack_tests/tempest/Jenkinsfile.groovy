@@ -37,7 +37,7 @@ node(params.SLAVE_NODE_NAME) {
                     } catch (error) {
                         echo "error configuring tempest ${error}"
                     }
-                }*/
+                }
         stage("Run tempest test") {
             env.HTTP_PROXY="http://squid.internal:3128"
             env.HTTPS_PROXY="http://squid.internal:3128"
