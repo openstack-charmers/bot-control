@@ -62,6 +62,7 @@ node(params.SLAVE_NODE_NAME) {
         stage("Get logs") {
             echo "get some logs"
             sh "cat ${TEST_TYPE}_output.log"
+            archiveArtifacts artifacts: '/*output.txt'
         }
         stage("Clean up") {
             echo "some cleanup may be required between tests"
