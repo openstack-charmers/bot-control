@@ -15,9 +15,11 @@ SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 def test_runner(TEST_CMD) {
     try {
         TEST_RUN = sh (
-            script: "tox -e ${TEST_CMD} > ${TEST_CMD}_output.log",
+            script: "tox -e ${TEST_CMD} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
             returnStdout: true
         )
+        sh "cat ${TEST_CMD}_${BUILD_ID}_output.log"
+        archiveArtifacts artifacts: "*output.log"
     } catch (error) {
         echo "Error with test runner: ${error}"
     }
@@ -58,11 +60,6 @@ node(params.SLAVE_NODE_NAME) {
                 test_runner("${TEST_TYPE}")
                 }
             }
-        }
-        stage("Get logs") {
-            echo "get some logs"
-            sh "cat ${TEST_TYPE}_output.log"
-            archiveArtifacts artifacts: '/*output.txt'
         }
         stage("Clean up") {
             echo "some cleanup may be required between tests"
