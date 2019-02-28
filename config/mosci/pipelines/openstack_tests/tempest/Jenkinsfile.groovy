@@ -29,6 +29,14 @@ node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
         dir("${env.HOME}/tools/openstack-charm-testing/") {
         stage('Configure tempest') {
+                try {
+                    JUJU_SWITCH = sh (
+                        script: "juju switch ${ARCH}-mosci-${CLOUD_NAME}:${ARCH}-mosci-${CLOUD_NAME}",
+                        returnStdout: true
+                    )
+                } catch (error) {
+                    echo "Couldn't juju switch: ${error}"
+                }
                 echo "SLAVE_NODE_NAME: ${SLAVE_NODE_NAME}"
                 echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
                     try {
