@@ -217,6 +217,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                             if ( "${params.DESTROY_CONTROLLER}" == "true" ) {
                                 echo "Destroying controller and models: ${CONTROLLER_NAME}"
                                 try {
+                                        sh "for a in \$(juju machines|awk '{print \$1}'|grep -v Machine) ; do juju remove-machine -m ${MODEL_NAME} \$a --force ; done"
                                         sh "juju destroy-controller ${CONTROLLER_NAME} --destroy-all-models -y"
                                 } catch (error) {
                                         echo "An error occured:" + error
