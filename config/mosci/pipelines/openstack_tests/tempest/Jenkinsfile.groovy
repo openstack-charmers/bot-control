@@ -1,3 +1,7 @@
+if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='amontons' ) {
+                CLOUD_NAME="${CLOUD_NAME}-maas"
+}
+
 if ( ! params.OPENSTACK ) {
     error "This is not an openstack deployment"
 }
