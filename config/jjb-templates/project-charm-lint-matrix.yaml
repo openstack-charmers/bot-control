@@ -32,6 +32,7 @@
           - ceph-osd
           - ceph-proxy
           - ceph-radosgw
+          - ceph-rbd-mirror
           - cinder
           - cinder-backup
           - cinder-ceph
@@ -48,18 +49,15 @@
           - manila
           - manila-generic
           - neutron-api
-          - neutron-api-odl
           - neutron-dynamic-routing
           - neutron-gateway
           - neutron-openvswitch
           - nova-cell-controller
           - nova-cloud-controller
           - nova-compute
-          - nova-compute-proxy
           - octavia
-          - odl-controller
+          - octavia-dashboard
           - openstack-dashboard
-          - openvswitch-odl
           - percona-cluster
           - rabbitmq-server
           - swift-proxy

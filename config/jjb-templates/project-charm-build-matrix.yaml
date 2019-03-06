@@ -24,7 +24,9 @@
           - aodh
           - barbican
           - barbican-softhsm
+          - barbican-vault
           - ceph-fs
+          - ceph-rbd-mirror
           - designate
           - designate-bind
           - gnocchi
@@ -32,10 +34,12 @@
           - manila
           - manila-generic
           - murano
-          - neutron-api-odl
-          - openvswitch-odl
-          - panko
+          - neutron-dynamic-routing
+          - nova-cell-controller
+          - octavia
+          - octavia-dashboard
           - tempest
+          - vault
     builders:
       - trigger-builds:
         - project:
