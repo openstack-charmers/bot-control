@@ -32,6 +32,7 @@
           - ceph-osd
           - ceph-proxy
           - ceph-radosgw
+          - ceph-rbd-mirror
           - cinder
           - cinder-backup
           - cinder-ceph

@@ -25,6 +25,7 @@
           - barbican
           - barbican-softhsm
           - ceph-fs
+          - ceph-rbd-mirror
           - designate
           - designate-bind
           - gnocchi
@@ -33,6 +34,7 @@
           - manila-generic
           - murano
           - neutron-api-odl
+          - octavia
           - openvswitch-odl
           - panko
           - tempest
