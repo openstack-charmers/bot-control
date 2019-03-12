@@ -19,13 +19,14 @@ SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 def test_runner(TEST_CMD) {
     try {
         TEST_RUN = sh (
-            script: "tox -e ${TEST_CMD} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
+            script: "#!/bin/bash \nset -o pipefail ; tox -e ${TEST_CMD} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
             returnStdout: true
         )
         sh "cat ${TEST_CMD}_${BUILD_ID}_output.log"
         archiveArtifacts artifacts: "*output.log"
     } catch (error) {
         echo "Error with test runner: ${error}"
+        currentBuild.result = 'FAILURE'
     }
 }
 
