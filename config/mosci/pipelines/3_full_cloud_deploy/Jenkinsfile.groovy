@@ -47,8 +47,12 @@ def get_neutron_machine_id() {
                     return false
                 } else {
                     try {
+                        MACHINE_ID = sh (
+                        script: "juju status neutron-gateway|awk /started/'{print \$1}'",
+                        returnStdout: true
+                        )
                         NEUTRON_ID = sh (
-                        script: "juju status neutron-gateway|awk /started/'{print \$4}'",
+                        script: " juju show-machine ${MACHINE_ID}|awk /instance-id/'{print \$2}'|head -n1",
                         returnStdout: true
                         )
                     if ( NEUTRON_ID == '' ) {
