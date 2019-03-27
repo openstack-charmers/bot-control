@@ -54,7 +54,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -98,7 +97,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -137,7 +135,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -181,7 +178,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -220,7 +216,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -264,7 +259,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -386,7 +380,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           # - "trusty-mitaka"        # Nothing to upgrade to.
@@ -428,7 +421,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           # - "trusty-mitaka"         # Nothing to upgrade to.
@@ -467,7 +459,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -510,7 +501,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -552,7 +542,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -595,7 +584,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -682,7 +670,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -783,7 +770,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -826,7 +812,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -869,7 +854,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           # - "trusty-kilo"    # Same ceph version as Liberty UCA
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -912,7 +896,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           # - "trusty-kilo"    # Same ceph version as Liberty UCA
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -955,7 +938,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           # - "trusty-kilo"    # Same ceph version as Liberty UCA
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -998,7 +980,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           # - "trusty-kilo"    # Same ceph version as Liberty UCA
           - "trusty-liberty"
           - "trusty-mitaka"
@@ -1038,7 +1019,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           # - "trusty-kilo"    # Same ceph version as Liberty UCA
           - "trusty-liberty"
           # - "trusty-mitaka" # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
@@ -1081,7 +1061,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-icehouse"
           # - "trusty-kilo"    # Same ceph version as Liberty UCA
           - "trusty-liberty"
           - "trusty-mitaka"
