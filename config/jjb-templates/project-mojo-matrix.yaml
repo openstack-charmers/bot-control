@@ -54,7 +54,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -97,7 +96,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -135,7 +133,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -178,7 +175,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -216,7 +212,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -259,7 +254,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -380,7 +374,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           # - "trusty-mitaka"        # Nothing to upgrade to.
           - "xenial-mitaka"
@@ -421,7 +414,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           # - "trusty-mitaka"         # Nothing to upgrade to.
           - "xenial-mitaka"
@@ -459,7 +451,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -501,7 +492,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -542,7 +532,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -584,7 +573,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -627,7 +615,6 @@
          name: U_OS
          values:
           # - "trusty-icehouse"   # No spec defined, unsupported combo.
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -670,7 +657,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -770,7 +756,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -812,7 +797,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
@@ -1145,7 +1129,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-kilo"
           - "trusty-liberty"
           - "trusty-mitaka"
           - "xenial-mitaka"
