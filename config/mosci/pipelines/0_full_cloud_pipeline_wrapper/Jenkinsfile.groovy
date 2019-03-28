@@ -1,3 +1,6 @@
+if (params.CLOUD_NAME.contains("serverstack")) {
+    ARCH="overcloud"
+}
 if (params.SLAVE_NODE_NAME) {
     specific_slave=params.SLAVE_NODE_NAME
 }
@@ -25,7 +28,7 @@ bootstrap_tag = BOOTSTRAP_CONSTRAINTS.split("tags=")[1].split(" ")[0]
 primary_tag = TAGS[0]
 additional_tags = TAGS.join(",")
 maas_api_cmd = ""
-echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${arch}"
+echo "Primary tag: ${primary_tag}, additional_tags: ${additional_tags}, arch: ${ARCH}"
 
 
 
