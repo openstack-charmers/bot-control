@@ -454,7 +454,6 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
-          - "bionic-stein"
     builders:
       - trigger-builds:
         - project:
@@ -495,7 +494,6 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
-          - "bionic-stein"
     builders:
       - trigger-builds:
         - project:
