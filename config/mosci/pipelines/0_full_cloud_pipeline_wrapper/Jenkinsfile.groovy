@@ -8,7 +8,7 @@ if (params.LXD) {
 if (params.SLAVE_NODE_NAME) {
     specific_slave=params.SLAVE_NODE_NAME
 }
-else if (params.PERSIST_SLAVE && ! params.LXD ) {
+else if (params.PERSIST_SLAVE) {
     specific_slave="${params.SLAVE_LABEL}-${ARCH}-persist"
 } 
 else {
