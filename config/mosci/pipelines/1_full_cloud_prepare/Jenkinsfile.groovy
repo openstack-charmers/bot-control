@@ -34,7 +34,7 @@ if ( params.LXD ) {
                 currentBuild.result = 'FAILURE'
         }
         else {
-                LXD_BOOTSTRAP = true
+                LXD_DEPLOY = true
         }
 }
 echo "BOOTSTRAP_CONSTRAINTS=${BOOTSTRAP_CONSTRAINTS}"
