@@ -294,68 +294,68 @@ def initLXDHost(IP_ADDRESS) {
 }
 
 stage ("[ build slave ]") {
-    node ('master') {
-    #    lxdonline = false
-    #    // if params.LXD here to check if there is already a slave with this label - but actually it doesnt matter if there is, 
-    #    // because if there is it will continue. if there is no slave with this label... 
-    #    if ( params.LXD ) {
-    #        echo "params.LXD is true, checking lxd-${ARCH}"
-    #        for ( node in jenkins.model.Jenkins.instance.nodes ) {
-    #            if ( node.getNodeName().contains("lxd-${ARCH}")) {
-    #                if ( node.getChannel() != null ) {
-    #                    echo "node ${node.getNodeName()} is online, continuing"
-    #                    specific_slave = node.getNodeName()
-    #                    lxdonline = true
-    #                    return true
-    #                }
-    #            }
-    #        }
-    #        if ( lxdonline != true ) {
-    #            echo "node lxd-${ARCH} is not online - provisioning one from MAAS" 
-    #            maas_api_cmd = " -o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch} --output"
-    #            /*if ( primary_tag != additional_tags ) {
-    #                maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
-    #            }*/
-    #            dir("${env.HOME}/tools/openstack-charm-testing/") {
-    #                 timeout(params.RESOURCE_CHECK_TIMEOUT.toInteger()) {
-    #                    waitUntil {
-    #                        try {
-    #                            MAAS_SYSID = sh (
-    #                                script: "./bin/maas_actions.py ${maas_api_cmd}",
-    #                                returnStdout: true
-    #                            ).trim().tokenize().last()
-    #                            echo "MAAS_SYSID: ${MAAS_SYSID}"
-    #                            if ( MAAS_SYSID == "0" ) {
-    #                                echo "No machines available, wait for 1 minute before retrying"
-    #                                sleep(60)
-    #                                return false
-    #                            }
-    #                            return true
-    #                        } catch (error) {
-    #                            echo "Error picking LXD host to provision with maas: ${error}"
-    #                            currentBuild.result = 'FAILURE' 
-    #                            error "FAILING"
-    #                        }
-    #                    } 
-    #                }
-    #                maas_api_cmd = " --deploy -o ${params.MAAS_OWNER} -k ${MAAS_API_KEY} -m ${CLOUD_NAME}-maas --tags ${primary_tag} --system_id ${MAAS_SYSID} "
-    #                try {
-    #                    MAAS_DEPLOY = sh (
-    #                        script: "./bin/maas_actions.py ${maas_api_cmd}",
-    #                        returnStdout: true
-    #                    ).trim()
-    #                    echo "Deployed ${MAAS_SYSID}: ${MAAS_DEPLOY}"
-    #                    sleep(30)
-    #                    initLXDHost(getSystemIP(MAAS_SYSID))
-    #                } catch (error) {
-    #                    echo "Error deploying machine ${MAAS_SYSID}: ${error}"
-    #                    currentBuild.result = 'FAILURE'
-    #                    error "FAILING"
-    #                }
-    #            } 
-    #        } 
-    #    } 
-    #}
+    /* node ('master') {
+        lxdonline = false
+        // if params.LXD here to check if there is already a slave with this label - but actually it doesnt matter if there is, 
+        // because if there is it will continue. if there is no slave with this label... 
+        if ( params.LXD ) {
+            echo "params.LXD is true, checking lxd-${ARCH}"
+            for ( node in jenkins.model.Jenkins.instance.nodes ) {
+                if ( node.getNodeName().contains("lxd-${ARCH}")) {
+                    if ( node.getChannel() != null ) {
+                        echo "node ${node.getNodeName()} is online, continuing"
+                        specific_slave = node.getNodeName()
+                        lxdonline = true
+                        return true
+                    }
+                }
+            }
+            if ( lxdonline != true ) {
+                echo "node lxd-${ARCH} is not online - provisioning one from MAAS" 
+                maas_api_cmd = " -o ${params.MAAS_OWNER} -m ${CLOUD_NAME}-maas -k ${MAAS_API_KEY} --count --tags ${primary_tag} --arch ${arch} --output"
+                /*if ( primary_tag != additional_tags ) {
+                    maas_api_cmd = maas_api_cmd + " --additional ${additional_tags} "
+                }*/
+                /*dir("${env.HOME}/tools/openstack-charm-testing/") {
+                     timeout(params.RESOURCE_CHECK_TIMEOUT.toInteger()) {
+                        waitUntil {
+                            try {
+                                MAAS_SYSID = sh (
+                                    script: "./bin/maas_actions.py ${maas_api_cmd}",
+                                    returnStdout: true
+                                ).trim().tokenize().last()
+                                echo "MAAS_SYSID: ${MAAS_SYSID}"
+                                if ( MAAS_SYSID == "0" ) {
+                                    echo "No machines available, wait for 1 minute before retrying"
+                                    sleep(60)
+                                    return false
+                                }
+                                return true
+                            } catch (error) {
+                                echo "Error picking LXD host to provision with maas: ${error}"
+                                currentBuild.result = 'FAILURE' 
+                                error "FAILING"
+                            }
+                        } 
+                    }
+                    maas_api_cmd = " --deploy -o ${params.MAAS_OWNER} -k ${MAAS_API_KEY} -m ${CLOUD_NAME}-maas --tags ${primary_tag} --system_id ${MAAS_SYSID} "
+                    try {
+                        MAAS_DEPLOY = sh (
+                            script: "./bin/maas_actions.py ${maas_api_cmd}",
+                            returnStdout: true
+                        ).trim()
+                        echo "Deployed ${MAAS_SYSID}: ${MAAS_DEPLOY}"
+                        sleep(30)
+                        initLXDHost(getSystemIP(MAAS_SYSID))
+                    } catch (error) {
+                        echo "Error deploying machine ${MAAS_SYSID}: ${error}"
+                        currentBuild.result = 'FAILURE'
+                        error "FAILING"
+                    }
+                } 
+            } 
+        } 
+    }*/
     waitUntil {
     node (specific_slave) { 
             echo "Picking ${NODE_NAME} for this job run"
