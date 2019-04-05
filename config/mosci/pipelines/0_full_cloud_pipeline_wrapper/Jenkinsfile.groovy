@@ -1,6 +1,10 @@
 if (params.CLOUD_NAME.contains("serverstack")) {
     ARCH="overcloud"
 }
+if (params.LXD) {
+    CLOUD_NAME="lxd"
+    ARCH="lxd"
+}
 if (params.SLAVE_NODE_NAME) {
     specific_slave=params.SLAVE_NODE_NAME
 }
@@ -396,6 +400,7 @@ node(SLAVE_NODE_NAME) {
             SLAVE_NODE_NAME="${env.NODE_NAME}"
             prep_job = build job: '1. Full Cloud - Prepare', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CTI_GIT_REPO', value: "${params.CTI_GIT_REPO}"],
                        [$class: 'BooleanParameterValue', name: 'LXD', value: params.LXD],
+                       [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
                        [$class: 'StringParameterValue', name: 'CTI_GIT_BRANCH', value: "${params.CTI_GIT_BRANCH}"],
                        [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: "${SLAVE_NODE_NAME}"],
                        [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],

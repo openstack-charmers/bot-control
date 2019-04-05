@@ -28,6 +28,15 @@ else {
         env.BOOTSTRAP_CONSTRAINTS="arch=${params.ARCH} ${BOOTSTRAP_CONSTRAINTS}" 
 }
 
+if ( params.LXD ) {
+        if ( params.LXD_IP == "" ) {
+                echo "LXD IP Not set, failing build"
+                currentBuild.result = 'FAILURE'
+        }
+        else {
+                LXD_BOOTSTRAP = true
+        }
+}
 echo "BOOTSTRAP_CONSTRAINTS=${BOOTSTRAP_CONSTRAINTS}"
 
 /* stage('Check Nodes for controllers and models') {
@@ -172,6 +181,36 @@ node("${SLAVE_NODE_NAME}") {
                     }
                     dir("${env.HOME}/cloud-credentials/") {
                         sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/credentials.yaml ."
+                    }
+                }
+            }
+        }
+        if ( LXD_DEPLOY == "true" ) {
+            stage('Configure LXD remote') {
+                dir("${env.HOME}/cloud-credentials/") {
+                    if ( fileExists('./credentials.yaml') ) {
+                        if ( fileExists("${env.HOME}/tools/charm-test-infra/") ) {
+                            sh "cp ./credentials.yaml ${env.HOME}/tools/charm-test-infra/juju-configs/"
+                        }
+                    }
+                }
+                dir("${env.HOME}/tools/charm-test-infra") {
+                    SHORT_NAME="lxd-remote"
+                    try { CHECK_AUTH=sh (
+                            script: "grep ${SHORT_NAME} juju-configs/credentials.yaml",
+                            returnStdout: true
+                            ).trim()
+                    }
+                    catch(all) {
+                        CHECK_AUTH=''
+                    }
+                    echo "${CHECK_AUTH}"
+                    dir("${env.HOME}/tools/charm-test-infra") {
+                        sh "sed -i 's/__ENDPOINT_LXD__/${params.LXD_IP}/g' juju-configs/clouds.yaml"
+                        sh "cat juju-configs/clouds.yaml"
+                    }
+                    dir("${env.HOME}/cloud-credentials/") {
+                        sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/clouds.yaml ."
                     }
                 }
             }
