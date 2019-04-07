@@ -220,7 +220,7 @@ node("${SLAVE_NODE_NAME}") {
                         }
                         readContent = readFile 'juju-configs/credentials.yaml'
                         if ( ! readContent.contains("${LXD_UNDER}"))  {
-                            writeFile file: 'juju-configs/credentials.yaml', text: readContent + "\r  lxd-${LXD_UNDER}:\n    lxd-remote-creds:\n      auth-type: interactive\n      trust-password: ubuntu"
+                            writeFile file: 'juju-configs/credentials.yaml', text: readContent + "\n  lxd-${LXD_UNDER}:\n    lxd-remote-creds:\n      auth-type: interactive\n      trust-password: ubuntu\n"
                         }
                         /*sh "sed -i 's/__ENDPOINT_LXD__/${params.LXD_IP}/g' juju-configs/clouds.yaml"
                         sh "cat juju-configs/clouds.yaml"*/
@@ -237,7 +237,7 @@ node("${SLAVE_NODE_NAME}") {
                         try {
                             readContent = readFile 'credentials.yaml'
                             if ( ! readContent.contains("${LXD_UNDER}")) {
-                                writeFile file: 'juju-configs/credentials.yaml', text: readContent + "\r  lxd-${LXD_UNDER}:\n    lxd-remote-creds:\n      auth-type: interactive\n      trust-password: ubuntu"
+                                writeFile file: 'juju-configs/credentials.yaml', text: readContent + "\n  lxd-${LXD_UNDER}:\n    lxd-remote-creds:\n      auth-type: interactive\n      trust-password: ubuntu\n"
                             }
                         } catch(all) {
                             sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/credentials.yaml ."
