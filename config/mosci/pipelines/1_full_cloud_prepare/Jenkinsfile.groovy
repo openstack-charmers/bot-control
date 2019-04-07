@@ -209,7 +209,7 @@ node("${SLAVE_NODE_NAME}") {
                     dir("${env.HOME}/tools/charm-test-infra") {
                         def readContent = readFile 'juju-configs/clouds.yaml'
                         if ( ! readContent.contains("${LXD_IP}")) {
-                                writeFile file: 'juju-configs/clouds.yaml', text: readContent + "\nlxd-${LXD_IP}\n  type:lxd\n  auth-types: [interactive,certificate]\n  endpoint: https://${LXD_IP}:8443"
+                                writeFile file: 'juju-configs/clouds.yaml', text: readContent + "\nlxd-${LXD_IP}\n  type:lxd\n  auth-types: [interactive,certificate]\n  endpoint: https://${LXD_IP}:8443\n"
                         }
                         /*sh "sed -i 's/__ENDPOINT_LXD__/${params.LXD_IP}/g' juju-configs/clouds.yaml"
                         sh "cat juju-configs/clouds.yaml"*/
