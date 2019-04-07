@@ -208,9 +208,8 @@ node("${SLAVE_NODE_NAME}") {
                     echo "${CHECK_AUTH}"
                     dir("${env.HOME}/tools/charm-test-infra") {
                         try {
-                            sh "cp ${env.HOME}/cloud-credentials/clouds.yaml ./juju-configs/"}
-                        }
-                        catch(all) {
+                            sh "cp ${env.HOME}/cloud-credentials/clouds.yaml ./juju-configs/"
+                        } catch(all) {
                             echo "clouds.yaml has not yet been altered" 
                         }
                         def readContent = readFile 'juju-configs/clouds.yaml'
