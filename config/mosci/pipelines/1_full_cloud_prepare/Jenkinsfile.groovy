@@ -208,7 +208,7 @@ node("${SLAVE_NODE_NAME}") {
                     echo "${CHECK_AUTH}"
                     dir("${env.HOME}/tools/charm-test-infra") {
                         def readContent = readFile 'juju-configs/clouds.yaml'
-                        LXD_UNDER = "${LXD_IP}.replaceAll("[.]", "-")"
+                        LXD_UNDER = "${LXD_IP}.replaceAll('[.]', '-')"
                         if ( ! readContent.contains("${LXD_UNDER}")) {
                                 writeFile file: 'juju-configs/clouds.yaml', text: readContent + "\nlxd-${LXD_UNDER}\n  type:lxd\n  auth-types: [interactive,certificate]\n  endpoint: https://${LXD_UNDER}:8443\n"
                         }
