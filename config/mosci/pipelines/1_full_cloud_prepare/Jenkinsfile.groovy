@@ -28,6 +28,8 @@ else {
         env.BOOTSTRAP_CONSTRAINTS="arch=${params.ARCH} ${BOOTSTRAP_CONSTRAINTS}" 
 }
 
+LXD_DEPLOY = false
+
 if ( params.LXD == true ) {
         if ( params.LXD_IP == "" ) {
                 echo "LXD IP Not set, failing build"
