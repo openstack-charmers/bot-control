@@ -186,7 +186,7 @@ node("${SLAVE_NODE_NAME}") {
             }
         }
         echo "checking state of LXD_DEPLOY: ${LXD_DEPLOY}"
-        if ( LXD_DEPLOY == "true" ) {
+        if ( LXD_DEPLOY == true ) {
             stage('Configure LXD remote') {
                 dir("${env.HOME}/cloud-credentials/") {
                     if ( fileExists('./credentials.yaml') ) {
