@@ -131,7 +131,7 @@ if ( params.CLOUD_NAME.contains("390")) {
         S390X=true
 }  else { S390X=false }
 if ( params.CLOUD_NAME=='lxd' ) {
-        CLOUD_NAME="lxd-${LXD_IP}".replaceAll(".", "_")
+        CLOUD_NAME="lxd-${LXD_IP}".replaceAll("\.", "_")
 }
 
 CONMOD = "${CLOUD_NAME}:${CLOUD_NAME}"
