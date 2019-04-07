@@ -221,11 +221,14 @@ node("${SLAVE_NODE_NAME}") {
                         sh "cat juju-configs/clouds.yaml"*/
                     }
                     dir("${env.HOME}/cloud-credentials/") {
-                        readContent = readFile 'clouds.yaml'
-                        if ( ! readContent.contains("${LXD_UNDER}")) {
-                            writeFile file: 'clouds.yaml', text: readContent + "\n  lxd-${LXD_UNDER}\n    type:lxd\n    auth-types: [interactive,certificate]\n    endpoint: https://${LXD_UNDER}:8443\n"
+                        try {
+                            readContent = readFile 'clouds.yaml'
+                            if ( ! readContent.contains("${LXD_UNDER}")) {
+                                writeFile file: 'clouds.yaml', text: readContent + "\n  lxd-${LXD_UNDER}\n    type:lxd\n    auth-types: [interactive,certificate]\n    endpoint: https://${LXD_UNDER}:8443\n"
+                            }
+                        } catch(all) {
+                            sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/clouds.yaml ."
                         }
-                        // sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/clouds.yaml ."
                     }
                 }
             }
