@@ -131,6 +131,7 @@ if ( params.CLOUD_NAME.contains("390")) {
         S390X=true
 }  else { S390X=false }
 if ( params.CLOUD_NAME=='lxd' ) {
+        CLOUD_NAME="${CLOUD_NAME}-" + LXD_IP.replaceAll('.', '-')"
         CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
         MODEL_NAME="lxd-${LXD_IP}".replaceAll("[.]", "-")
 
