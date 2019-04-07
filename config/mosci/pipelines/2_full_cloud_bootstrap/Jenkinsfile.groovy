@@ -130,6 +130,11 @@ if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' || params.CLOUD_
 if ( params.CLOUD_NAME.contains("390")) {
         S390X=true
 }  else { S390X=false }
+if ( params.CLOUD_NAME=='lxd' ) {
+        CLOUD_NAME="lxd-${LXD_IP}"
+}
+
+CONMOD = "${CLOUD_NAME}:${CLOUD_NAME}"
 
 def s390x_add_machine(add_machines) {
     echo "s390x_add_machine"
@@ -138,7 +143,7 @@ def s390x_add_machine(add_machines) {
             try {
                 waitUntil {
                     def check_model = sh (
-                        script: "juju status > juju_model",
+                        script: "juju status -m ${CONMOD} > juju_model",
                         returnStatus: true
                     )
                     if ( check_model != 0 ) {
@@ -248,7 +253,6 @@ node(params.SLAVE_NODE_NAME) {
             dir("${env.HOME}/tools/openstack-charm-testing") {
                 OS_PROJECT_NAME="${params.ARCH}-mosci"
                 CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
-                MODEL_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
                 MODEL_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
                 BOOTSTRAP_LOCAL=Boolean.valueOf(params.BOOTSTRAP_ON_SLAVE)
                 if ( params.OVERCLOUD_DEPLOY ) {
@@ -376,7 +380,7 @@ node(params.SLAVE_NODE_NAME) {
                 for ( int i = 0 ; i < CONFIG_LINES.size() ; i++ ) {
                     try {
                         JUJU_CONFIG = sh (
-                            script: "juju controller-config ${CONFIG_LINES[i]}",
+                            script: "juju controller-config ${CONFIG_LINES[i]} -c ${CONTROLLER_NAME}",
                             returnStdout: true
                         )
                     } catch (error) {
@@ -391,7 +395,7 @@ node(params.SLAVE_NODE_NAME) {
                 for ( int i = 0 ; i < CONFIG_LINES.size() ; i++ ) {
                     try {
                         JUJU_CONFIG = sh (
-                            script: "juju model-config ${CONFIG_LINES[i]}",
+                            script: "juju model-config ${CONFIG_LINES[i]} -m ${CONMOD}",
                             returnStdout: true
                         )
                     } catch (error) {

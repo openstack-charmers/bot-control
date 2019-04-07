@@ -101,11 +101,17 @@ if ( "${params.ARCH}".contains("s390x") && ! params.OVERCLOUD_DEPLOY ) {
         echo "OVERCLOUD_DEPLOY == true"
         CONTROLLER_NAME=params.CONTROLLER_NAME
         MODEL_NAME=params.MODEL_NAME
+} else if ( params.CLOUD_NAME == "lxd" ) {
+        CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-${LXD_IP}"
+        MODEL_NAME=CONTROLLER_NAME
 } else {
         CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-maas"
         MODEL_NAME=CONTROLLER_NAME
         echo "MAAS detected, setting controller and model names: ${CONTROLLER_NAME}, ${MODEL_NAME}"
 }
+
+CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
+
 
 if ( params.SLAVE_NODE_NAME == '') {
     // This is not valid, since the master doesnt have capabilities to release machines
@@ -152,7 +158,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                     if ( params.CLOUD_NAME == "autodetect" ) {
                         try {
                             CLOUD_NAME = sh (
-                                script: "juju controllers|awk /mosci/'{print \$1}'",
+                                script: "juju -m ${CONMOD} controllers|awk /mosci/'{print \$1}'",
                                 returnStdout: true
                             ).trim()
                         } catch (error) {
@@ -162,6 +168,9 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                         }
                     } else {
                         CLOUD_NAME = params.CLOUD_NAME
+                    }
+                    if ( CLOUD_NAME == "lxd" ) {
+                        CLOUD_NAME = "lxd-${LXD_IP}"
                     }
                     ws("${params.WORKSPACE}") {
                         stage("Archive juju logs") {
@@ -192,12 +201,12 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                 }
                                 try {
                                     CHECK_ERR = sh ( 
-                                        script: "juju status --relations=false|grep -E '/.*error'",
+                                        script: "juju -m ${CONMOD} status --relations=false|grep -E '/.*error'",
                                         returnStatus: true 
                                     )
                                     if ( CHECK_ERR == 0 ) {
                                         RESOLVING = sh (
-                                            script: "for a in \$(juju status --relations=false|grep -E '/.*error'|awk '{print \$1}'|tr -d '*'); do juju resolved --no-retry \$a ; juju remove-unit \$a ; done",
+                                            script: "for a in \$(juju -m ${CONMOD} status --relations=false|grep -E '/.*error'|awk '{print \$1}'|tr -d '*'); do juju -m ${CONMOD} resolved --no-retry \$a ; juju -m ${CONMOD} remove-unit \$a ; done",
                                             returnStdout: true
                                         ).trim()
                                         echo "Resolving: ${RESOLVING}"
@@ -217,7 +226,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                             if ( "${params.DESTROY_CONTROLLER}" == "true" ) {
                                 echo "Destroying controller and models: ${CONTROLLER_NAME}"
                                 try {
-                                        sh "for a in \$(juju machines|awk '{print \$1}'|grep -v Machine) ; do juju remove-machine -m ${MODEL_NAME} \$a --force ; done"
+                                        sh "for a in \$(juju -m ${CONMOD} machines|awk '{print \$1}'|grep -v Machine) ; do juju -m ${CONMOD} remove-machine -m ${MODEL_NAME} \$a --force ; done"
                                         echo "Wait for machine removal before destroying controller and models"
                                         sleep(120)
                                         sh "juju destroy-controller ${CONTROLLER_NAME} --destroy-all-models -y"
@@ -266,7 +275,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                         stage("MAAS release nodes") {
                             try {
                                 MAAS_IDS = sh (
-                                    script: "juju machines | grep -v lxd | awk '{print \$4}'",
+                                    script: "juju -m ${CONMOD} machines | grep -v lxd | awk '{print \$4}'",
                                     returnStdout: true
                                 ).trim()
                             echo "Releasing: ${MAAS_IDS}"

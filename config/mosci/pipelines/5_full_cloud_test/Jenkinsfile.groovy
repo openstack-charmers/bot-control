@@ -17,6 +17,7 @@ node('master') {
                 [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
                 [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
                 [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
+                [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP]]
                 [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
         }
     }

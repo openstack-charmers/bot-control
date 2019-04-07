@@ -12,7 +12,9 @@ if ("${params.SLAVE_NODE_NAME}" == '') {
 if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='amontons' ) {
                 CLOUD_NAME="${CLOUD_NAME}-maas"
 }
-
+if ( CLOUD_NAME=='lxd' ) {
+        CLOUD_NAME="lxd-${LXD_IP}"
+}
 SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 
 node(params.SLAVE_NODE_NAME) {

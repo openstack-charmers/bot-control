@@ -28,7 +28,7 @@ else {
         env.BOOTSTRAP_CONSTRAINTS="arch=${params.ARCH} ${BOOTSTRAP_CONSTRAINTS}" 
 }
 
-if ( params.LXD ) {
+if ( params.LXD == true ) {
         if ( params.LXD_IP == "" ) {
                 echo "LXD IP Not set, failing build"
                 currentBuild.result = 'FAILURE'
@@ -185,6 +185,7 @@ node("${SLAVE_NODE_NAME}") {
                 }
             }
         }
+        echo "checking state of LXD_DEPLOY: ${LXD_DEPLOY}"
         if ( LXD_DEPLOY == "true" ) {
             stage('Configure LXD remote') {
                 dir("${env.HOME}/cloud-credentials/") {
@@ -195,7 +196,7 @@ node("${SLAVE_NODE_NAME}") {
                     }
                 }
                 dir("${env.HOME}/tools/charm-test-infra") {
-                    SHORT_NAME="lxd-remote"
+                    SHORT_NAME="lxd"
                     try { CHECK_AUTH=sh (
                             script: "grep ${SHORT_NAME} juju-configs/credentials.yaml",
                             returnStdout: true

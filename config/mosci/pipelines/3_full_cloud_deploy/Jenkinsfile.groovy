@@ -9,12 +9,16 @@ if ( params.OVERCLOUD_DEPLOY == true ) {
     CONTROLLER_NAME=params.CONTROLLER_NAME
     MODEL_NAME=params.MODEL_NAME
 } else {
-    if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' || params.CLOUD_NAME=='amontons') {
+    if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' ) {
         CLOUD_NAME="${params.CLOUD_NAME}-maas"
     } else { 
         CLOUD_NAME=params.CLOUD_NAME 
     }
+    if ( params.CLOUD_NAME = "lxd" ) {
+        CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}-${LXD_IP}"
+    } else {
     CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}"
+    }
     MODEL_NAME=CONTROLLER_NAME
 }
 if ( params.CLOUD_NAME.contains("390")) {
@@ -38,7 +42,7 @@ def get_neutron_machine_id() {
             // need max retries here
             try {
                 JUJU_MACHINES = sh (
-                script: "juju machines|grep -v lxd",
+                script: "juju -m ${CONMOD} machines|grep -v lxd",
                 returnStdout: true
                 )
                 if ( JUJU_MACHINES.contains("pending")) {
@@ -48,12 +52,12 @@ def get_neutron_machine_id() {
                 } else {
                     try {
                         NEUTRON_ID = sh (
-                        script: "juju show-machine \$(juju status neutron-gateway | awk /started/'{print \$1}') | awk /instance-id/'{print \$2}' | head -n1",
+                        script: "juju -m ${CONMOD} show-machine \$(juju status neutron-gateway | awk /started/'{print \$1}') | awk /instance-id/'{print \$2}' | head -n1",
                         returnStdout: true
                         )
                     if ( NEUTRON_ID == '' ) {
                         echo "Neutron ID error: ${NEUTRON_ID}"
-                        sh "juju  status -m ${CONMOD}"
+                        sh "juju  -m ${CONMOD} status"
                         currentBuild.result = 'FAILURE'
                         return true
                     } else {
@@ -151,7 +155,7 @@ node("${SLAVE_NODE_NAME}") {
         stage('Deploy bundle') {
             waitUntil {
                 try {
-                    sh "juju deploy bundle.yaml --map-machines=existing --model=${CONMOD} ${OVERLAY_STRING}"
+                    sh "juju -m ${CONMOD} deploy bundle.yaml --map-machines=existing --model=${CONMOD} ${OVERLAY_STRING}"
                     return true
                 } catch (error) {
                     if ( params.MANUAL_JOB == true ) {
@@ -189,7 +193,7 @@ node("${SLAVE_NODE_NAME}") {
                     CONFIG = CONFIG_LINES[i].split(',')[1]
                     try {
                         JUJU_CONFIG = sh (
-                            script: "juju config ${APP} ${CONFIG}",
+                            script: "juju -m ${CONMOD} config ${APP} ${CONFIG}",
                             returnStdout: true
                         )
                     } catch (error) {
@@ -211,13 +215,13 @@ node("${SLAVE_NODE_NAME}") {
                         echo "Waiting for neutron-gateway to settle so that we can ensure data-port config is correct"
                         sleep(60)
                         sh (
-                            script: "juju config neutron-gateway data-port=\"br-ex:${NEUTRON_INTERFACE[-1]}\"",
+                            script: "juju -m ${CONMOD} config neutron-gateway data-port=\"br-ex:${NEUTRON_INTERFACE[-1]}\"",
                             returnStdout: true
                         )
                         echo "Resolve neutron-gateway errors if there are any after setting correct data-port"
                         sleep(60)
                         sh (
-                            script: "for a in \$(juju status neutron-gateway|grep -E 'neutron.*error'|awk '!/jujucharms/ {print \$1}'|tr -d '*'); do echo juju resolved \$a ; juju resolved \$a ; done",
+                            script: "for a in \$(juju status -m ${CONMOD} neutron-gateway|grep -E 'neutron.*error'|awk '!/jujucharms/ {print \$1}'|tr -d '*'); do echo juju -m ${CONMOD} resolved \$a ; juju -m ${CONMOD} resolved \$a ; done",
                             returnStdout: true
                         )
                 } catch (error) {
@@ -257,7 +261,7 @@ node("${SLAVE_NODE_NAME}") {
             }
             try {
                 CHECK_STATUS = sh (
-                script: "juju status -m ${CONMOD}",
+                script: "juju -m ${CONMOD} status",
                 returnStdout: true
                 )
             if ( CHECK_STATUS.contains("error") ) {

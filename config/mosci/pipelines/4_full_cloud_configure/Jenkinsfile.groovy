@@ -9,6 +9,35 @@ KEYSTONE_API_VERSION = ""
     KEYSTONE_API_VERSION = params.KEYSTONE_API_VERSION
 }
 
+if ("${params.SLAVE_NODE_NAME}" == '') {
+    SLAVE_NODE_NAME="${params.SLAVE_LABEL}-${ARCH}"
+}
+else {
+    SLAVE_NODE_NAME="${params.SLAVE_NODE_NAME}"
+}
+
+if ( params.OVERCLOUD_DEPLOY == true ) {
+    CONTROLLER_NAME=params.CONTROLLER_NAME
+    MODEL_NAME=params.MODEL_NAME
+} else {
+    if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' ) {
+        CLOUD_NAME="${params.CLOUD_NAME}-maas"
+    } else {
+        CLOUD_NAME=params.CLOUD_NAME
+    }
+    if ( params.CLOUD_NAME == "lxd" ) {
+        CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}-${LXD_IP}"
+    } else {
+    CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}"
+    }
+    MODEL_NAME=CONTROLLER_NAME
+}
+if ( params.CLOUD_NAME.contains("390")) {
+        S390X=true
+}  else { S390X=false }
+
+CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
+
 SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 
 /* This phase is configuring the deployed cloud to be accessible via openstack commands
@@ -26,7 +55,7 @@ SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 def get_keystone_api_version() {
         try {
         KEYSTONE_MAJOR_VERSION = sh (
-            script: "juju status keystone|grep -i version -A1|tail -n1|awk '{print \$2}'|cut -d'.' -f1",
+            script: "juju -m ${CONDMOD} status keystone|grep -i version -A1|tail -n1|awk '{print \$2}'|cut -d'.' -f1",
             returnStdout: true
             )
         } catch (error) {
@@ -35,7 +64,7 @@ def get_keystone_api_version() {
         } finally {
             if ( KEYSTONE_MAJOR_VERSION.contains("error") ) {
                 echo "Error found with 'juju status keystone':"
-                sh "juju status keystone"
+                sh "juju -m ${CONMOD} status keystone"
                 currentBuild.result = 'FAILURE' 
                 error "Couldn't get keystone major version"
             }
@@ -43,7 +72,7 @@ def get_keystone_api_version() {
         }
         try {
         KAV = sh (
-            script: "juju config keystone preferred-api-version",
+            script: "juju -m ${CONMOD} config keystone preferred-api-version",
             returnStdout: true
             )
         if ( KAV != '' ) {
@@ -130,8 +159,8 @@ node(params.SLAVE_NODE_NAME) {
                 } else {
                     DNS_CMD = "dns-servers=${DNS_SERVER}"
                 }
-                API_CMD = "juju config neutron-api enable-ml2-dns=true reverse-dns-lookup=true"
-                GW_CMD = "juju config neutron-gateway ${DNS_CMD}"
+                API_CMD = "juju -m ${CONMOD} config neutron-api enable-ml2-dns=true reverse-dns-lookup=true"
+                GW_CMD = "juju -m ${CONMOD} config neutron-gateway ${DNS_CMD}"
                 SUBNET_CMD = "${SRCCMD} ; openstack subnet set private_subnet --no-dns-nameservers"
                 echo "Setting ${API_CMD}, ${GW_CMD} and ${SUBNET_CMD}"
                 try {
