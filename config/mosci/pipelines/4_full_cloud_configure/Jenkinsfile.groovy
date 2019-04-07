@@ -55,7 +55,7 @@ SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 def get_keystone_api_version() {
         try {
         KEYSTONE_MAJOR_VERSION = sh (
-            script: "juju -m ${CONDMOD} status keystone|grep -i version -A1|tail -n1|awk '{print \$2}'|cut -d'.' -f1",
+            script: "juju status keystone -m ${CONDMOD}|grep -i version -A1|tail -n1|awk '{print \$2}'|cut -d'.' -f1",
             returnStdout: true
             )
         } catch (error) {
@@ -64,7 +64,7 @@ def get_keystone_api_version() {
         } finally {
             if ( KEYSTONE_MAJOR_VERSION.contains("error") ) {
                 echo "Error found with 'juju status keystone':"
-                sh "juju -m ${CONMOD} status keystone"
+                sh "juju status keystone -m ${CONMOD}"
                 currentBuild.result = 'FAILURE' 
                 error "Couldn't get keystone major version"
             }
@@ -72,7 +72,7 @@ def get_keystone_api_version() {
         }
         try {
         KAV = sh (
-            script: "juju -m ${CONMOD} config keystone preferred-api-version",
+            script: "juju config keystone preferred-api-version -m ${CONMOD}",
             returnStdout: true
             )
         if ( KAV != '' ) {
@@ -159,8 +159,8 @@ node(params.SLAVE_NODE_NAME) {
                 } else {
                     DNS_CMD = "dns-servers=${DNS_SERVER}"
                 }
-                API_CMD = "juju -m ${CONMOD} config neutron-api enable-ml2-dns=true reverse-dns-lookup=true"
-                GW_CMD = "juju -m ${CONMOD} config neutron-gateway ${DNS_CMD}"
+                API_CMD = "juju config neutron-api enable-ml2-dns=true reverse-dns-lookup=true -m ${CONMOD}"
+                GW_CMD = "juju config neutron-gateway ${DNS_CMD} -m ${CONMOD}"
                 SUBNET_CMD = "${SRCCMD} ; openstack subnet set private_subnet --no-dns-nameservers"
                 echo "Setting ${API_CMD}, ${GW_CMD} and ${SUBNET_CMD}"
                 try {

@@ -158,7 +158,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                     if ( params.CLOUD_NAME == "autodetect" ) {
                         try {
                             CLOUD_NAME = sh (
-                                script: "juju -m ${CONMOD} controllers|awk /mosci/'{print \$1}'",
+                                script: "juju controllers|awk /mosci/'{print \$1}'",
                                 returnStdout: true
                             ).trim()
                         } catch (error) {
@@ -201,12 +201,12 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                 }
                                 try {
                                     CHECK_ERR = sh ( 
-                                        script: "juju -m ${CONMOD} status --relations=false|grep -E '/.*error'",
+                                        script: "juju status -m ${CONMOD} --relations=false|grep -E '/.*error'",
                                         returnStatus: true 
                                     )
                                     if ( CHECK_ERR == 0 ) {
                                         RESOLVING = sh (
-                                            script: "for a in \$(juju -m ${CONMOD} status --relations=false|grep -E '/.*error'|awk '{print \$1}'|tr -d '*'); do juju -m ${CONMOD} resolved --no-retry \$a ; juju -m ${CONMOD} remove-unit \$a ; done",
+                                            script: "for a in \$(juju status -m ${CONMOD} --relations=false|grep -E '/.*error'|awk '{print \$1}'|tr -d '*'); do juju resolved --no-retry \$a  -m ${CONMOD}; juju remove-unit \$a  -m ${CONMOD}; done",
                                             returnStdout: true
                                         ).trim()
                                         echo "Resolving: ${RESOLVING}"
@@ -226,7 +226,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                             if ( "${params.DESTROY_CONTROLLER}" == "true" ) {
                                 echo "Destroying controller and models: ${CONTROLLER_NAME}"
                                 try {
-                                        sh "for a in \$(juju -m ${CONMOD} machines|awk '{print \$1}'|grep -v Machine) ; do juju -m ${CONMOD} remove-machine -m ${MODEL_NAME} \$a --force ; done"
+                                        sh "for a in \$(juju machines -m ${CONMOD}|awk '{print \$1}'|grep -v Machine) ; do juju remove-machine -m ${MODEL_NAME} \$a --force ; done"
                                         echo "Wait for machine removal before destroying controller and models"
                                         sleep(120)
                                         sh "juju destroy-controller ${CONTROLLER_NAME} --destroy-all-models -y"
@@ -275,7 +275,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                         stage("MAAS release nodes") {
                             try {
                                 MAAS_IDS = sh (
-                                    script: "juju -m ${CONMOD} machines | grep -v lxd | awk '{print \$4}'",
+                                    script: "juju machines -m ${CONMOD}| grep -v lxd | awk '{print \$4}'",
                                     returnStdout: true
                                 ).trim()
                             echo "Releasing: ${MAAS_IDS}"
