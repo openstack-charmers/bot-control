@@ -102,8 +102,8 @@ if ( "${params.ARCH}".contains("s390x") && ! params.OVERCLOUD_DEPLOY ) {
         CONTROLLER_NAME=params.CONTROLLER_NAME
         MODEL_NAME=params.MODEL_NAME
 } else if ( params.CLOUD_NAME == "lxd" ) {
-        CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "_")
-        MODEL_NAME=CONTROLLER_NAME
+        MODEL_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "_")
+        CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}"
 } else {
         CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-maas"
         MODEL_NAME=CONTROLLER_NAME

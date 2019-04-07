@@ -131,10 +131,12 @@ if ( params.CLOUD_NAME.contains("390")) {
         S390X=true
 }  else { S390X=false }
 if ( params.CLOUD_NAME=='lxd' ) {
-        CLOUD_NAME="lxd-${LXD_IP}".replaceAll("[.]", "-")
+        CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
+        MODEL_NAME="lxd-${LXD_IP}".replaceAll("[.]", "-")
+
 }
 
-CONMOD = "${CLOUD_NAME}:${CLOUD_NAME}"
+CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
 
 def s390x_add_machine(add_machines) {
     echo "s390x_add_machine"

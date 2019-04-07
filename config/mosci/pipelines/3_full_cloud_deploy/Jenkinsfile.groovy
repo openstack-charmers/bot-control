@@ -5,6 +5,8 @@ else {
     SLAVE_NODE_NAME="${params.SLAVE_NODE_NAME}"
 }
 
+CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}"
+
 if ( params.OVERCLOUD_DEPLOY == true ) {
     CONTROLLER_NAME=params.CONTROLLER_NAME
     MODEL_NAME=params.MODEL_NAME
@@ -15,11 +17,10 @@ if ( params.OVERCLOUD_DEPLOY == true ) {
         CLOUD_NAME=params.CLOUD_NAME 
     }
     if ( params.CLOUD_NAME == "lxd" ) {
-        CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "_")
+        MODEL_NAME="${ARCH}-mosci-${CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "_")
     } else {
-    CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}"
-    }
     MODEL_NAME=CONTROLLER_NAME
+    }
 }
 if ( params.CLOUD_NAME.contains("390")) {
         S390X=true
