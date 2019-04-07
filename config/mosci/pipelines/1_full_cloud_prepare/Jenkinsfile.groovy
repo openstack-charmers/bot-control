@@ -212,16 +212,20 @@ node("${SLAVE_NODE_NAME}") {
                         } catch(all) {
                             echo "clouds.yaml has not yet been altered" 
                         }
-                        def readContent = readFile 'juju-configs/clouds.yaml'
+                        readContent = readFile 'juju-configs/clouds.yaml'
                         LXD_UNDER = LXD_IP.replaceAll("[.]", "-")
                         if ( ! readContent.contains("${LXD_UNDER}")) {
-                                writeFile file: 'juju-configs/clouds.yaml', text: readContent + "\nlxd-${LXD_UNDER}\n  type:lxd\n  auth-types: [interactive,certificate]\n  endpoint: https://${LXD_UNDER}:8443\n"
+                            writeFile file: 'juju-configs/clouds.yaml', text: readContent + "\n  lxd-${LXD_UNDER}\n    type:lxd\n    auth-types: [interactive,certificate]\n    endpoint: https://${LXD_UNDER}:8443\n"
                         }
                         /*sh "sed -i 's/__ENDPOINT_LXD__/${params.LXD_IP}/g' juju-configs/clouds.yaml"
                         sh "cat juju-configs/clouds.yaml"*/
                     }
                     dir("${env.HOME}/cloud-credentials/") {
-                        sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/clouds.yaml ."
+                        readContent = readFile 'clouds.yaml'
+                        if ( ! readContent.contains("${LXD_UNDER}")) {
+                            writeFile file: 'clouds.yaml', text: readContent + "\n  lxd-${LXD_UNDER}\n    type:lxd\n    auth-types: [interactive,certificate]\n    endpoint: https://${LXD_UNDER}:8443\n"
+                        }
+                        // sh "cp ${env.HOME}/tools/charm-test-infra/juju-configs/clouds.yaml ."
                     }
                 }
             }
