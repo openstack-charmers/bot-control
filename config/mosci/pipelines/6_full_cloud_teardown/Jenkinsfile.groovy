@@ -102,7 +102,7 @@ if ( "${params.ARCH}".contains("s390x") && ! params.OVERCLOUD_DEPLOY ) {
         CONTROLLER_NAME=params.CONTROLLER_NAME
         MODEL_NAME=params.MODEL_NAME
 } else if ( params.CLOUD_NAME == "lxd" ) {
-        MODEL_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "_")
+        MODEL_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "-")
         CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}"
 } else {
         CONTROLLER_NAME="${params.ARCH}-mosci-${params.CLOUD_NAME}-maas"
@@ -170,7 +170,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                         CLOUD_NAME = params.CLOUD_NAME
                     }
                     if ( CLOUD_NAME == "lxd" ) {
-                        CLOUD_NAME = "lxd-${LXD_IP}".replaceAll(".", "_")
+                        CLOUD_NAME = "lxd-${LXD_IP}".replaceAll(".", "-")
                     }
                     ws("${params.WORKSPACE}") {
                         stage("Archive juju logs") {

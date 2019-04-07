@@ -17,7 +17,7 @@ if ( params.OVERCLOUD_DEPLOY == true ) {
         CLOUD_NAME=params.CLOUD_NAME 
     }
     if ( params.CLOUD_NAME == "lxd" ) {
-        MODEL_NAME="${ARCH}-mosci-${CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "_")
+        MODEL_NAME="${ARCH}-mosci-${CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "-")
     } else {
     MODEL_NAME=CONTROLLER_NAME
     }
