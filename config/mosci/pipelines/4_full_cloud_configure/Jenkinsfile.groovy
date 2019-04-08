@@ -133,6 +133,7 @@ node(params.SLAVE_NODE_NAME) {
                     echo "Attempting to configure cloud with ./configure ${profile_name}"
                     env.WGET_MODE="--quiet"
                     env.BARE_METAL="true"
+                    sh "juju switch ${CONMOD}"
                     sh "./configure ${profile_name}"
                     return true
                 } catch (error) {
