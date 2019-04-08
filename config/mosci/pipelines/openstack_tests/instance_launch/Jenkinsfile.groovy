@@ -13,7 +13,7 @@ if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='amontons' ) {
                 CLOUD_NAME="${CLOUD_NAME}-maas"
 }
 if ( CLOUD_NAME=='lxd' ) {
-        CLOUD_NAME="lxd-${LXD_IP}"
+        MODEL_NAME="lxd-${LXD_IP}"
 }
 SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 
@@ -28,7 +28,7 @@ node(params.SLAVE_NODE_NAME) {
                 echo "openstack commands from anywhere which has access to the machines"
                     try {
                         JUJU_SWITCH = sh (
-                            script: "juju switch ${ARCH}-mosci-${CLOUD_NAME}:${ARCH}-mosci-${CLOUD_NAME}",
+                            script: "juju switch ${ARCH}-mosci-${CLOUD_NAME}:${ARCH}-mosci-${MODEL_NAME}",
                             returnStdout: true
                         ) 
                     } catch (error) {
