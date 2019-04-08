@@ -370,9 +370,9 @@ node(params.SLAVE_NODE_NAME) {
                         env.MODEL_NAME=MODEL_NAME
                         echo "MODEL_NAME: ${env.MODEL_NAME}, CONTROLLER_NAME: ${env.CONTROLLER_NAME}"
                         env.OS_PROJECT_NAME="${params.ARCH}-mosci"
-                        env.CLOUD_NAME=CLOUD_NAME
+                        /*env.CLOUD_NAME=CLOUD_NAME
                         env.CONTROLLER_NAME=CONTROLLER_NAME
-                        env.MODEL_NAME=MODEL_NAME
+                        env.MODEL_NAME=MODEL_NAME*/
                         sh "./juju-maas-controller-mosci.sh"
                     }
                 }
