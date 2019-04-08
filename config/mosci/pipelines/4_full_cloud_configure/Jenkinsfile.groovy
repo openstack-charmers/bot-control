@@ -162,7 +162,7 @@ node(params.SLAVE_NODE_NAME) {
                     DNS_CMD = "dns-servers=${DNS_SERVER}"
                 }
                 API_CMD = "juju config neutron-api enable-ml2-dns=true reverse-dns-lookup=true -m ${CONMOD}"
-                GW_CMD = "juju config neutron-gateway ${DNS_CMD} -m ${CONMOD}"
+                GW_CMD = "juju config neutron-gateway -m ${CONMOD} ${DNS_CMD} "
                 SUBNET_CMD = "${SRCCMD} ; openstack subnet set private_subnet --no-dns-nameservers"
                 echo "Setting ${API_CMD}, ${GW_CMD} and ${SUBNET_CMD}"
                 try {
