@@ -16,7 +16,6 @@ else {
     SLAVE_NODE_NAME="${params.SLAVE_NODE_NAME}"
 }
 
-CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}"
 
 if ( params.OVERCLOUD_DEPLOY == true ) {
     CONTROLLER_NAME=params.CONTROLLER_NAME
@@ -27,6 +26,7 @@ if ( params.OVERCLOUD_DEPLOY == true ) {
     } else {
         CLOUD_NAME=params.CLOUD_NAME
     }
+    CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}"
     if ( params.CLOUD_NAME == "lxd" ) {
         MODEL_NAME="${ARCH}-mosci-${CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "-")
     } else {
