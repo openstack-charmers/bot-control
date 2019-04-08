@@ -13,7 +13,7 @@ if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='amontons' ) {
                 CLOUD_NAME="${CLOUD_NAME}-maas"
 }
 if ( CLOUD_NAME=='lxd' ) {
-        MODEL_NAME="lxd-${LXD_IP}"
+        MODEL_NAME="lxd-" + LXD_IP.replaceAll("[.]", "-")
 }
 SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 
