@@ -258,8 +258,8 @@ node(params.SLAVE_NODE_NAME) {
         stage('Source things and get variables') {
             dir("${env.HOME}/tools/openstack-charm-testing") {
                 OS_PROJECT_NAME="${params.ARCH}-mosci"
-                #CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
-                #MODEL_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
+                // CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
+                // MODEL_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
                 BOOTSTRAP_LOCAL=Boolean.valueOf(params.BOOTSTRAP_ON_SLAVE)
                 if ( params.OVERCLOUD_DEPLOY ) {
                     env.OS_PROJECT_NAME=MODEL_NAME
