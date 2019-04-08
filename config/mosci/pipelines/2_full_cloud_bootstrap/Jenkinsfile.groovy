@@ -136,7 +136,7 @@ MODEL_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
 
 if ( params.CLOUD_NAME=='lxd' ) {
         CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
-        MODEL_NAME="${params.ARCH}-lxd-${LXD_IP}".replaceAll("[.]", "-")
+        MODEL_NAME="${params.ARCH}-mosci-lxd-${LXD_IP}".replaceAll("[.]", "-")
 }
 
 CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
