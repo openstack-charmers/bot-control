@@ -137,6 +137,7 @@ if ( params.CLOUD_NAME=='lxd' ) {
 }
 
 CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
+echo CONMOD
 
 def s390x_add_machine(add_machines) {
     echo "s390x_add_machine"
