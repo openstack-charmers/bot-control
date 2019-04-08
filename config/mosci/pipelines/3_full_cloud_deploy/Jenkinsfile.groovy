@@ -5,7 +5,6 @@ else {
     SLAVE_NODE_NAME="${params.SLAVE_NODE_NAME}"
 }
 
-CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}"
 
 if ( params.OVERCLOUD_DEPLOY == true ) {
     CONTROLLER_NAME=params.CONTROLLER_NAME
@@ -16,6 +15,7 @@ if ( params.OVERCLOUD_DEPLOY == true ) {
     } else { 
         CLOUD_NAME=params.CLOUD_NAME 
     }
+    CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}"
     if ( params.CLOUD_NAME == "lxd" ) {
         MODEL_NAME="${ARCH}-mosci-${CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "-")
     } else {
@@ -156,7 +156,7 @@ node("${SLAVE_NODE_NAME}") {
         stage('Deploy bundle') {
             waitUntil {
                 try {
-                    sh "juju  deploy bundle.yaml --map-machines=existing --model=${CONMOD} ${OVERLAY_STRING}"
+                    sh "juju deploy bundle.yaml --map-machines=existing --model=${CONMOD} ${OVERLAY_STRING}"
                     return true
                 } catch (error) {
                     if ( params.MANUAL_JOB == true ) {
