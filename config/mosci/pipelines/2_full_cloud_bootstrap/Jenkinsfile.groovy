@@ -130,6 +130,10 @@ if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' || params.CLOUD_
 if ( params.CLOUD_NAME.contains("390")) {
         S390X=true
 }  else { S390X=false }
+
+CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
+MODEL_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
+
 if ( params.CLOUD_NAME=='lxd' ) {
         CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
         MODEL_NAME="${params.ARCH}-lxd-${LXD_IP}".replaceAll("[.]", "-")
@@ -254,8 +258,8 @@ node(params.SLAVE_NODE_NAME) {
         stage('Source things and get variables') {
             dir("${env.HOME}/tools/openstack-charm-testing") {
                 OS_PROJECT_NAME="${params.ARCH}-mosci"
-                CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
-                MODEL_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
+                #CONTROLLER_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
+                #MODEL_NAME="${params.ARCH}-mosci-${CLOUD_NAME}"
                 BOOTSTRAP_LOCAL=Boolean.valueOf(params.BOOTSTRAP_ON_SLAVE)
                 if ( params.OVERCLOUD_DEPLOY ) {
                     env.OS_PROJECT_NAME=MODEL_NAME
