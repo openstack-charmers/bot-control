@@ -56,7 +56,7 @@ SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 def get_keystone_api_version() {
         try {
         KEYSTONE_MAJOR_VERSION = sh (
-            script: "juju status keystone -m ${CONDMOD}|grep -i version -A1|tail -n1|awk '{print \$2}'|cut -d'.' -f1",
+            script: "juju status keystone -m ${CONMOD}|grep -i version -A1|tail -n1|awk '{print \$2}'|cut -d'.' -f1",
             returnStdout: true
             )
         } catch (error) {
