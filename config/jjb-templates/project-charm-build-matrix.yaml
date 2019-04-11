@@ -6,7 +6,7 @@
         <p>Exercise charm builds, driven by a matrix trigger.</p>
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
         - timed: "H H(0-6) * * *"  # Daily in the wee hours
