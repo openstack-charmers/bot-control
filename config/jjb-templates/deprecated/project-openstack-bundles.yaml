@@ -24,7 +24,7 @@
         - DISPLAY_NAME
     properties:
       - build-discarder:
-          artifact-days-to-keep: 365
+          artifact-days-to-keep: 30
           artifact-num-to-keep: 500
     # Not triggering from the job definition directly (trigging via matrix instead).
     # triggers:
