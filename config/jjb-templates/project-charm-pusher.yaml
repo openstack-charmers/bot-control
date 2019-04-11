@@ -77,7 +77,7 @@
         - DISPLAY_NAME
     properties:
       - build-discarder:
-          artifact-days-to-keep: 365
+          artifact-days-to-keep: 30
           artifact-num-to-keep: 500
     scm:
       - git:
@@ -117,7 +117,7 @@
         - DISPLAY_NAME
     properties:
       - build-discarder:
-          artifact-days-to-keep: 365
+          artifact-days-to-keep: 30
           artifact-num-to-keep: 500
     scm:
       - git:
@@ -157,7 +157,7 @@
         - DISPLAY_NAME
     properties:
       - build-discarder:
-          artifact-days-to-keep: 365
+          artifact-days-to-keep: 30
           artifact-num-to-keep: 500
     scm:
       - git:
