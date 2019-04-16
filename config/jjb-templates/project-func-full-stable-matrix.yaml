@@ -47,6 +47,8 @@
           - lxd
           - manila
           - manila-generic
+          - masakari
+          - masakari-remote
           - neutron-api
           - neutron-dynamic-routing
           - neutron-gateway
@@ -57,6 +59,7 @@
           - octavia
           - octavia-dashboard
           - openstack-dashboard
+          - pacemaker-remote
           - percona-cluster
           - rabbitmq-server
           - swift-proxy
