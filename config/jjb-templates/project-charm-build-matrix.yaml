@@ -33,11 +33,14 @@
           - keystone-ldap
           - manila
           - manila-generic
+          - masakari
+          - masakari-monitors
           - murano
           - neutron-dynamic-routing
           - nova-cell-controller
           - octavia
           - octavia-dashboard
+          - pacemaker-remote
           - tempest
           - vault
     builders:
