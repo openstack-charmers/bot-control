@@ -15,7 +15,7 @@
          type: user-defined
          name: GIT_BRANCH
          values:
-          - stable/18.11
+          - stable/19.04
       - axis:
          type: user-defined
          name: BASE_NAME
