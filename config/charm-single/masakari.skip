@@ -1,0 +1,4 @@
+# The masakari charm does not have `xenial` series support and the
+# `charm-single` job assumes every charm does.
+#
+# https://bugs.launchpad.net/ubuntu-openstack-ci/+bug/1799376
