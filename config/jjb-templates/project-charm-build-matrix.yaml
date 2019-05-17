@@ -31,6 +31,7 @@
           - designate-bind
           - gnocchi
           - keystone-ldap
+          - keystone-saml-mellon
           - manila
           - manila-generic
           - masakari
