@@ -44,6 +44,7 @@
           - heat
           - keystone
           - keystone-ldap
+          - keystone-saml-mellon
           - lxd
           - manila
           - manila-generic
