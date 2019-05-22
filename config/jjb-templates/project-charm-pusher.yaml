@@ -53,7 +53,8 @@
       - swift-proxy
       - swift-storage
       - tempest
-      - vault
+      - vault:
+          repo: "https://opendev.org/x/charm-vault.git"
 # FYI - Jenkins job names cannot contain slashes, so we cannot use branch
 # as a pivot point to simplify.
 #    branch:
@@ -77,6 +78,10 @@
             name: GIT_BRANCH
             default: master
             description: Git branch.  Generally master or stable/nn.nn.
+        - string:
+            name: GIT_REPO
+            default: 'https://github.com/openstack/charm-{charm}'
+            description: Git repo to push
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
     properties:
@@ -85,7 +90,7 @@
           artifact-num-to-keep: 500
     scm:
       - git:
-         url: https://github.com/openstack/charm-{charm}
+         url: '{obj:repo|$GIT_REPO}'
          basedir: '{charm}'
          skip-tag: true
          fastpoll: true
@@ -117,6 +122,10 @@
             name: GIT_BRANCH
             default: stable/19.04
             description: Git branch.  Generally master or stable/nn.nn.
+        - string:
+            name: GIT_REPO
+            default: 'https://github.com/openstack/charm-{charm}'
+            description: Git repo to push
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
     properties:
@@ -125,7 +134,7 @@
           artifact-num-to-keep: 500
     scm:
       - git:
-         url: https://github.com/openstack/charm-{charm}
+         url: '{obj:repo|$GIT_REPO}'
          basedir: '{charm}'
          skip-tag: true
          fastpoll: true
