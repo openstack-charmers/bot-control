@@ -229,7 +229,7 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                         sh "for a in \$(juju machines -m ${CONMOD}|awk '{print \$1}'|grep -v Machine) ; do juju remove-machine -m ${MODEL_NAME} \$a --force ; done"
                                         echo "Wait for machine removal before destroying controller and models"
                                         sleep(120)
-                                        sh "juju destroy-controller ${CONTROLLER_NAME} --destroy-all-models -y"
+                                        sh "juju destroy-controller ${CONTROLLER_NAME} --destroy-all-models -y --debug"
                                 } catch (error) {
                                         echo "An error occured:" + error
                                 } 
