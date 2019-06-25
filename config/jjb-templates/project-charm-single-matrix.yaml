@@ -59,6 +59,7 @@
           - nova-compute
           - octavia
           - octavia-dashboard
+          - octavia-diskimage-retrofit
           - openstack-dashboard
           - percona-cluster
           - pacemaker-remote
