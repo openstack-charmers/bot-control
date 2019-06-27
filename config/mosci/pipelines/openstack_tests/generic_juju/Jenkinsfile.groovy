@@ -70,7 +70,7 @@ node(params.SLAVE_NODE_NAME) {
 pipeline_state = ""
 node('master') {
     stage("Bootstrap on overcloud: ${params.ARCH}") {
-            bootstrap_job = build job: '2. Full Cloud - Bootstrap', propagate: false, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
+            bootstrap_job = build job: '2. Full Cloud - Bootstrap', propagate: false, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME.minus("-maas")],
                             [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH],
                             [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
                             [$class: 'StringParameterValue', name: 'OVERCLOUD_NAME', value: OVERCLOUD_NAME],
