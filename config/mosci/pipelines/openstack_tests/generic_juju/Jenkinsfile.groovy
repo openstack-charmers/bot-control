@@ -7,7 +7,7 @@ if ("${params.SLAVE_NODE_NAME}" == '') {
     currentBuild.result = 'FAILURE'
 }
 if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='amontons' ) {
-                CLOUD_NAME="${CLOUD_NAME}-maas"
+                TEMP_CLOUD_NAME="${CLOUD_NAME}-maas"
 }
 
 /* This test can utilises existing pipeline jobs to bootstrap on top of an openstack deployment,
@@ -42,7 +42,7 @@ node(params.SLAVE_NODE_NAME) {
             dir("${env.HOME}/tools/openstack-charm-testing/") {
                 try {
                     JUJU_SWITCH = sh (
-                        script: "juju switch ${ARCH}-mosci-${CLOUD_NAME}:${ARCH}-mosci-${CLOUD_NAME}",
+                        script: "juju switch ${ARCH}-mosci-${TEMP_CLOUD_NAME}:${ARCH}-mosci-${TEMP_CLOUD_NAME}",
                         returnStdout: true
                     )
                 } catch (error) {
@@ -62,7 +62,7 @@ node(params.SLAVE_NODE_NAME) {
             echo "SLAVE_NODE_NAME: ${SLAVE_NODE_NAME}"
             echo "OPENSTACK_PUBLIC_IP = ${OPENSTACK_PUBLIC_IP}"
             echo "Bootstrapping controller ${CONTROLLER_NAME} on ${OVERCLOUD_NAME}"
-            echo "${OVERCLOUD_NAME} is built on metal from ${CLOUD_NAME}"
+            echo "${OVERCLOUD_NAME} is built on metal from ${TEMP_CLOUD_NAME}"
             echo "Jenkins slave name is ${SLAVE_NODE_NAME}, ip ${OPENSTACK_PUBLIC_IP}"
         }
     }
@@ -70,7 +70,7 @@ node(params.SLAVE_NODE_NAME) {
 pipeline_state = ""
 node('master') {
     stage("Bootstrap on overcloud: ${params.ARCH}") {
-            bootstrap_job = build job: '2. Full Cloud - Bootstrap', propagate: false, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME.minus("-maas")],
+            bootstrap_job = build job: '2. Full Cloud - Bootstrap', propagate: false, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                             [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH],
                             [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
                             [$class: 'StringParameterValue', name: 'OVERCLOUD_NAME', value: OVERCLOUD_NAME],
