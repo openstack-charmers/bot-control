@@ -86,7 +86,8 @@ node('master') {
         if ( ! pipeline_state.contains("FAILURE" ) ) {
             stage("Deploy on overcloud: ${params.ARCH}") {
                 echo 'Deploy'
-                deploy_job = build job: '3. Full Cloud - Deploy', propagate: false, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CONTROLLER_NAME],
+                deploy_job = build job: '3. Full Cloud - Deploy', propagate: false, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
+                             [$class: 'StringParameterValue', name: 'OVERCLOUD_NAME', value: OVERCLOUD_NAME],
                              [$class: 'StringParameterValue', name: 'CONTROLLER_NAME', value: params.CONTROLLER_NAME],
                              [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
                              [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
