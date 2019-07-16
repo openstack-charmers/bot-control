@@ -428,6 +428,7 @@
 
 - job:
     name: test_mojo_charm_upgrade_ha_matrix
+    disabled: true  # Missing memcached relation https://bugs.launchpad.net/openstack-mojo-specs/+bug/1836796
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
