@@ -1,6 +1,7 @@
 # OpenStack Charm CI
 - job:
     name: test_mojo_magpie_matrix
+    disabled: false
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -8,7 +9,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(17-23) * * *"  # Once daily
+      - timed: "H H(17-23) * * *"  # Once daily
     axes:
       - axis:
          type: user-defined
@@ -37,6 +38,7 @@
 
 - job:
     name: test_mojo_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -44,7 +46,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(04-08) * * 6"  # Once weekly on Friday Evening / Saturday Morning
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -87,7 +89,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -116,6 +118,7 @@
 
 - job:
     name: test_mojo_ha_oneshot_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -123,7 +126,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(19-23) * * 4"  # Once weekly on Thursday evening
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -166,7 +169,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -195,6 +198,7 @@
 
 - job:
     name: test_mojo_ssl_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -202,7 +206,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(00-04) * * 2"  # Once weekly on Monday Evening / Tuesday Morning
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -245,7 +249,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -274,6 +278,7 @@
 
 - job:
     name: test_mojo_ksv3_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -281,7 +286,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(00-04) * * 4"  # Once weekly on Wednesday Evening / Thursday Morning
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -324,7 +329,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -353,6 +358,7 @@
 
 - job:
     name: test_mojo_openstack_upgrade_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -360,7 +366,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(00-04) * * 7"  # Once weekly on Saturday Evening / Sunday Morning
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -391,7 +397,6 @@
 - job:
     name: test_mojo_openstack_upgrade_stable_matrix
     disabled: true  # Disable for 18.11 freeze, re-enable after 18.11 release.  https://github.com/openstack-charmers/openstack-mojo-specs/issues/64
-    disabled: true  # There is not currently a mojo spec for this
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -399,7 +404,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -436,7 +441,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -476,7 +481,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(06-10) * * 6"  # Once weekly on Saturday Morning
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -508,6 +513,7 @@
 
 - job:
     name: test_mojo_ch_sync_ha_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -515,7 +521,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(17-23) * * 5"  # Once weekly on Friday nights
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -550,6 +556,7 @@
 
 - job:
     name: test_mojo_ch_sync_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -557,7 +564,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "H H(12-16) * * 7"  # Once weekly on Sunday Afternoon
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -592,6 +599,7 @@
 
 - job:
     name: test_mojo_vrrp_ha_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -599,7 +607,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(00-04) * * 1"  # Once weekly on Friday nights
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -642,7 +650,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "0 H(0-8) */15 * *"  # Twice monthly
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -733,6 +741,7 @@
 
 - job:
     name: test_mojo_swift_base_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -740,7 +749,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(04-06) * * 6"  # Once weekly on Saturday mornings
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -775,6 +784,7 @@
 
 - job:
     name: test_mojo_swift_ha_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -782,7 +792,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(22-0) * * 3"  # Once weekly on Wednesday nights
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -817,6 +827,7 @@
 
 - job:
     name: test_mojo_ceph_radosgw_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -824,7 +835,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(03-05) * * 6"  # Once weekly on Saturday mornings
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -859,6 +870,7 @@
 
 - job:
     name: test_mojo_ceph_radosgw_ha_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -866,7 +878,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(21-23) * * 2"  # Once weekly on Tuesday nights
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -901,6 +913,7 @@
 
 - job:
     name: test_mojo_ceph_base_master_matrix
+    disabled: false
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -908,7 +921,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(21-23) * * 5"  # Once weekly on Friday nights
+      - timed: "H H(21-23) * * 3"  # Once weekly on Tuesday nights.
     axes:
       - axis:
          type: user-defined
@@ -943,6 +956,7 @@
 
 - job:
     name: test_mojo_ceph_charm_migration_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -950,7 +964,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(00-04) * * 6"  # Once weekly on Saturday Morningns
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -980,6 +994,7 @@
 
 - job:
     name: test_mojo_ceph_encrypt_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -987,7 +1002,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(01-05) * * 6"  # Once weekly on Saturday Morningns
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -1022,6 +1037,7 @@
 
 - job:
     name: test_mojo_ceph_harden_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1029,7 +1045,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(02-06) * * 6"  # Once weekly on Saturday Morningns
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -1064,6 +1080,7 @@
 
 - job:
     name: test_mojo_designate_ha_master_matrix
+    disabled: false
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1071,7 +1088,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(00-04) * * 2"  # Once weekly on Monday Evening / Tuesday Morning
+      - timed: "H H(00-04) * * 2"  # Once weekly on Monday Evening / Tuesday Morning
     axes:
       - axis:
          type: user-defined
@@ -1105,6 +1122,7 @@
             DISPLAY_NAME=$MOJO_SPEC $U_OS
 - job:
     name: test_mojo_dvr_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1112,7 +1130,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(20-23) * * 1"  # Once Weekly, Monday Evening
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -1147,6 +1165,7 @@
 
 - job:
     name: test_mojo_dynamic_routing_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1154,7 +1173,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(12-15) * * 5"  # Once weekly Thursday Afternoon
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -1181,6 +1200,7 @@
 
 - job:
     name: test_mojo_series_upgrade_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1188,7 +1208,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(12-15) * * 4"  # Once weekly Wednesday Afternoon
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
@@ -1214,6 +1234,7 @@
 
 - job:
     name: test_mojo_cells_master_matrix
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1221,7 +1242,7 @@
       sequential: false
     node: task
     triggers:
-        - timed: "H H(12-15) * * 5"  # Once weekly Friday Afternoon
+      - timed: ""  # Re-enable only after this entire spec is known to pass.
     axes:
       - axis:
          type: user-defined
