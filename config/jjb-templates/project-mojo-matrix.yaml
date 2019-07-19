@@ -302,12 +302,6 @@
           - "xenial-newton"
           - "xenial-ocata"
           - "xenial-pike"
-          - "xenial-queens"
-          - "bionic-queens"
-          - "bionic-rocky"
-          - "bionic-stein"
-          - "cosmic-rocky"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
