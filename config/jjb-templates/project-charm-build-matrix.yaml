@@ -9,7 +9,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "H H(0-6) * * *"  # Daily in the wee hours
+        - timed: ""  # No schedule, leaving in place for manual trigger.
     axes:
       - axis:
          type: user-defined
