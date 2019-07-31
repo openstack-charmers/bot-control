@@ -80,7 +80,6 @@
           - "development/ceph-base-xenial-luminous"
           - "development/ceph-base-bionic-luminous"
           - "development/ceph-base-bionic-mimic"
-          - "development/ceph-base-cosmic-mimic"
     parameters:
       - string:
           name: GIT_REPO
@@ -125,7 +124,6 @@
           - "development/openstack-base-xenial-queens"
           - "development/openstack-base-bionic-queens"
           - "development/openstack-base-bionic-rocky"
-          - "development/openstack-base-cosmic-rocky"
     parameters:
       - string:
           name: GIT_REPO
