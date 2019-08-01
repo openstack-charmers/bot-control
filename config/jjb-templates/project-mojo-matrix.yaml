@@ -1167,6 +1167,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
