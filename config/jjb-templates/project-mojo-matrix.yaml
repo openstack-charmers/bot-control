@@ -373,6 +373,7 @@
           - "xenial-ocata"
           - "xenial-pike"
           - "bionic-queens"
+          - "bionic-rocky"
     builders:
       - trigger-builds:
         - project:
@@ -450,6 +451,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "bionic-stein"
     builders:
       - trigger-builds:
         - project:
@@ -490,6 +492,7 @@
           - "xenial-queens"
           - "bionic-queens"
           - "bionic-rocky"
+          - "bionic-stein"
     builders:
       - trigger-builds:
         - project:
