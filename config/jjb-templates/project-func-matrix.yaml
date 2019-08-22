@@ -17,8 +17,8 @@
     concurrent: true
     properties:
       - build-discarder:
-          artifact-days-to-keep: 30
-          artifact-num-to-keep: 500
+          artifact-days-to-keep: 3
+          artifact-num-to-keep: ''
       - throttle:
           max-per-node: 1
           max-total: 3
