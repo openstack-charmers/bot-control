@@ -121,7 +121,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -279,7 +279,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -353,7 +353,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -429,7 +429,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -470,7 +470,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -511,7 +511,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -595,7 +595,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -862,7 +862,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -946,7 +946,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -1068,7 +1068,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: "H H(00-04) * * 2"  # Once weekly on Monday Evening / Tuesday Morning
@@ -1109,7 +1109,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -1151,7 +1151,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -1186,7 +1186,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
@@ -1220,7 +1220,7 @@
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
     execution-strategy:
-      sequential: false
+      sequential: true
     node: task
     triggers:
       - timed: ""  # Re-enable only after this entire spec is known to pass.
