@@ -1071,7 +1071,7 @@
       sequential: true
     node: task
     triggers:
-      - timed: "H H(00-04) * * 2"  # Once weekly on Monday Evening / Tuesday Morning
+      - timed: "H H(00-02) * * 4"  # Weekly on Thursday
     axes:
       - axis:
          type: user-defined
@@ -1082,7 +1082,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
