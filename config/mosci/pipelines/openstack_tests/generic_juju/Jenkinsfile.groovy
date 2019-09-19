@@ -8,6 +8,8 @@ if ("${params.SLAVE_NODE_NAME}" == '') {
 }
 if ( CLOUD_NAME=='ruxton' || CLOUD_NAME=='icarus' || CLOUD_NAME=='amontons' ) {
                 TEMP_CLOUD_NAME="${CLOUD_NAME}-maas"
+} else {
+                TEMP_CLOUD_NAME="${CLOUD_NAME}"
 }
 
 /* This test can utilises existing pipeline jobs to bootstrap on top of an openstack deployment,
