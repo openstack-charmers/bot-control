@@ -1,4 +1,0 @@
-# Legacy ceph charm is no longer in line with OpenStack Charms multiple
-# series enforcement, as Artful was the final released series of that charm.
-#
-# No charm-single test will run when this .skip file exists.
