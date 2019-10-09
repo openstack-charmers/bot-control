@@ -38,11 +38,16 @@
           - masakari-monitors
           - murano
           - neutron-dynamic-routing
+          - neutron-api-plugin-ovn
           - nova-cell-controller
           - octavia
           - octavia-dashboard
           - octavia-diskimage-retrofit
+          - ovn-central
+          - ovn-chassis
+          - ovn-dedicated-chassis
           - pacemaker-remote
+          - placement
           - tempest
           - vault
     builders:

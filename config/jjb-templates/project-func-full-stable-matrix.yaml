@@ -63,6 +63,7 @@
           - openstack-dashboard
           - pacemaker-remote
           - percona-cluster
+          - placement
           - rabbitmq-server
           - swift-proxy
           - swift-storage
