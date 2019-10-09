@@ -24,6 +24,7 @@
           - "xenial-distro"
           - "bionic-distro"
           - "disco-distro"
+          - "eoan-distro"
     builders:
       - trigger-builds:
         - project:
@@ -927,7 +928,9 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "bionic-train"
           - "disco-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:

@@ -38,6 +38,7 @@
       - masakari
       - masakari-monitors
       - neutron-api
+      - neutron-api-plugin-ovn
       - neutron-dynamic-routing
       - neutron-gateway
       - neutron-openvswitch
@@ -47,9 +48,13 @@
       - octavia
       - octavia-dashboard
       - octavia-diskimage-retrofit
+      - ovn-central
+      - ovn-chassis
+      - ovn-dedicated-chassis
       - openstack-dashboard
       - pacemaker-remote
       - percona-cluster
+      - placement
       - rabbitmq-server
       - swift-proxy
       - swift-storage

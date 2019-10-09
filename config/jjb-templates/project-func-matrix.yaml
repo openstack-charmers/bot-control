@@ -70,7 +70,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "H H(04-08) * * 6"  # Once weekly on Friday Evening / Saturday Morning
+        - timed: ""
     axes:
       - axis:
          type: user-defined
@@ -80,6 +80,7 @@
           - "development/ceph-base-xenial-luminous"
           - "development/ceph-base-bionic-luminous"
           - "development/ceph-base-bionic-mimic"
+          - "development/ceph-base-bionic-nautilus"
     parameters:
       - string:
           name: GIT_REPO
@@ -111,7 +112,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: "H H(08-12) * * 5"  # Once weekly on Friday Morning
+        - timed: ""
     axes:
       - axis:
          type: user-defined
@@ -124,6 +125,8 @@
           - "development/openstack-base-xenial-queens"
           - "development/openstack-base-bionic-queens"
           - "development/openstack-base-bionic-rocky"
+          - "development/openstack-base-bionic-stein"
+          - "development/openstack-base-bionic-train"
     parameters:
       - string:
           name: GIT_REPO
