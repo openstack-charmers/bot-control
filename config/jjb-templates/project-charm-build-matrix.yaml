@@ -37,6 +37,8 @@
           - masakari
           - masakari-monitors
           - murano
+          - mysql-innodb-cluster
+          - mysql-router
           - neutron-dynamic-routing
           - neutron-api-plugin-ovn
           - nova-cell-controller
