@@ -35,6 +35,7 @@
           - cinder
           - cinder-backup
           - cinder-ceph
+          - cinder-purestorage
           - designate
           - designate-bind
           - glance
