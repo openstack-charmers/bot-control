@@ -71,7 +71,7 @@ if ( params.BUNDLE_URL == "" && params.BUNDLE_PASTE == "" && params.BUNDLE_REPO 
 }
 
 if ( bundle_guessed != true && params.RELEASE_NAME.contains("undefined") ) {
-    releases = ["stable", "icehouse", "juno", "kilo", "liberty", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "train", "jewel", "luminous", "mimic"]
+    releases = ["stable", "icehouse", "juno", "kilo", "liberty", "mitaka", "newton", "ocata", "pike", "queens", "rocky", "stein", "train", "jewel", "luminous", "mimic", "nautilus"]
     echo "Trying to get release from bundle url..."
     for ( a in releases ) {
         if ( params.BUNDLE_URL.contains(a) ) {
@@ -90,7 +90,7 @@ echo "Release: ${release}"
 
 if ( bundle_guessed != true && params.DISTRO_NAME.contains("undefined") ) {
     distro = ""
-    distros = ["stable", "trusty", "xenial", "bionic", "cosmic", "disco"]
+    distros = ["stable", "trusty", "xenial", "bionic", "cosmic", "disco", "eoan"]
     echo "Trying to get distro from bundle url..."
     for ( a in distros ) {
         if ( params.BUNDLE_URL.contains(a) ) {
