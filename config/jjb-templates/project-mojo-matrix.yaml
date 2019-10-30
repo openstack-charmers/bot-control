@@ -357,7 +357,7 @@
       sequential: true
     node: task
     triggers:
-      - timed: ""  # Re-enable only after this entire spec is known to pass.
+      - timed: "H H(00-04) * * 7"  # Once weekly on Saturday Evening / Sunday Morning
     axes:
       - axis:
          type: user-defined
@@ -375,6 +375,7 @@
           - "xenial-pike"
           - "bionic-queens"
           - "bionic-rocky"
+          - "bionic-stein"
     builders:
       - trigger-builds:
         - project:
@@ -433,7 +434,7 @@
       sequential: true
     node: task
     triggers:
-      - timed: ""  # Re-enable only after this entire spec is known to pass.
+      - timed: "0 H(0-8) */15 * *"  # Twice monthly
     axes:
       - axis:
          type: user-defined
@@ -453,6 +454,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "bionic-train"
     builders:
       - trigger-builds:
         - project:
@@ -599,7 +601,7 @@
       sequential: true
     node: task
     triggers:
-      - timed: ""  # Re-enable only after this entire spec is known to pass.
+      - timed: "H H(00-04) * * 1"  # Once weekly on Friday nights
     axes:
       - axis:
          type: user-defined
@@ -610,7 +612,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -619,6 +620,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "bionic-train"
           - "disco-stein"
     builders:
       - trigger-builds:
