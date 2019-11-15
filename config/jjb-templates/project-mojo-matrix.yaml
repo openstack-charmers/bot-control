@@ -349,7 +349,7 @@
 
 - job:
     name: test_mojo_openstack_upgrade_master_matrix
-    disabled: true
+    disabled: false
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -426,7 +426,7 @@
 
 - job:
     name: test_mojo_charm_upgrade_ha_matrix
-    disabled: true  # Missing memcached relation https://bugs.launchpad.net/openstack-mojo-specs/+bug/1836796
+    disabled: false
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -593,7 +593,7 @@
 
 - job:
     name: test_mojo_vrrp_ha_master_matrix
-    disabled: true
+    disabled: false
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1087,6 +1087,7 @@
          type: user-defined
          name: U_OS
          values:
+          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -1095,6 +1096,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "bionic-train"
           - "disco-stein"
     builders:
       - trigger-builds:
