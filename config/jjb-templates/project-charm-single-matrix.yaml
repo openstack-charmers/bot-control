@@ -45,7 +45,6 @@
           - heat
           - keystone
           - keystone-ldap
-          - lxd
           - manila
           - manila-generic
           - masakari
