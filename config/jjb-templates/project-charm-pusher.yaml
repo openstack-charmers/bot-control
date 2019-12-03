@@ -35,6 +35,7 @@
       - keystone-saml-mellon
       - lxd
       - manila
+      - manila-ganesha
       - manila-generic
       - masakari
       - masakari-monitors
