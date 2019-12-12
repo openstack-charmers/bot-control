@@ -147,3 +147,41 @@
             TEST_PATH=$TEST_PATH
             GIT_BRANCH=$GIT_BRANCH
             DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
+
+- job:
+    name: test_func_openstack_mysql8_ovn_matrix
+    disabled: true
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+        - timed: ""
+    axes:
+      - axis:
+         type: user-defined
+         name: TEST_PATH
+         values:
+          - "development/openstack-base-eoan-train-mysql8-ovn"
+    parameters:
+      - string:
+          name: GIT_REPO
+          default: "git://github.com/openstack-charmers/openstack-bundles.git"
+          description: Git repo for Bundle
+      - string:
+          name: GIT_BRANCH
+          default: "master"
+          description: Git branch for Bundle repo
+    builders:
+      - trigger-builds:
+        - project:
+            - "zaza_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            GIT_REPO=$GIT_REPO
+            TEST_PATH=$TEST_PATH
+            GIT_BRANCH=$GIT_BRANCH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
