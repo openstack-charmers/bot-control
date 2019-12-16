@@ -150,7 +150,7 @@
 
 - job:
     name: test_func_openstack_mysql8_ovn_matrix
-    disabled: true
+    disabled: false
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -158,7 +158,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: ""
+        - timed: "H H(00-04) * * 2"  # Once weekly on Monday Evening / Tuesday Morning
     axes:
       - axis:
          type: user-defined
