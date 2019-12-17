@@ -156,7 +156,7 @@ node("${SLAVE_NODE_NAME}") {
         stage('Deploy bundle') {
             waitUntil {
                 try {
-                    sh "juju deploy bundle.yaml --map-machines=existing --model=${CONMOD} ${OVERLAY_STRING}"
+                    sh "juju deploy ./bundle.yaml --map-machines=existing --model=${CONMOD} ${OVERLAY_STRING}"
                     return true
                 } catch (error) {
                     if ( params.MANUAL_JOB == true ) {
