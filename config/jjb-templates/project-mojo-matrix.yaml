@@ -357,7 +357,7 @@
       sequential: true
     node: task
     triggers:
-      - timed: "H H(00-04) * * 7"  # Once weekly on Saturday Evening / Sunday Morning
+      - timed: "01 00 * * 2"  # Once weekly after midnight on Tuesday
     axes:
       - axis:
          type: user-defined
@@ -434,7 +434,7 @@
       sequential: true
     node: task
     triggers:
-      - timed: "0 H(0-8) */15 * *"  # Twice monthly
+      - timed: "01 00 * * 3"  # Once weekly after midnight on Wednesday
     axes:
       - axis:
          type: user-defined
@@ -601,7 +601,7 @@
       sequential: true
     node: task
     triggers:
-      - timed: "H H(00-04) * * 1"  # Once weekly on Friday nights
+      - timed: "01 00 * * 4"  # Once weekly after midnight on Thursday
     axes:
       - axis:
          type: user-defined
@@ -1076,7 +1076,7 @@
       sequential: true
     node: task
     triggers:
-      - timed: "H H(00-02) * * 4"  # Weekly on Thursday
+      - timed: "01 00 * * 1"  # Once weekly after midnight on Monday
     axes:
       - axis:
          type: user-defined
@@ -1187,7 +1187,7 @@
 
 - job:
     name: test_mojo_series_upgrade_master_matrix
-    disabled: true
+    disabled: false
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1195,7 +1195,7 @@
       sequential: true
     node: task
     triggers:
-      - timed: ""  # Re-enable only after this entire spec is known to pass.
+      - timed: "01 00 * * 6"  # Once weekly after midnight on Saturday
     axes:
       - axis:
          type: user-defined
@@ -1207,7 +1207,7 @@
          name: U_OS
          values:
           - "trusty-mitaka"
-          - "xenial-queens"
+#          - "xenial-queens" # Re-enable only after it is known to pass.
     builders:
       - trigger-builds:
         - project:
