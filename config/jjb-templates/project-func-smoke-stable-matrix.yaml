@@ -47,6 +47,7 @@
           - keystone-saml-mellon
           - manila
           - manila-generic
+          - manila-ganesha
           - masakari
           - masakari-monitors
           - neutron-api
