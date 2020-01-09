@@ -1,6 +1,7 @@
 sudo: false
 language: python
+dist: bionic
 python:
-    - "3.4"
+  - "3.6"
 install: pip install tox-travis
 script: tox -c tox.ini -e yaml_load,jjb_test
