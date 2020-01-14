@@ -33,6 +33,7 @@
           - ceph-radosgw
           - ceph-rbd-mirror
           - cinder
+          - cinder-backup-swift-proxy
           - cinder-backup
           - cinder-ceph
           - cinder-purestorage
