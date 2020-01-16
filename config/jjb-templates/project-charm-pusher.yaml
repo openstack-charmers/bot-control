@@ -78,6 +78,7 @@
 - job-template:
     name: 'charm_pusher_{charm}_master'
     node: task
+    disabled: true
     parameters:
         - string:
             name: BASE_NAME
@@ -118,6 +119,7 @@
 - job-template:
     name: 'charm_pusher_{charm}_stable'
     node: task
+    disabled: true
     parameters:
         - string:
             name: BASE_NAME
