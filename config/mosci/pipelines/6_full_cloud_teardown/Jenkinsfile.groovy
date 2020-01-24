@@ -180,9 +180,9 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                     sh "mkdir -p crashdumps ; /snap/bin/juju-crashdump -o crashdumps/${MODEL_NAME}-${BUILD_ID}.tar.xz"
                                     archiveArtifacts 'crashdumps/*'
                                 } catch (error) {
-                                    echo "Error collecting crashdump logs, stopping teardown in case manual log collection is required"
-                                    currentBuild.result = 'FAILURE'
-                                    error "FAILURE"
+                                    echo "Error collecting crashdump logs, NOT stopping teardown in case manual log collection is required"
+                                    #currentBuild.result = 'FAILURE'
+                                    #error "FAILURE"
                                 }
                             //}
                         }
