@@ -181,8 +181,8 @@ echo "Attempting to connect to ${params.SLAVE_NODE_NAME}"
                                     archiveArtifacts 'crashdumps/*'
                                 } catch (error) {
                                     echo "Error collecting crashdump logs, NOT stopping teardown in case manual log collection is required"
-                                    #currentBuild.result = 'FAILURE'
-                                    #error "FAILURE"
+                                    // currentBuild.result = 'FAILURE'
+                                    // error "FAILURE"
                                 }
                             //}
                         }
