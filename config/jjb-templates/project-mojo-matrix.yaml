@@ -23,7 +23,6 @@
           - "trusty-distro"
           - "xenial-distro"
           - "bionic-distro"
-          - "disco-distro"
           - "eoan-distro"
     builders:
       - trigger-builds:
@@ -66,7 +65,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -145,7 +143,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -224,7 +221,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -537,7 +533,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -579,7 +574,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -621,7 +615,6 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -762,7 +755,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -804,7 +796,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -846,7 +837,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -888,7 +878,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -931,7 +920,6 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
-          - "disco-stein"
           - "eoan-train"
     builders:
       - trigger-builds:
@@ -1012,7 +1000,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -1054,7 +1041,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -1097,7 +1083,6 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -1138,7 +1123,6 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          - "disco-stein"
     builders:
       - trigger-builds:
         - project:
@@ -1243,7 +1227,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
-          # - "disco-stein"  # Hold interim release validation of this, prioritize LTS
+          # Hold interim release validation of non-LTS, prioritize LTS
     builders:
       - trigger-builds:
         - project:
