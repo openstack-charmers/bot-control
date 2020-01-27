@@ -65,6 +65,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -143,6 +144,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -221,6 +223,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -372,6 +375,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -451,6 +455,7 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -492,6 +497,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -533,6 +539,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -574,6 +581,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -615,6 +623,7 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -755,6 +764,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -796,6 +806,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -837,6 +848,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -878,6 +890,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -1000,6 +1013,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -1041,6 +1055,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -1083,6 +1098,7 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -1123,6 +1139,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -1158,6 +1175,7 @@
           - "xenial-pike"
           - "xenial-queens"
           - "bionic-queens"
+          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
@@ -1228,6 +1246,7 @@
           - "bionic-rocky"
           - "bionic-stein"
           # Hold interim release validation of non-LTS, prioritize LTS
+          # - "eoan-train"
     builders:
       - trigger-builds:
         - project:
