@@ -64,6 +64,8 @@
       - swift-storage
       - tempest
       - vault
+      - watcher
+      - watcher-dashboard
 # FYI - Jenkins job names cannot contain slashes, so we cannot use branch
 # as a pivot point to simplify.
 #    branch:

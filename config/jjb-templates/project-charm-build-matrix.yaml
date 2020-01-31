@@ -55,6 +55,8 @@
           - placement
           - tempest
           - vault
+          - watcher
+          - watcher-dashboard
     builders:
       - trigger-builds:
         - project:
