@@ -1191,7 +1191,7 @@
          name: U_OS
          values:
           - "trusty-mitaka"
-#          - "xenial-queens" # Re-enable only after it is known to pass.
+          - "xenial-queens"
     builders:
       - trigger-builds:
         - project:
