@@ -174,7 +174,7 @@ node(params.SLAVE_NODE_NAME) {
                 dir("${env.HOME}/bundle_repo/${bundle_repodir}") {
                     sh "tox -e venv pip"
                     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
-                    sh "${ACTCMD} ; echo \$GATEWAY ; echo \$default_gateway functest-configure --model ${MODEL_NAME}"
+                    sh "${ACTCMD} ; functest-configure --model ${MODEL_NAME}"
                 }
             } else {
                 if ( params.CLOUD_NAME.contains("390") ) {
