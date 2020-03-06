@@ -123,71 +123,123 @@ node(params.SLAVE_NODE_NAME) {
             } else { profile_name = profile_prefix }
         }
         stage("Configure Cloud") {
-            if ( params.CLOUD_NAME.contains("390") ) {
-                directory = "${env.HOME}/tools/zopenstack/tools/2-configure/"
-            } else {
-                directory = "${env.HOME}/tools/openstack-charm-testing/"
-            }
-            dir(directory) {
+            if ( params.BUNDLE_REPO ) {
+                bundle_repo = params.BUNDLE_REPO.split(',')[0]
+                bundle_repodir = params.BUNDLE_REPO.split(,)[1]
                 try {
-                    echo "Attempting to configure cloud with ./configure ${profile_name}"
-                    env.WGET_MODE="--quiet"
-                    env.BARE_METAL="true"
-                    sh "juju switch ${CONMOD}"
-                    sh "./configure ${profile_name}"
-                    return true
+                    sh "git clone ${bundle_repo} ${env.HOME}/bundle_repo/"
                 } catch (error) {
-                    echo "Configure script run failed: ${error}, failing."
-                    currentBuild.result = 'FAILURE'
-                    error "Configure Failed."
-                    // currentBuild.result = 'UNSTABLE'
+                    echo "Couldn't clone bundle repo"
+                }
+                dir("${env.HOME}/tools/openstack-charm-testing/") {
+                    BUNDLE_VARS = readFile("profiles/" + ${profile_name} )
+                    BUNDLE_VARS.split("\n").each { line_a, count_a ->
+                        if ( line_a.contains("export GATEWAY") ) {
+                            BUNDLE_GATEWAY = line_a.split('""')[-1]
+                            echo "Gateway found and setting to ${BUNDLE_GATEWAY}"
+                        }if ( line_a.contains("export CIDR_EXT") ) {
+                            BUNDLE_CIDR_EXT = line_a.split('""')[-1]
+                            echo "Gateway found and setting to ${BUNDLE_CIDR_EXT}"
+                        }if ( line_a.contains("export FIP_RANGE") ) {
+                            BUNDLE_FIP_RANGE = line_a.split('""')[-1]
+                            echo "Gateway found and setting to ${BUNDLE_FIP_RANGE}"
+                        }if ( line_a.contains("export NAMESERVER") ) {
+                            BUNDLE_NAMESERVER = line_a.split('""')[-1]
+                            echo "Gateway found and setting to ${BUNDLE_NAMESERVER}"
+                        }if ( line_a.contains("export CIDR_PRIV") ) {
+                            BUNDLE_CIDR_PRIV = line_a.split('""')[-1]
+                            echo "Gateway found and setting to ${BUNDLE_CIDR_PRIV}"
+                        }if ( line_a.contains("export SWIFT_IP") ) {
+                            BUNDLE_SWIFT_IP = line_a.split('""')[-1]
+                            echo "Gateway found and setting to ${BUNDLE_SWIFT_IP}"
+                        }
+                    }
+                }
+                env.GATEWAY = $BUNDLE_GATEWAY
+                env.CIDR_EXT = $BUNDLE_CIDR_EXT
+                env.FIP_RANGE = $BUNDLE_FIP_RANGE
+                env.NAMESERVER = $BUNDLE_NAMESERVER
+                env.CIDR_PRIV =  $BUNDLE_CIDR_PRIV
+                env.SWIFT_IP = $BUNDLE_SWIFT_IP
+                env.default_gateway = $BUNDLE_GATEWAY
+                env.external_dns = $BUNDLE_NAMESERVER
+                env.external_net_cidr = $BUNDLE_CIDR_EXT
+                env.start_floating_ip = $BUNDLE_FIP_RANGE.split(":")[0]
+                env.end_floating_ip = $BUNDLE_FIP_RANGE.split(":")[1]
+                dir("${env.HOME}/bundle_repo/${bundle_repodir}") {
+                    sh "tox -e venv"
+                    ACTCMD = "#!/bin/bash \nsource $(find . -name activate)"
+                    sh "${ACTCMD} ; echo \$GATEWAY ; echo \$default_gateway functest-configure --model ${MODEL_NAME}"
+                }
+            } else {
+                if ( params.CLOUD_NAME.contains("390") ) {
+                    directory = "${env.HOME}/tools/zopenstack/tools/2-configure/"
+                } else {
+                    directory = "${env.HOME}/tools/openstack-charm-testing/"
+                }
+                dir(directory) {
+                    try {
+                        echo "Attempting to configure cloud with ./configure ${profile_name}"
+                        env.WGET_MODE="--quiet"
+                        env.BARE_METAL="true"
+                        sh "juju switch ${CONMOD}"
+                        sh "./configure ${profile_name}"
+                        return true
+                    } catch (error) {
+                        echo "Configure script run failed: ${error}, failing."
+                        currentBuild.result = 'FAILURE'
+                        error "Configure Failed."
+                        // currentBuild.result = 'UNSTABLE'
+                    }
                 }
             }
         }
         stage("Configure Cloud DNS") { 
-            dir("${env.HOME}/tools/openstack-charm-testing/") {
-                CMD = "${SRCCMD} ; openstack subnet show private_subnet|grep dns_nameservers|awk '{print \$4}'"
-                try {
-                    DNS_SERVER = sh (
-                        script: CMD,
-                        returnStdout: true
-                    )
-                } catch (error) {
-                    echo "Error getting DNS server: ${error}"
-                }
-                // if ^ = '|', then don't try to set it
-                if ( DNS_SERVER.contains("|") ) {
-                    DNS_CMD = "dns-servers"
-                } else {
-                    DNS_CMD = "dns-servers=${DNS_SERVER}"
-                }
-                API_CMD = "juju config neutron-api enable-ml2-dns=true reverse-dns-lookup=true -m ${CONMOD}"
-                GW_CMD = "juju config neutron-gateway -m ${CONMOD} ${DNS_CMD} "
-                SUBNET_CMD = "${SRCCMD} ; openstack subnet set private_subnet --no-dns-nameservers"
-                echo "Setting ${API_CMD}, ${GW_CMD} and ${SUBNET_CMD}"
-                try {
-                    sh (
-                        script: API_CMD,
-                        returnStdout: true
-                    )
-                } catch (error) {
-                    echo "Error setting neutron-api dns config, ${error}"
-                }
-                try {
-                    sh (
-                        script: GW_CMD,
-                        returnStdout: true
-                    )
-                } catch (error) {
-                    echo "Error setting neutron-gateway dns config, ${error}"
-                }
-                try {
-                    sh (
-                        script: SUBNET_CMD,
-                        returnStdout: true
-                    )
-                } catch (error) {
-                    echo "Error setting neutron-api dns config, ${error}"
+            if ( ! params.BUNDLE_REPO ) { 
+                dir("${env.HOME}/tools/openstack-charm-testing/") {
+                    CMD = "${SRCCMD} ; openstack subnet show private_subnet|grep dns_nameservers|awk '{print \$4}'"
+                    try {
+                        DNS_SERVER = sh (
+                            script: CMD,
+                            returnStdout: true
+                        )
+                    } catch (error) {
+                        echo "Error getting DNS server: ${error}"
+                    }
+                    // if ^ = '|', then don't try to set it
+                    if ( DNS_SERVER.contains("|") ) {
+                        DNS_CMD = "dns-servers"
+                    } else {
+                        DNS_CMD = "dns-servers=${DNS_SERVER}"
+                    }
+                    API_CMD = "juju config neutron-api enable-ml2-dns=true reverse-dns-lookup=true -m ${CONMOD}"
+                    GW_CMD = "juju config neutron-gateway -m ${CONMOD} ${DNS_CMD} "
+                    SUBNET_CMD = "${SRCCMD} ; openstack subnet set private_subnet --no-dns-nameservers"
+                    echo "Setting ${API_CMD}, ${GW_CMD} and ${SUBNET_CMD}"
+                    try {
+                        sh (
+                            script: API_CMD,
+                            returnStdout: true
+                        )
+                    } catch (error) {
+                        echo "Error setting neutron-api dns config, ${error}"
+                    }
+                    try {
+                        sh (
+                            script: GW_CMD,
+                            returnStdout: true
+                        )
+                    } catch (error) {
+                        echo "Error setting neutron-gateway dns config, ${error}"
+                    }
+                    try {
+                        sh (
+                            script: SUBNET_CMD,
+                            returnStdout: true
+                        )
+                    } catch (error) {
+                        echo "Error setting neutron-api dns config, ${error}"
+                    }
                 }
             }
         }

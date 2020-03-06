@@ -34,6 +34,19 @@ if ( params.CLOUD_NAME.contains("ruxton") ) {
     MAAS_API_KEY = params.AMONTONS_API_KEY
 }
 
+if ( params.BUNDLE_REPO) {
+
+    bundle_repo = params.BUNDLE_REPO.split(',')[0]
+    bundle_repodir = params.BUNDLE_REPO.split(,)[1]
+
+    try {
+        sh "git clone ${BUNDLE_REPO} ~/bundle_repo/"
+    } catch (error) {
+        echo "Full bundle paste:"
+        writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
+    }
+}
+
 
 CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
 
@@ -128,6 +141,18 @@ node("${SLAVE_NODE_NAME}") {
                         filename = OVERLAYS[i].split('/').last()
                         sh "curl ${OVERLAYS[i]} -o overlay_${i}.yaml"
                         OVERLAY_STRING = OVERLAY_STRING + "--overlay overlay_${i}.yaml "
+                }
+            }
+            if ( params.BUNDLE_REPO) {
+            
+                bundle_repo = params.BUNDLE_REPO.split(',')[0]
+                bundle_repodir = params.BUNDLE_REPO.split(,)[1]
+            
+                try {
+                    sh "git clone ${BUNDLE_REPO} ~/bundle_repo/"
+                } catch (error) {
+                    echo "Full bundle paste:"
+                    writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
                 }
             }
         }

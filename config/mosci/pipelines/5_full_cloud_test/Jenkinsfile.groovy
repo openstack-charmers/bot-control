@@ -15,6 +15,7 @@ node('master') {
             print TESTS[i]
             build job: TESTS[i], parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: params.CLOUD_NAME],
                 [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
+                [$class: 'BooleanParameterValue', name: 'ZAZA', value: Boolean.valueOf(ZAZA)],
                 [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
                 [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
                 [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
