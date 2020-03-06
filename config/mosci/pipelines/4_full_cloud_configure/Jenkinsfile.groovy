@@ -132,9 +132,9 @@ node(params.SLAVE_NODE_NAME) {
                     echo "Couldn't clone bundle repo"
                 }
                 dir("${env.HOME}/tools/openstack-charm-testing/") {
-                    echo ${profile_name}
-                    BUNDLE_VARS = readFile("profiles/" + ${profile_name} )
-                    echo $BUNDLE_VARS
+                    echo "${profile_name}"
+                    BUNDLE_VARS = readFile("profiles/${profile_name}" )
+                    echo "${BUNDLE_VARS}"
                     BUNDLE_VARS.split("\n").each { line_a, count_a ->
                         if ( line_a.contains("export GATEWAY") ) {
                             BUNDLE_GATEWAY = line_a.split('""')[-1]
