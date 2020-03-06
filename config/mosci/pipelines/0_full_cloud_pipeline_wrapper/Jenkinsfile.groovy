@@ -494,6 +494,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
                          [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: params.BUNDLE_REPO],
                          [$class: 'StringParameterValue', name: 'SELECTED_TESTS', value: params.SELECTED_TESTS],
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]

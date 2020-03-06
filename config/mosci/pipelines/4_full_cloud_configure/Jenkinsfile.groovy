@@ -123,7 +123,7 @@ node(params.SLAVE_NODE_NAME) {
             } else { profile_name = profile_prefix }
         }
         stage("Configure Cloud") {
-            if ( params.BUNDLE_REPO ) {
+            if ( params.BUNDLE_REPO && params.ZAZA == true ) {
                 bundle_repo = params.BUNDLE_REPO.split(',')[0]
                 bundle_repodir = params.BUNDLE_REPO.split(,)[1]
                 try {

@@ -17,6 +17,7 @@ node('master') {
                 [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
                 [$class: 'BooleanParameterValue', name: 'ZAZA', value: Boolean.valueOf(ZAZA)],
                 [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
+                [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: params.BUNDLE_REPO],
                 [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
                 [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
                 [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
