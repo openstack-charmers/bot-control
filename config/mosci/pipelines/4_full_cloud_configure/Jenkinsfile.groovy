@@ -163,16 +163,16 @@ node(params.SLAVE_NODE_NAME) {
                     }
                 }
                 env.GATEWAY = BUNDLE_GATEWAY
-                env.CIDR_EXT = $BUNDLE_CIDR_EXT
-                env.FIP_RANGE = $BUNDLE_FIP_RANGE
-                env.NAMESERVER = $BUNDLE_NAMESERVER
-                env.CIDR_PRIV =  $BUNDLE_CIDR_PRIV
-                env.SWIFT_IP = $BUNDLE_SWIFT_IP
-                env.default_gateway = $BUNDLE_GATEWAY
-                env.external_dns = $BUNDLE_NAMESERVER
-                env.external_net_cidr = $BUNDLE_CIDR_EXT
-                env.start_floating_ip = $BUNDLE_FIP_RANGE.split(":")[0]
-                env.end_floating_ip = $BUNDLE_FIP_RANGE.split(":")[1]
+                env.CIDR_EXT = BUNDLE_CIDR_EXT
+                env.FIP_RANGE = BUNDLE_FIP_RANGE
+                env.NAMESERVER = BUNDLE_NAMESERVER
+                env.CIDR_PRIV =  BUNDLE_CIDR_PRIV
+                env.SWIFT_IP = BUNDLE_SWIFT_IP
+                env.default_gateway = BUNDLE_GATEWAY
+                env.external_dns = BUNDLE_NAMESERVER
+                env.external_net_cidr = BUNDLE_CIDR_EXT
+                env.start_floating_ip = BUNDLE_FIP_RANGE.split(":")[0]
+                env.end_floating_ip = BUNDLE_FIP_RANGE.split(":")[1]
                 dir("${env.HOME}/bundle_repo/${bundle_repodir}") {
                     sh "tox -e venv"
                     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
