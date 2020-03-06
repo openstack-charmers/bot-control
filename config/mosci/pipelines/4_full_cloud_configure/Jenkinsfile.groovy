@@ -173,7 +173,7 @@ node(params.SLAVE_NODE_NAME) {
                 env.end_floating_ip = $BUNDLE_FIP_RANGE.split(":")[1]
                 dir("${env.HOME}/bundle_repo/${bundle_repodir}") {
                     sh "tox -e venv"
-                    ACTCMD = "#!/bin/bash \nsource $(find . -name activate)"
+                    ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
                     sh "${ACTCMD} ; echo \$GATEWAY ; echo \$default_gateway functest-configure --model ${MODEL_NAME}"
                 }
             } else {
