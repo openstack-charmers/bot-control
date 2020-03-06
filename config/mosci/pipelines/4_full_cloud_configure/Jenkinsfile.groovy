@@ -132,9 +132,7 @@ node(params.SLAVE_NODE_NAME) {
                     echo "Couldn't clone bundle repo"
                 }
                 dir("${env.HOME}/tools/openstack-charm-testing/") {
-                    echo "${profile_name}"
                     BUNDLE_VARS = readFile("profiles/${profile_name}" )
-                    echo "${BUNDLE_VARS}"
                     BUNDLE_VARS.split("\n").each { line_a, count_a ->
                         if ( line_a.contains("export GATEWAY") ) {
                             BUNDLE_GATEWAY = line_a.split('"')[-1]
@@ -174,7 +172,7 @@ node(params.SLAVE_NODE_NAME) {
                 env.start_floating_ip = BUNDLE_FIP_RANGE.split(":")[0]
                 env.end_floating_ip = BUNDLE_FIP_RANGE.split(":")[1]
                 dir("${env.HOME}/bundle_repo/${bundle_repodir}") {
-                    sh "tox -e venv"
+                    sh "tox -e pip"
                     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
                     sh "${ACTCMD} ; echo \$GATEWAY ; echo \$default_gateway functest-configure --model ${MODEL_NAME}"
                 }
