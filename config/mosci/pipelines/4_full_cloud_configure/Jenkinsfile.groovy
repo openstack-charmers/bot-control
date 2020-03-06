@@ -137,27 +137,27 @@ node(params.SLAVE_NODE_NAME) {
                     echo "${BUNDLE_VARS}"
                     BUNDLE_VARS.split("\n").each { line_a, count_a ->
                         if ( line_a.contains("export GATEWAY") ) {
-                            BUNDLE_GATEWAY = line_a.split('""')[-1]
+                            BUNDLE_GATEWAY = line_a.split('"')[-1]
                             echo "Gateway found and setting to ${BUNDLE_GATEWAY}"
                         }
                         if ( line_a.contains("export CIDR_EXT") ) {
-                            BUNDLE_CIDR_EXT = line_a.split('""')[-1]
+                            BUNDLE_CIDR_EXT = line_a.split('"')[-1]
                             echo "Gateway found and setting to ${BUNDLE_CIDR_EXT}"
                         }
                         if ( line_a.contains("export FIP_RANGE") ) {
-                            BUNDLE_FIP_RANGE = line_a.split('""')[-1]
+                            BUNDLE_FIP_RANGE = line_a.split('"')[-1]
                             echo "Gateway found and setting to ${BUNDLE_FIP_RANGE}"
                         }
                         if ( line_a.contains("export NAMESERVER") ) {
-                            BUNDLE_NAMESERVER = line_a.split('""')[-1]
+                            BUNDLE_NAMESERVER = line_a.split('"')[-1]
                             echo "Gateway found and setting to ${BUNDLE_NAMESERVER}"
                         }
                         if ( line_a.contains("export CIDR_PRIV") ) {
-                            BUNDLE_CIDR_PRIV = line_a.split('""')[-1]
+                            BUNDLE_CIDR_PRIV = line_a.split('"')[-1]
                             echo "Gateway found and setting to ${BUNDLE_CIDR_PRIV}"
                         }
                         if ( line_a.contains("export SWIFT_IP") ) {
-                            BUNDLE_SWIFT_IP = line_a.split('""')[-1]
+                            BUNDLE_SWIFT_IP = line_a.split('"')[-1]
                             echo "Gateway found and setting to ${BUNDLE_SWIFT_IP}"
                         }
                     }
