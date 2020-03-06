@@ -162,7 +162,7 @@ node(params.SLAVE_NODE_NAME) {
                         }
                     }
                 }
-                env.GATEWAY = $BUNDLE_GATEWAY
+                env.GATEWAY = ${BUNDLE_GATEWAY}
                 env.CIDR_EXT = $BUNDLE_CIDR_EXT
                 env.FIP_RANGE = $BUNDLE_FIP_RANGE
                 env.NAMESERVER = $BUNDLE_NAMESERVER
