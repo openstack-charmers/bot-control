@@ -157,7 +157,7 @@ node(params.SLAVE_NODE_NAME) {
                         if ( line_a.contains("export SWIFT_IP") ) {
                             BUNDLE_SWIFT_IP = line_a.split('"')[-1]
                             echo "Gateway found and setting to ${BUNDLE_SWIFT_IP}"
-                        }
+                        } else { BUNDLE_SWIFT_IP = "" }
                     }
                 }
                 env.GATEWAY = BUNDLE_GATEWAY
