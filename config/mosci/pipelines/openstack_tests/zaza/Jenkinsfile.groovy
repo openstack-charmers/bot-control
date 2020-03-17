@@ -7,7 +7,7 @@ if ( ! params.OPENSTACK ) {
 }
 
 if ( ! params.ZAZA) {
-    error "This is not a zaza test
+    error "This is not a zaza test"
 }
 
 if ("${params.SLAVE_NODE_NAME}" == '') {
@@ -15,7 +15,7 @@ if ("${params.SLAVE_NODE_NAME}" == '') {
     currentBuild.result = 'FAILURE'
 }
 
-echo "Tempest tests selected: ${TEST_TYPE}"
+// echo "Tempest tests selected: ${TEST_TYPE}"
 // Simple test to launch a single openstack instance
 
 SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
@@ -23,24 +23,24 @@ SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 TEST_CMD = "func"
 
 bundle_repo = params.BUNDLE_REPO.split(',')[0]
-bundle_repodir = params.BUNDLE_REPO.split(,)[1]
+bundle_repodir = params.BUNDLE_REPO.split(',')[1]
 
+ACTCMD = "source \$(find . -name activate)"
+MODEL_NAME = "amd64-mosci-ruxton-maas"
 
-def test_runner(TEST_CMD) {
-    node(params.SLAVE_NODE_NAME) {
-        ws(params.WORKSPACE) {
-            dir("${env.HOME}/tools/bundle_repo/${bundle_repodir}") {
-                try {
-                    TEST_RUN = sh (
-                        script: "#!/bin/bash \nset -o pipefail ; functest-test --model ${params.MODEL_NAME} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
-                        returnStdout: true
-                    )
-                    sh "cat ${TEST_CMD}_${BUILD_ID}_output.log"
-                    archiveArtifacts artifacts: "*output.log"
-                } catch (error) {
-                    echo "Error with test runner: ${error}"
-                    currentBuild.result = 'FAILURE'
-                }
+node(params.SLAVE_NODE_NAME) {
+    ws(params.WORKSPACE) {
+        dir("${env.HOME}/tools/bundle_repo/${bundle_repodir}") {
+            try {
+                TEST_RUN = sh (
+                    script: "#!/bin/bash \nset -o pipefail ; ${ACTCMD} ; functest-test --model ${MODEL_NAME} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
+                    returnStdout: true
+                )
+                sh "cat ${TEST_CMD}_${BUILD_ID}_output.log"
+                archiveArtifacts artifacts: "*output.log"
+            } catch (error) {
+                echo "Error with test runner: ${error}"
+                currentBuild.result = 'FAILURE'
             }
         }
     }
