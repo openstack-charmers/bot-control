@@ -105,7 +105,7 @@ def bundle_url_to_repo() {
         echo "No bundle_repo dir to delete - first run"
     }
     try {
-        sh "git clone ${GUESS_REPO} ${env.HOME}/bundle_repo/"
+        sh "git clone ${GUESS_REPO}.git ${env.HOME}/bundle_repo/"
         if ( zaza_config_check(GUESS_REPO_DIR) ) {
             zaza_check = true
             return true
@@ -121,6 +121,7 @@ def zaza_config_check(GUESS_REPO_DIR) {
     // check if the tests.yaml in the bundle dir contains zaza config steps
     // if it does, we will configure the job with zaza and also attempt to run zaza tests
     // if it does not, we will do legacy configuration, and run selected tests
+    echo "Checking tests.yaml for zaza configuration steps"
     tests_yaml = readFile("${env.HOME}/tools/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml")
     if ( tests_yaml.contains('configure: []') ) {
         return false
