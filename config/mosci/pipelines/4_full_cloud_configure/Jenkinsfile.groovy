@@ -97,32 +97,32 @@ def get_keystone_api_version() {
 def bundle_url_to_repo() {
     // Try to get the BUNDLE_REPO and see if there are any zaza configuration steps
     // This only currently works with the openstack-bundles repo
-    GUESS_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','github.com')
-    GUESS_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/').minus('bundle.yaml')
+    // GUESS_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','github.com')
+    // GUESS_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/').minus('bundle.yaml')
     try {
         sh "rm -rf ${env.HOME}/bundle_repo/"
     } catch (error) {
         echo "No bundle_repo dir to delete - first run"
     }
     try {
-        sh "git clone ${GUESS_REPO}.git ${env.HOME}/bundle_repo/"
-        if ( zaza_config_check(GUESS_REPO_DIR) ) {
+        sh "git clone ${params.BUNDLE_REPO} ${env.HOME}/bundle_repo/"
+        if ( zaza_config_check(params.BUNDLE_REPO_DIR) ) {
             zaza_check = true
             return true
         }
     } catch (error) {
-        echo "Could not clone bundle repo ${GUESS_REPO} - bad guess?"
+        echo "Could not clone bundle repo ${params.BUNDLE_REPO} - bad guess?"
         echo "This means no zaza config for this bundle"
         return false
     }
 }
 
-def zaza_config_check(GUESS_REPO_DIR) {
+def zaza_config_check(params.BUNDLE_REPO_DIR) {
     // check if the tests.yaml in the bundle dir contains zaza config steps
     // if it does, we will configure the job with zaza and also attempt to run zaza tests
     // if it does not, we will do legacy configuration, and run selected tests
-    echo "Checking ${env.HOME}/tools/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
-    tests_yaml = readFile("${env.HOME}/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml")
+    echo "Checking ${env.HOME}/tools/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
+    tests_yaml = readFile("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml")
     if ( tests_yaml.contains('configure: []') ) {
         echo "no zaza configuration steps found"
         return false

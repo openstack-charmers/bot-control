@@ -210,6 +210,11 @@ def resourceCheck(arch, required, bootstrap) {
     }
 }
 
+if ( params.BUNDLE_REPO == "" ) {
+    BUNDLE_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','github.com')
+    BUNDLE_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/').minus('bundle.yaml')
+}
+
 try {
     node ('master') {
         ws("${params.WORKSPACE}") {
@@ -476,9 +481,9 @@ node(SLAVE_NODE_NAME) {
             echo "Configuring Openstack Cloud"
             configure_job = build job: '4. Full Cloud - Configure', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
-                         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: params.BUNDLE_REPO],
-                         [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: params.BUNDLE_REPO],
-                         [$class: 'BooleanParameterValue', name: 'ZAZA', value: Boolean.valueOf(ZAZA)],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: params.BUNDLE_URL],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: BUNDLE_REPO],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_REPO_DIR', value: BUNDLE_REPO_DIR],
                          [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
                          [$class: 'StringParameterValue', name: 'KEYSTONE_API_VERSION', value: params.KEYSTONE_API_VERSION],
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
@@ -495,7 +500,8 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
                          [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
-                         [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: params.BUNDLE_REPO],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: BUNDLE_REPO],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_REPO_DIR', value: BUNDLE_REPO_DIR],
                          [$class: 'StringParameterValue', name: 'SELECTED_TESTS', value: params.SELECTED_TESTS],
                          [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
                          [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
