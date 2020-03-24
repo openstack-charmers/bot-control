@@ -106,7 +106,7 @@ def bundle_url_to_repo() {
     }
     try {
         sh "git clone ${params.BUNDLE_REPO} ${env.HOME}/bundle_repo/"
-        if ( zaza_config_check(params.BUNDLE_REPO_DIR) ) {
+        if ( zaza_config_check() ) {
             zaza_check = true
             return true
         }
@@ -117,7 +117,7 @@ def bundle_url_to_repo() {
     }
 }
 
-def zaza_config_check(params.BUNDLE_REPO_DIR) {
+def zaza_config_check() {
     // check if the tests.yaml in the bundle dir contains zaza config steps
     // if it does, we will configure the job with zaza and also attempt to run zaza tests
     // if it does not, we will do legacy configuration, and run selected tests
