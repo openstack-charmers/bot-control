@@ -97,7 +97,7 @@ def get_keystone_api_version() {
 def bundle_url_to_repo() {
     // Try to get the BUNDLE_REPO and see if there are any zaza configuration steps
     // This only currently works with the openstack-bundles repo
-    GUESS_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','www.github.com')
+    GUESS_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','github.com')
     GUESS_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/').minus('bundle.yaml')
     try {
         sh "rm -rf ${env.HOME}/bundle_repo/"
@@ -121,7 +121,7 @@ def zaza_config_check(GUESS_REPO_DIR) {
     // check if the tests.yaml in the bundle dir contains zaza config steps
     // if it does, we will configure the job with zaza and also attempt to run zaza tests
     // if it does not, we will do legacy configuration, and run selected tests
-    echo "Checking tests.yaml for zaza configuration steps"
+    echo "Checking ${env.HOME}/tools/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
     tests_yaml = readFile("${env.HOME}/tools/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml")
     if ( tests_yaml.contains('configure: []') ) {
         return false
