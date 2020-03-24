@@ -44,12 +44,12 @@ node(params.SLAVE_NODE_NAME) {
                     }
                 }
         stage("API checks") {
-            sh "${SRCCMD} ; openstack catalog list ; openstack image list ; sleep 60 ; openstack network list"
+            sh "${SRCCMD} ; openstack catalog list --insecure ; openstack image list --insecure ; sleep 60 ; openstack network list --insecure"
         }
         stage("Launch the instance") {
             echo "Getting ${params.GUEST_IMAGE} image name to launch instance with:"
             try {
-                CMD = "${SRCCMD} ; openstack image list | grep ${params.GUEST_IMAGE} | awk /active/'{print \$4}'"
+                CMD = "${SRCCMD} ; openstack image list --insecure | grep ${params.GUEST_IMAGE} | awk /active/'{print \$4}'"
                 IMAGE_NAME = sh (
                 script: CMD,
                 returnStdout: true
@@ -84,7 +84,7 @@ node(params.SLAVE_NODE_NAME) {
                                     echo "querying failed instance:"
                                 }
                             }
-                            sh "${SRCCMD} ; openstack server show ${INSTANCE_NAME}"
+                            sh "${SRCCMD} ; openstack server show ${INSTANCE_NAME} --insecure"
                             currentBuild.result = 'FAILURE'
                             error "Instance build failed."
                         } else {
@@ -115,7 +115,7 @@ node(params.SLAVE_NODE_NAME) {
                 echo "Error creating or assigning floating ip: ${error}"
             }
             try {
-                CMD = "${SRCCMD} ; openstack server list |grep ${INSTANCE_NAME}| awk '{print \$9}'"
+                CMD = "${SRCCMD} ; openstack server list --insecure |grep ${INSTANCE_NAME}| awk '{print \$9}'"
                 FLOATING_IP = sh (
                     script: CMD,
                     returnStdout: true
@@ -163,7 +163,7 @@ node(params.SLAVE_NODE_NAME) {
         echo "Deleting instance ${INSTANCE_NAME}"
         try {
             DELETE_INSTANCE = sh (
-                script: "${SRCCMD} ; openstack server delete ${INSTANCE_NAME}",
+                script: "${SRCCMD} ; openstack server delete ${INSTANCE_NAME} --insecure",
                 returnStdout: true
             )
         } catch (error) {
