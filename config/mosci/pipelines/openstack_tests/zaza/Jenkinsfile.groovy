@@ -19,7 +19,7 @@ SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 TEST_CMD = "func"
 
 bundle_repo = params.BUNDLE_REPO.split(',')[0]
-bundle_repodir = params.BUNDLE_REPO.split(',')[1]
+bundle_repodir = params.BUNDLE_REPO.split(',')[1].minus('bundle.yaml')
 
 ACTCMD = "source \$(find . -name activate)"
 MODEL_NAME = "amd64-mosci-ruxton-maas"
