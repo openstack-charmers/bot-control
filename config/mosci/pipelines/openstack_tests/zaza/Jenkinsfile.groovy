@@ -6,10 +6,6 @@ if ( ! params.OPENSTACK ) {
     error "This is not an openstack deployment"
 }
 
-if ( ! params.ZAZA) {
-    error "This is not a zaza test"
-}
-
 if ("${params.SLAVE_NODE_NAME}" == '') {
     echo "SLAVE_NODE_NAME must be defined, cannot configure on new slave"
     currentBuild.result = 'FAILURE'
@@ -30,7 +26,7 @@ MODEL_NAME = "amd64-mosci-ruxton-maas"
 
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
-        dir("${env.HOME}/tools/bundle_repo/${bundle_repodir}") {
+        dir("${env.HOME}/bundle_repo/${bundle_repodir}") {
             try {
                 TEST_RUN = sh (
                     script: "#!/bin/bash \nset -o pipefail ; ${ACTCMD} ; functest-test --model ${MODEL_NAME} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
