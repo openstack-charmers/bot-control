@@ -204,7 +204,7 @@ node(params.SLAVE_NODE_NAME) {
                 env.external_net_cidr = BUNDLE_CIDR_EXT
                 env.start_floating_ip = BUNDLE_FIP_RANGE.split(":")[0]
                 env.end_floating_ip = BUNDLE_FIP_RANGE.split(":")[1]
-                dir("${env.HOME}/bundle_repo/${GUESS_REPO_DIR}") {
+                dir("${env.HOME}/bundle_repo/${BUNDLE_REPO_DIR}") {
                     sh "tox -e venv pip"
                     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
                     sh "${ACTCMD} ; functest-configure --model ${MODEL_NAME}"
