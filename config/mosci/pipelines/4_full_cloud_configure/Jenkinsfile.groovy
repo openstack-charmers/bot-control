@@ -124,8 +124,10 @@ def zaza_config_check(GUESS_REPO_DIR) {
     echo "Checking ${env.HOME}/tools/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
     tests_yaml = readFile("${env.HOME}/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml")
     if ( tests_yaml.contains('configure: []') ) {
+        echo "no zaza configuration steps found"
         return false
     } else {
+        echo "found zaza configuration steps"
         return true
     }
 }
@@ -161,6 +163,7 @@ node(params.SLAVE_NODE_NAME) {
         stage("Configure Cloud") {
             bundle_url_to_repo()
             if ( ( params.BUNDLE_REPO && params.ZAZA == true ) || ( zaza_check == true ) ) {
+                echo "Configuring with zaza"
                 dir("${env.HOME}/tools/openstack-charm-testing/") {
                     BUNDLE_VARS = readFile("profiles/${profile_name}" )
                     BUNDLE_VARS.split("\n").each { line_a, count_a ->
@@ -207,6 +210,7 @@ node(params.SLAVE_NODE_NAME) {
                     sh "${ACTCMD} ; functest-configure --model ${MODEL_NAME}"
                 }
             } else {
+                echo "legacy configuration with openstack-charm-testing"
                 if ( params.CLOUD_NAME.contains("390") ) {
                     directory = "${env.HOME}/tools/zopenstack/tools/2-configure/"
                 } else {
