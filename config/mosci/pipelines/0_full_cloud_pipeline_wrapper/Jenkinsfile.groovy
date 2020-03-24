@@ -476,6 +476,7 @@ node(SLAVE_NODE_NAME) {
             echo "Configuring Openstack Cloud"
             configure_job = build job: '4. Full Cloud - Configure', propagate: prop, parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: CLOUD_NAME],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
+                         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: params.BUNDLE_REPO],
                          [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: params.BUNDLE_REPO],
                          [$class: 'BooleanParameterValue', name: 'ZAZA', value: Boolean.valueOf(ZAZA)],
                          [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],

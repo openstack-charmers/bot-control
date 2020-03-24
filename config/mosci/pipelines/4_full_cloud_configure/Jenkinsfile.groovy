@@ -94,6 +94,36 @@ def get_keystone_api_version() {
         return KAV 
 }
 
+def bundle_url_to_repo() {
+    // Try to get the BUNDLE_REPO and see if there are any zaza configuration steps
+    // This only currently works with the openstack-bundles repo
+    GUESS_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','www.github.com')
+    GUESS_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/')
+    try {
+        sh "git clone ${GUESS_REPO} ${env.HOME}/bundle_repo/"
+        if ( zaza_config_check(GUESS_REPO_DIR) ) {
+            zaza_check = true
+            return true
+        }
+    } catch (error) {
+        echo "Could not clone bundle repo ${GUESS_REPO} - bad guess?"
+        echo "This means no zaza config for this bundle"
+        return false
+    }
+}
+
+def zaza_config_check(GUESS_REPO_DIR) {
+    // check if the tests.yaml in the bundle dir contains zaza config steps
+    // if it does, we will configure the job with zaza and also attempt to run zaza tests
+    // if it does not, we will do legacy configuration, and run selected tests
+    tests_yaml = readFile("${env.HOME}/tools/bundle_repo/openstack_bundles/${GUESS_REPO_DIR}/tests/tests.yaml")  
+    if tests_yaml.contains('configure: []') {
+        return false
+    } else {
+        return true
+    }
+}
+
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
         stage('Setup') {
@@ -123,14 +153,8 @@ node(params.SLAVE_NODE_NAME) {
             } else { profile_name = profile_prefix }
         }
         stage("Configure Cloud") {
-            if ( params.BUNDLE_REPO && params.ZAZA == true ) {
-                bundle_repo = params.BUNDLE_REPO.split(',')[0]
-                bundle_repodir = params.BUNDLE_REPO.split(',')[1]
-                try {
-                    sh "git clone ${bundle_repo} ${env.HOME}/bundle_repo/"
-                } catch (error) {
-                    echo "Couldn't clone bundle repo"
-                }
+            bundle_url_to_repo
+            if ( params.BUNDLE_REPO && params.ZAZA == true ) || ( zaza_check == true ) {
                 dir("${env.HOME}/tools/openstack-charm-testing/") {
                     BUNDLE_VARS = readFile("profiles/${profile_name}" )
                     BUNDLE_VARS.split("\n").each { line_a, count_a ->
@@ -171,7 +195,7 @@ node(params.SLAVE_NODE_NAME) {
                 env.external_net_cidr = BUNDLE_CIDR_EXT
                 env.start_floating_ip = BUNDLE_FIP_RANGE.split(":")[0]
                 env.end_floating_ip = BUNDLE_FIP_RANGE.split(":")[1]
-                dir("${env.HOME}/bundle_repo/${bundle_repodir}") {
+                dir("${env.HOME}/bundle_repo/${GUESS_REPO_DIR}") {
                     sh "tox -e venv pip"
                     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
                     sh "${ACTCMD} ; functest-configure --model ${MODEL_NAME}"

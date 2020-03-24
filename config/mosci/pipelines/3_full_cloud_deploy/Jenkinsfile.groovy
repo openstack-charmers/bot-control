@@ -34,18 +34,32 @@ if ( params.CLOUD_NAME.contains("ruxton") ) {
     MAAS_API_KEY = params.AMONTONS_API_KEY
 }
 
-if ( params.BUNDLE_REPO) {
-
-    bundle_repo = params.BUNDLE_REPO.split(',')[0]
-    bundle_repodir = params.BUNDLE_REPO.split(',')[1]
-
-    try {
-        sh "git clone ${BUNDLE_REPO} ~/bundle_repo/"
-    } catch (error) {
-        echo "Full bundle paste:"
-        writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
+/*def get_bundle_repo(GUESS_REPO) {
+    if ( params.BUNDLE_REPO) {
+    
+        bundle_repo = params.BUNDLE_REPO.split(',')[0]
+        bundle_repodir = params.BUNDLE_REPO.split(',')[1]
+    
+        try {
+            sh "git clone ${BUNDLE_REPO} ~/tools/bundle_repo/"
+        } catch (error) {
+            echo "Full bundle paste:"
+            writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
+        }
     }
 }
+
+def zaza_config_check(GUESS_REPO_DIR) {
+    // check if the tests.yaml in the bundle dir contains zaza config steps
+    // if it does, we will configure the job with zaza and also attempt to run zaza tests
+    // if it does not, we will do legacy configuration, and run selected tests
+    tests_yaml = readFile("${env.HOME}/tools/bundle_repo/openstack_bundles/${GUESS_REPO_DIR}/tests/tests.yaml")  
+    if tests_yaml.contains('configure: []') {
+        return false
+    } else {
+        return true
+    }
+}*/
 
 
 CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
@@ -143,6 +157,21 @@ node("${SLAVE_NODE_NAME}") {
                         OVERLAY_STRING = OVERLAY_STRING + "--overlay overlay_${i}.yaml "
                 }
             }
+            /*
+            // Try to get the BUNDLE_REPO and see if there are any zaza configuration steps
+            // This only currently works with the openstack-bundles repo
+            GUESS_REPO = BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','www.github.com')
+            GUESS_REPO_DIR = BUNDLE_URL.split('/')[8..6].reverse().join('/')
+            try {
+                get_bundle_repo(GUESS_REPO)
+                if ( zaza_config_check(GUESS_REPO_DIR) ) {
+                    ZAZA = true
+                    params.ZAZA = true
+                }
+            } catch (error) {
+                echo "Could not clone bundle repo ${GUESS_REPO} - bad guess?"
+            }*/
+
         }
         //stage('Validate bundle') {
         //    sh "yamllint bundle.yaml"
