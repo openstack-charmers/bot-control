@@ -100,6 +100,11 @@ def bundle_url_to_repo() {
     GUESS_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','www.github.com')
     GUESS_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/').minus('bundle.yaml')
     try {
+        sh "rm -rf ${env.HOME}/bundle_repo/"
+    } catch (error) {
+        echo "No bundle_repo dir to delete - first run"
+    }
+    try {
         sh "git clone ${GUESS_REPO} ${env.HOME}/bundle_repo/"
         if ( zaza_config_check(GUESS_REPO_DIR) ) {
             zaza_check = true
