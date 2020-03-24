@@ -122,7 +122,7 @@ def zaza_config_check(GUESS_REPO_DIR) {
     // if it does, we will configure the job with zaza and also attempt to run zaza tests
     // if it does not, we will do legacy configuration, and run selected tests
     echo "Checking ${env.HOME}/tools/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
-    tests_yaml = readFile("${env.HOME}/tools/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml")
+    tests_yaml = readFile("${env.HOME}/bundle_repo/${GUESS_REPO_DIR}/tests/tests.yaml")
     if ( tests_yaml.contains('configure: []') ) {
         return false
     } else {
