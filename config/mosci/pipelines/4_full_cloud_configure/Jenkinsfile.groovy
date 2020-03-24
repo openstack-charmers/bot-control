@@ -98,7 +98,7 @@ def bundle_url_to_repo() {
     // Try to get the BUNDLE_REPO and see if there are any zaza configuration steps
     // This only currently works with the openstack-bundles repo
     GUESS_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','www.github.com')
-    GUESS_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/')
+    GUESS_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/').minus('bundle.yaml')
     try {
         sh "git clone ${GUESS_REPO} ${env.HOME}/bundle_repo/"
         if ( zaza_config_check(GUESS_REPO_DIR) ) {
