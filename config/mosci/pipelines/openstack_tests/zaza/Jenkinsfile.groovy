@@ -18,18 +18,16 @@ SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
 
 TEST_CMD = "func"
 
-bundle_repo = params.BUNDLE_REPO.split(',')[0]
-bundle_repodir = params.BUNDLE_REPO.split(',')[1].minus('bundle.yaml')
+//bundle_repo = params.BUNDLE_REPO.split(',')[0]
+//bundle_repodir = params.BUNDLE_REPO.split(',')[1].minus('bundle.yaml')
 
 ACTCMD = "source \$(find . -name activate)"
 MODEL_NAME = "amd64-mosci-ruxton-maas"
-echo $bundle_repo
-echo $bundle_repo_dir
 
 
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
-        dir("${env.HOME}/bundle_repo/${bundle_repodir}") {
+        dir("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}") {
             try {
                 TEST_RUN = sh (
                     script: "#!/bin/bash \nset -o pipefail ; ${ACTCMD} ; functest-test --model ${MODEL_NAME} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
