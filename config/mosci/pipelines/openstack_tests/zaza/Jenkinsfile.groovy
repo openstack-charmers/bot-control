@@ -23,6 +23,9 @@ bundle_repodir = params.BUNDLE_REPO.split(',')[1].minus('bundle.yaml')
 
 ACTCMD = "source \$(find . -name activate)"
 MODEL_NAME = "amd64-mosci-ruxton-maas"
+echo $bundle_repo
+echo $bundle_repo_dir
+
 
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
