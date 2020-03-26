@@ -1,3 +1,6 @@
+# one of the dependencies include openstacksdk and a dependency of
+# openstacksdk 0.44 dropped Python 3.5 support
+openstacksdk<0.44
 python-openstackclient
 python-neutronclient
 python-novaclient
