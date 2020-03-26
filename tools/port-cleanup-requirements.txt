@@ -5,4 +5,5 @@ python-openstackclient
 python-neutronclient
 python-novaclient
 python-keystoneclient
+python-glanceclient
 jinja2
