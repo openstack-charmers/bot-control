@@ -42,10 +42,16 @@ if ( ! params.SELECTED_TESTS == ""  ) {
 }
 
 node(SLAVE_NODE_NAME) {
+    stage("Looking for zaza tests") {
+        do_zaza_tests = zaza_tests_check()
+        }
+}
+
+node('master') {
     stage("Run zaza tests") {
-        echo "Checking if there are any zaza tests, and if so, execute."
-        if ( zaza_tests_check() == true ) {
-            build job: "pipeline test - openstack - zaza", parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: params.CLOUD_NAME],
+        if ( do_zaza_tests == true ) {
+            echo "Found zaza tests"
+            build job: "automatic test - openstack - zaza", parameters: [[$class: 'StringParameterValue', name: 'CLOUD_NAME', value: params.CLOUD_NAME],
                 [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
                 [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
                 [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: params.BUNDLE_REPO],
@@ -53,6 +59,9 @@ node(SLAVE_NODE_NAME) {
                 [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
                 [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
                 [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
+            }
+        } else {
+            echo "No zaza tests found."
         }
     }
 }
