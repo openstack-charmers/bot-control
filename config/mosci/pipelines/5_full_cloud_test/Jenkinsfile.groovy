@@ -7,7 +7,6 @@ def zaza_tests_check() {
     echo "Checking ${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
     tests_yaml = readFile("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml")
     if ( ! tests_yaml.contains('zaza.charm_tests')) {
-        echo "${tests_yaml}"
         echo "no zaza tests found"
         return false
     } else {
