@@ -6,7 +6,8 @@ def zaza_tests_check() {
     // if it does not, we will do legacy configuration, and run selected tests
     echo "Checking ${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
     // tests_yaml = readFile("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml")
-    check_tests = sh "python3 -c \"import json, zaza.charm_lifecycle.utils; print(zaza.charm_lifecycle.utils.get_test_steps()['default_alias'])\""
+    ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
+    check_tests = sh "${ACTCMD} ; python3 -c \"import json, zaza.charm_lifecycle.utils; print(zaza.charm_lifecycle.utils.get_test_steps()['default_alias'])\""
     echo ${check_tests}
     if ( check_tests.contains('zaza.charm_tests')) {
         echo "no zaza tests found"
