@@ -59,9 +59,9 @@ node('master') {
                 [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
                 [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
                 [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
+            } else {
+                echo "No zaza tests found."
             }
-        } else {
-            echo "No zaza tests found."
         }
     }
 }
