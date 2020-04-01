@@ -41,7 +41,7 @@ if ( params.CLOUD_NAME.contains("ruxton") ) {
         bundle_repodir = params.BUNDLE_REPO.split(',')[1]
     
         try {
-            sh "git clone ${BUNDLE_REPO} ~/tools/bundle_repo/"
+            sh "git clone ${BUNDLE_REPO} ~/bundle_repo/"
         } catch (error) {
             echo "Full bundle paste:"
             writeFile file: "bundle.yaml", text: params.BUNDLE_PASTE
@@ -53,7 +53,7 @@ def zaza_config_check(GUESS_REPO_DIR) {
     // check if the tests.yaml in the bundle dir contains zaza config steps
     // if it does, we will configure the job with zaza and also attempt to run zaza tests
     // if it does not, we will do legacy configuration, and run selected tests
-    tests_yaml = readFile("${env.HOME}/tools/bundle_repo/openstack_bundles/${GUESS_REPO_DIR}/tests/tests.yaml")  
+    tests_yaml = readFile("${env.HOME}/bundle_repo/openstack_bundles/${GUESS_REPO_DIR}/tests/tests.yaml")  
     if tests_yaml.contains('configure: []') {
         return false
     } else {

@@ -123,7 +123,7 @@ def zaza_config_check() {
     // check if the tests.yaml in the bundle dir contains zaza config steps
     // if it does, we will configure the job with zaza and also attempt to run zaza tests
     // if it does not, we will do legacy configuration, and run selected tests
-    echo "Checking ${env.HOME}/tools/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
+    echo "Checking ${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
     tests_yaml = readFile("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml")
     if ( tests_yaml.contains('configure: []') ) {
         echo "no zaza configuration steps found"
