@@ -164,7 +164,7 @@ node(params.SLAVE_NODE_NAME) {
         }
         stage("Configure Cloud") {
             bundle_url_to_repo()
-            if ( ( params.BUNDLE_REPO ) || ( zaza_check == true ) ) {
+            if ( zaza_check == true ) {
                 echo "Configuring with zaza"
                 dir("${env.HOME}/tools/openstack-charm-testing/") {
                     BUNDLE_VARS = readFile("profiles/${profile_name}" )
