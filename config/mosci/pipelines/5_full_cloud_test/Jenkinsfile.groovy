@@ -46,8 +46,10 @@ if ( ! params.SELECTED_TESTS == ""  ) {
 
 node(SLAVE_NODE_NAME) {
     stage("Looking for zaza tests") {
-        do_zaza_tests = zaza_tests_check()
+        dir("${env.HOME}/bundle_repo/${BUNDLE_REPO_DIR}") {
+            do_zaza_tests = zaza_tests_check()
         }
+    }
 }
 
 node('master') {
