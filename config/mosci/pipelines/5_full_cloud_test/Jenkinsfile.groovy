@@ -7,7 +7,10 @@ def zaza_tests_check() {
     echo "Checking ${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
     // tests_yaml = readFile("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml")
     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
-    check_tests = sh "${ACTCMD} ; python3 -c \"import json, zaza.charm_lifecycle.utils; print(zaza.charm_lifecycle.utils.get_test_steps()['default_alias'])\""
+    check_tests = sh (
+        script: "${ACTCMD} ; python3 -c \"import json, zaza.charm_lifecycle.utils; print(zaza.charm_lifecycle.utils.get_test_steps()['default_alias'])\"",
+        returnStdout: true
+        )
     //echo ${check_tests}
     if ( check_tests.contains('[]')) {
         echo "no zaza tests found"
