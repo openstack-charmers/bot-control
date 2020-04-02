@@ -21,16 +21,16 @@ TEST_CMD = "func"
 //bundle_repo = params.BUNDLE_REPO.split(',')[0]
 //bundle_repodir = params.BUNDLE_REPO.split(',')[1].minus('bundle.yaml')
 
-ACTCMD = "source \$(find . -name activate)"
-MODEL_NAME = "amd64-mosci-ruxton-maas"
-
+TOXCMD = "tox -e venv -- true"
+ACTCMD = "${TOXCMD} ; source \$(find . -name activate)"
+TESTCMD = "functest-test --model ${params.MODEL_NAME} | tee ${TEST_CMD}_${BUILD_ID}_output.log"
 
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
         dir("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}") {
             try {
                 TEST_RUN = sh (
-                    script: "#!/bin/bash \nset -o pipefail ; ${ACTCMD} ; functest-test --model ${MODEL_NAME} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
+                    script: "#!/bin/bash \nset -o pipefail ; ${TOXCMD} ; ${ACTCMD} ; ${TESTCMD}",
                     returnStdout: true
                 )
                 sh "cat ${TEST_CMD}_${BUILD_ID}_output.log"

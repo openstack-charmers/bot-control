@@ -500,6 +500,7 @@ node(SLAVE_NODE_NAME) {
                          [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
                          [$class: 'StringParameterValue', name: 'WORKSPACE', value: workSpace],
                          [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
+                         [$class: 'StringParameterValue', name: 'MODEL_NAME', value: params.MODEL_NAME],
                          [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: BUNDLE_REPO],
                          [$class: 'StringParameterValue', name: 'BUNDLE_REPO_DIR', value: BUNDLE_REPO_DIR],
                          [$class: 'StringParameterValue', name: 'SELECTED_TESTS', value: params.SELECTED_TESTS],

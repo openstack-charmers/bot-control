@@ -1,5 +1,18 @@
 // bundle-agnostic test runner. Runs tests selected by params.SELECTED_TESTS
 
+if ( params.CLOUD_NAME=='ruxton' || params.CLOUD_NAME=='icarus' ) {
+    CLOUD_NAME="${params.CLOUD_NAME}-maas"
+} else {
+    CLOUD_NAME=params.CLOUD_NAME
+}
+CONTROLLER_NAME="${ARCH}-mosci-${CLOUD_NAME}"
+if ( params.CLOUD_NAME == "lxd" ) {
+    MODEL_NAME="${ARCH}-mosci-${CLOUD_NAME}-${LXD_IP}".replaceAll("[.]", "-")
+} else {
+    MODEL_NAME=CONTROLLER_NAME
+}
+
+
 def zaza_tests_check() {
     // check if the tests.yaml in the bundle dir contains zaza config steps
     // if it does, we will configure the job with zaza and also attempt to run zaza tests
@@ -65,6 +78,7 @@ node('master') {
                 [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: params.BUNDLE_REPO],
                 [$class: 'StringParameterValue', name: 'BUNDLE_REPO_DIR', value: params.BUNDLE_REPO_DIR],
                 [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
+                [$class: 'StringParameterValue', name: 'MODEL_NAME', value: MODEL_NAME],
                 [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
                 [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
         } else {
