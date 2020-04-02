@@ -106,7 +106,7 @@ def bundle_url_to_repo() {
     }
     try {
         sh "git clone ${params.BUNDLE_REPO} ${env.HOME}/bundle_repo/"
-        sh "tox -e venv pip"
+        sh "tox -e venv -- /bin/true"
         if ( zaza_config_check() ) {
             zaza_check = true
             return true
@@ -208,7 +208,7 @@ node(params.SLAVE_NODE_NAME) {
                 env.start_floating_ip = BUNDLE_FIP_RANGE.split(":")[0]
                 env.end_floating_ip = BUNDLE_FIP_RANGE.split(":")[1]
                 dir("${env.HOME}/bundle_repo/${BUNDLE_REPO_DIR}") {
-                    sh "tox -e venv pip"
+                    sh "tox -e venv -- /bin/true"
                     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
                     sh "${ACTCMD} ; functest-configure --model ${MODEL_NAME}"
                 }
