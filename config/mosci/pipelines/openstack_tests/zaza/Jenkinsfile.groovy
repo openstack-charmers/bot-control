@@ -25,6 +25,7 @@ TOXCMD = "tox -e venv -- true"
 ACTCMD = "${TOXCMD} ; source \$(find . -name activate)"
 TESTCMD = "functest-test --model ${params.MODEL_NAME} | tee ${TEST_CMD}_${BUILD_ID}_output.log"
 
+echo "THING THINGY!"
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
         dir("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}") {
