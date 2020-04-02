@@ -11,7 +11,7 @@ node('master') {
         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: params.BUNDLE_URL],
         [$class: 'StringParameterValue', name: 'BUNDLE_OVERLAYS', value: params.BUNDLE_OVERLAYS],
         [$class: 'StringParameterValue', name: 'BUNDLE_PASTE', value: params.BUNDLE_PASTE],
-        [$class: 'StringParameterValue', name: 'SELECTED_TESTS', value: params.SELECTED_TESTS],
+        [$class: 'ActiveChoicesParameterValue', name: 'SELECTED_TESTS', value: params.SELECTED_TESTS],
         [$class: 'BooleanParameterValue', name: 'PERSIST_SLAVE', value: params.PERSIST_SLAVE],
         [$class: 'BooleanParameterValue', name: 'OFFLINE_SLAVE', value: params.OFFLINE_SLAVE]]
     }
