@@ -1204,6 +1204,40 @@
             DISPLAY_NAME=$MOJO_SPEC $U_OS
 
 - job:
+    name: test_mojo_parallel_series_upgrade_master_matrix
+    disabled: false
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+      - timed: "" # Re-enable only after this entire spec is known to pass.
+    axes:
+      - axis:
+         type: user-defined
+         name: MOJO_SPEC
+         values:
+          - specs/full_stack/next_series_upgrade_parallel
+      - axis:
+         type: user-defined
+         name: U_OS
+         values:
+          - "trusty-mitaka"
+          - "xenial-queens"
+    builders:
+      - trigger-builds:
+        - project:
+            - "mojo_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            MOJO_SPEC=$MOJO_SPEC
+            U_OS=$U_OS
+            DISPLAY_NAME=$MOJO_SPEC $U_OS
+
+- job:
     name: test_mojo_cells_master_matrix
     disabled: true
     project-type: matrix
