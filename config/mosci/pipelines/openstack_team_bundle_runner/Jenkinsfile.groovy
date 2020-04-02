@@ -1,6 +1,6 @@
 node('master') {
     stage('Trigger 0. Full Cloud - Pipeline') {
-        trigger_wrapper = build job: '0. Full Cloud - Pipeline', propagate: prop, parameters: 
+        trigger_wrapper = build job: '0. Full Cloud - Pipeline', parameters: 
         [[$class: 'BooleanParameterValue', name: 'OPENSTACK', value: params.OPENSTACK],
         [$class: 'StringParameterValue', name: 'CLOUD_NAME', value: params.CLOUD_NAME],
         [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH],
