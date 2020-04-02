@@ -20,9 +20,11 @@ def zaza_tests_check() {
     // if it does not, we will do legacy configuration, and run selected tests
     echo "Checking ${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml for zaza configuration steps"
     // tests_yaml = readFile("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}/tests/tests.yaml")
+    TOXCMD = "tox -e venv -- true"
     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
+    TESTCMD = "python3 -c \"import json, zaza.charm_lifecycle.utils; print(zaza.charm_lifecycle.utils.get_test_steps()['default_alias'])\""
     check_tests = sh (
-        script: "${ACTCMD} ; python3 -c \"import json, zaza.charm_lifecycle.utils; print(zaza.charm_lifecycle.utils.get_test_steps()['default_alias'])\"",
+        script: "${ACTCMD} ; ${TOXCMD} ; ${TESTCMD}",
         returnStdout: true
         )
     //echo ${check_tests}
