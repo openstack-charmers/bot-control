@@ -12,16 +12,8 @@ if ( params.CLOUD_NAME == "lxd" ) {
     MODEL_NAME=CONTROLLER_NAME
 }
 
-echo "MODEL NAME IS ${MODEL_NAME}"
-echo "SELECTED TESTS ARE ${params.SELECTED_TESTS}"
-
-if ( params.SELECTED_TESTS ) {
-    echo "selected tests true"
-}
-
-if ( ! params.SELECTED_TESTS) {
-    echo "selected tests false"
-}
+echo "MODEL NAME: ${MODEL_NAME}"
+echo "SELECTED_TESTS: ${params.SELECTED_TESTS}"
 
 def zaza_tests_check() {
     // check if the tests.yaml in the bundle dir contains zaza config steps
