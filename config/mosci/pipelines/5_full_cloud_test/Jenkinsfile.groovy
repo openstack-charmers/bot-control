@@ -67,9 +67,16 @@ if ( ! params.SELECTED_TESTS == ""  ) {
         }
     }
 } else {
-    echo "Selecteded tests NARP"
+    echo "Selecteded tests NARP: ${params.SELECTED_TESTS}"
 }
 
+node(SLAVE_NODE_NAME) {
+    stage("Looking for zaza tests") {
+        dir("${env.HOME}/bundle_repo/${BUNDLE_REPO_DIR}") {
+            do_zaza_tests = zaza_tests_check()
+        }
+    }
+}
 
 node('master') {
     stage("Run zaza tests") {
@@ -90,11 +97,5 @@ node('master') {
     }
 }
 
-node(SLAVE_NODE_NAME) {
-    stage("Looking for zaza tests") {
-        dir("${env.HOME}/bundle_repo/${BUNDLE_REPO_DIR}") {
-            do_zaza_tests = zaza_tests_check()
-        }
-    }
-}
+
 
