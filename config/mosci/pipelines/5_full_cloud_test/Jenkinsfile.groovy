@@ -41,7 +41,7 @@ def zaza_tests_check() {
     }
 }
 
-echo ${SELECTED_TESTS}
+echo ${params.SELECTED_TESTS}
 
 if ( ! params.SELECTED_TESTS == ""  ) {
     node('master') {
