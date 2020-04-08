@@ -23,17 +23,21 @@ def zaza_tests_check() {
     TOXCMD = "tox -e venv -- /bin/true"
     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
     TESTCMD = "python3 -c \"import json, zaza.charm_lifecycle.utils; print(zaza.charm_lifecycle.utils.get_test_steps()['default_alias'])\""
-    check_tests = sh (
-        script: "${ACTCMD} ; ${TOXCMD} ; ${TESTCMD}",
-        returnStdout: true
-        )
-    //echo ${check_tests}
-    if ( check_tests.contains('[]')) {
-        echo "no zaza tests found"
-        return false
-    } else {
-        echo "found zaza tests"
-        return true
+    try {
+        check_tests = sh (
+            script: "${ACTCMD} ; ${TOXCMD} ; ${TESTCMD}",
+            returnStdout: true
+            )
+        //echo ${check_tests}
+        if ( check_tests.contains('[]')) {
+            echo "no zaza tests found"
+            return false
+        } else {
+            echo "found zaza tests"
+            return true
+        }
+    } catch (error) {
+        echo "Error ${error} checking for zaza, skipping"
     }
 }
 
