@@ -42,7 +42,7 @@ def zaza_tests_check() {
     }
 }
 
-if ( ! params.SELECTED_TESTS == ""  ) {
+if ( ! params.SELECTED_TESTS  ) {
     node('master') {
         stage("Prepare dynamic test selection") {
         /* If i do it this way, all tests must have ALL params.
