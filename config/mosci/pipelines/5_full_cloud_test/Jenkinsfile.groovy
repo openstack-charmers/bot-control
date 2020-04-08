@@ -42,8 +42,6 @@ def zaza_tests_check() {
     }
 }
 
-echo ${params.SELECTED_TESTS}
-
 if ( ! params.SELECTED_TESTS == ""  ) {
     node('master') {
         stage("Prepare dynamic test selection") {
