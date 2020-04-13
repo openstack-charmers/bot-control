@@ -26,7 +26,7 @@ def zaza_tests_check() {
     TESTCMD = "python3 -c \"import json, zaza.charm_lifecycle.utils; print(zaza.charm_lifecycle.utils.get_test_steps()['default_alias'])\""
     try {
         check_tests = sh (
-            script: "${ACTCMD} ; ${TOXCMD} ; ${TESTCMD}",
+            script: "${TOXCMD} ; ${ACTCMD} ; ${TESTCMD}",
             returnStdout: true
             )
         //echo ${check_tests}
