@@ -63,6 +63,10 @@
       - swift-proxy
       - swift-storage
       - tempest
+      - trilio-data-mover
+      - trilio-dm-api
+      - trilio-horizon-plugin
+      - trilio-wlm
       - vault
       - watcher
       - watcher-dashboard
