@@ -1,0 +1,118 @@
+# OpenStack Charm CI - Charm Pusher Job Generator for Jenkins-Job-Builder
+#   Renders (Charms) x (Branches) = (Lots of Jobs) so we can forget about XML
+
+- project:
+    name: project-charm-pusher-x
+    description: |
+        <p>Watch for git commits and kick off charmstore charm upload/release paths.</p>
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    charm:
+      - ovn-central
+      - ovn-chassis
+      - ovn-dedicated-chassis
+# FYI - Jenkins job names cannot contain slashes, so we cannot use branch
+# as a pivot point to simplify.
+#    branch:
+#      - master
+#      - stable/NN.NN
+    jobs:
+      - 'charm_pusher_x_{charm}_master'
+      - 'charm_pusher_x_{charm}_stable'
+
+# MASTER
+- job-template:
+    name: 'charm_pusher_x_{charm}_master'
+    node: task
+    disabled: false
+    parameters:
+        - string:
+            name: BASE_NAME
+            default: '{charm}'
+            description: Asset name (charm name).
+        - string:
+            name: GIT_BRANCH
+            default: master
+            description: Git branch.  Generally master or stable/nn.nn.
+        - CHARM_PUSH_DRY_RUN
+        - DISPLAY_NAME
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 3
+          artifact-num-to-keep: ''
+    scm:
+      - git:
+         url: https://opendev.org/x/charm-{charm}
+         basedir: '{charm}'
+         skip-tag: true
+         fastpoll: true
+         shallow-clone: true
+         clean: {before: true}
+         branches:
+          - master
+    triggers:
+      - pollscm:
+          cron: 'H/10 * * * *'
+          ignore-post-commit-hooks: True
+    builders:
+      - prep_osci_repo_if_necessary
+      - build_charm_push_and_publish
+    publishers:
+        - archive_artifacts
+        - email_watchers
+
+# STABLE
+- job-template:
+    name: 'charm_pusher_x_{charm}_stable'
+    node: task
+    disabled: false
+    parameters:
+        - string:
+            name: BASE_NAME
+            default: '{charm}'
+            description: Asset name (charm name).
+        - string:
+            name: GIT_BRANCH
+            default: stable/20.02
+            description: Git branch.  Generally master or stable/nn.nn.
+        - CHARM_PUSH_DRY_RUN
+        - DISPLAY_NAME
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 3
+          artifact-num-to-keep: ''
+    scm:
+      - git:
+         url: https://opendev.org/x/charm-{charm}
+         basedir: '{charm}'
+         skip-tag: true
+         fastpoll: true
+         shallow-clone: true
+         clean: {before: true}
+         branches:
+          - stable/20.02
+    triggers:
+      - pollscm:
+          cron: 'H/10 * * * *'
+          ignore-post-commit-hooks: True
+    builders:
+      - prep_osci_repo_if_necessary
+      - build_charm_push_and_publish
+    publishers:
+        - archive_artifacts
+        - email_watchers
+
+#- builder:
+#    name: build_charm_push_and_publish
+#    builders:
+#        - shell: |
+            #!/bin/bash -ue
+#            . ~/oscirc
+#            ${OSCI_ROOT}/run/job-parts/build_charm_pusher.sh
+
+#- parameter:
+#    name: CHARM_PUSH_DRY_RUN
+#    parameters:
+#        - bool:
+#            name: CHARM_PUSH_DRY_RUN
+#            default: false
+#            description: Optionally take no action, just run for debug purpose.
