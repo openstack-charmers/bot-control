@@ -52,9 +52,6 @@
       - octavia
       - octavia-dashboard
       - octavia-diskimage-retrofit
-      - ovn-central
-      - ovn-chassis
-      - ovn-dedicated-chassis
       - openstack-dashboard
       - pacemaker-remote
       - percona-cluster
