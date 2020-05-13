@@ -100,19 +100,3 @@
     publishers:
         - archive_artifacts
         - email_watchers
-
-#- builder:
-#    name: build_charm_push_and_publish
-#    builders:
-#        - shell: |
-            #!/bin/bash -ue
-#            . ~/oscirc
-#            ${OSCI_ROOT}/run/job-parts/build_charm_pusher.sh
-
-#- parameter:
-#    name: CHARM_PUSH_DRY_RUN
-#    parameters:
-#        - bool:
-#            name: CHARM_PUSH_DRY_RUN
-#            default: false
-#            description: Optionally take no action, just run for debug purpose.
