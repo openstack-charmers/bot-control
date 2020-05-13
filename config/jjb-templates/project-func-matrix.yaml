@@ -195,7 +195,7 @@
       sequential: true
     node: task
     triggers:
-        - timed: ""
+        - timed: "H H(00-04) * * 1"  # Once weekly on Sunday Evening / Monday Morning
     axes:
       - axis:
          type: user-defined
