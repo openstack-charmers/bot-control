@@ -187,7 +187,7 @@
             DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
 - job:
     name: test_func_series_upgrade_ubuntu_lite_matrix
-    disabled: true
+    disabled: false
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
