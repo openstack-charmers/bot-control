@@ -20,10 +20,9 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-distro"
           - "xenial-distro"
           - "bionic-distro"
-          - "eoan-distro"
+          - "focal-distro"
     builders:
       - trigger-builds:
         - project:
