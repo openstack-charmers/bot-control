@@ -106,7 +106,7 @@ def bundle_url_to_repo() {
     }
     try {
         sh "git clone ${params.BUNDLE_REPO} ${env.HOME}/bundle_repo/"
-        #sh "cd ${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR} ; tox -e venv -- /bin/true"
+        // sh "cd ${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR} ; tox -e venv -- /bin/true"
         if ( zaza_config_check() ) {
             zaza_check = true
             return true
