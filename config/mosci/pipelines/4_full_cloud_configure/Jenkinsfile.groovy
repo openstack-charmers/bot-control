@@ -114,7 +114,7 @@ def bundle_url_to_repo() {
             zaza_check = false
         }
     } catch (error) {
-        echo "Could not clone bundle repo ${params.BUNDLE_REPO} - bad guess?"
+        echo "Could not clone bundle repo ${params.BUNDLE_REPO} - bad guess? ${error}"
         echo "This means no zaza config for this bundle"
         zaza_check = false
         return false
