@@ -99,13 +99,13 @@ def bundle_url_to_repo() {
     // This only currently works with the openstack-bundles repo
     // GUESS_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','github.com')
     // GUESS_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/').minus('bundle.yaml')
+    //try {
+    //    sh "rm -rf ${env.HOME}/bundle_repo/"
+    //} catch (error) {
+    //    echo "No bundle_repo dir to delete - first run"
+    //}
     try {
-        sh "rm -rf ${env.HOME}/bundle_repo/"
-    } catch (error) {
-        echo "No bundle_repo dir to delete - first run"
-    }
-    try {
-        // sh "git clone ${params.BUNDLE_REPO} ${env.HOME}/bundle_repo/"
+        sh "git clone ${params.BUNDLE_REPO} ${env.HOME}/bundle_repo/"
         sh "cd ${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR} ; tox -e venv -- /bin/true"
         if ( zaza_config_check() ) {
             zaza_check = true
