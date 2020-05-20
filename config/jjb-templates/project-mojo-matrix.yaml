@@ -371,6 +371,7 @@
           - "bionic-queens"
           - "bionic-rocky"
           - "bionic-stein"
+          - "bionic-train"
     builders:
       - trigger-builds:
         - project:
