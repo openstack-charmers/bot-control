@@ -97,31 +97,27 @@ def main():
         app_unit_clean_name = app_unit.replace('/', '-')
         # Note: /var/lib/charm may not always exist (ceph stores confs there)
 
-        cmd_archive = '''
-dpkg -l | bzip2 -9z > /home/ubuntu/{1}-dpkg-list.bz2 &&\
+        # NOTE(lourot): I can't figure out why but 'tar' sometimes exits 1
+        # although it does the job. Thus '||:' as a workaround.
+        cmds_archive = [
+            'dpkg -l | bzip2 -9z > /home/ubuntu/%UNIT%-dpkg-list.bz2',
+            '[[ -d /var/lib/charm ]] && sudo tar -cjf /home/ubuntu/%UNIT%-var-lib-charm.tar.bz2 /var/lib/charm ||:',  # noqa
+            'ps aux | bzip2 -9z > /home/ubuntu/%UNIT%-processes.bz2',
+            'sudo netstat -taupn | grep LISTEN | bzip2 -9z > /home/ubuntu/%UNIT%-listening.bz2',  # noqa
+            'sudo ip a > /home/ubuntu/%UNIT%-ip-addr.txt',
+            'df -h | bzip2 -9z > /home/ubuntu/%UNIT%-df.bz2',
+            'free -m | bzip2 -9z > /home/ubuntu/%UNIT%-free.bz2',
+            'sudo tar -cjf /home/ubuntu/%UNIT%-var-log.tar.bz2 /var/log --warning=no-file-changed ||:',  # noqa
+            'sudo tar -cjf /home/ubuntu/%UNIT%-etc.tar.bz2 /etc --warning=no-file-changed --exclude="/etc/X11" --exclude="/etc/ssl" --exclude="/etc/ssh" --exclude="shadow" ||:',  # noqa
+        ]
 
-[[ -d /var/lib/charm ]] && sudo tar -cjf /home/ubuntu/{1}-var-lib-charm.tar.bz2 /var/lib/charm ||: &&\
-
-ps aux | bzip2 -9z > /home/ubuntu/{1}-processes.bz2 &&\
-
-sudo netstat -taupn | grep LISTEN | bzip2 -9z > /home/ubuntu/{1}-listening.bz2 &&\
-
-sudo ip a > /home/ubuntu/{1}-ip-addr.txt &&\
-
-df -h | bzip2 -9z > /home/ubuntu/{1}-df.bz2 &&\
-
-free -m | bzip2 -9z > /home/ubuntu/{1}-free.bz2 &&\
-
-sudo tar -cjf /home/ubuntu/{1}-var-log.tar.bz2 /var/log --warning=no-file-changed &&\
-
-sudo tar -cjf /home/ubuntu/{1}-etc.tar.bz2 /etc --warning=no-file-changed --exclude="/etc/X11" --exclude="/etc/ssl" --exclude="/etc/ssh" --exclude="shadow"
-'''.format(app_unit, app_unit_clean_name)  # noqa
-
-        cmds.append('juju ssh {} "{}"'.format(app_unit, cmd_archive))
+        cmds.extend('juju ssh {} "{}"'.format(
+            app_unit, cmd_archive.replace('%UNIT%', app_unit_clean_name))
+                    for cmd_archive in cmds_archive)
         cmds.append('juju scp {}:/home/ubuntu/*.bz2'
                     ' {}'.format(app_unit, log_dir))
 
-        if not u.run_cmds(cmds, dry_run=opts.dry_run):
+        if not u.run_cmds(cmds, dry_run=opts.dry_run, suppress=False):
             logging.error('Failed to get logs from application unit: '
                           '{}'.format(app_unit))
 

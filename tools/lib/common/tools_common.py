@@ -428,7 +428,7 @@ def run_cmds(cmds, fatal=False, stop_on_first_fail=True,
             ret = 0
         else:
             # Use os.system instead of subprocess due to piping and redirection
-            ret = os.system(cmd)
+            ret = os.system(cmd) >> 8
             logging.info('cmd [returned {}]: {}'.format(ret, cmd))
 
         if fatal and ret:
