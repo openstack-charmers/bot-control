@@ -211,9 +211,14 @@ def resourceCheck(arch, required, bootstrap) {
 }
 
 if ( params.BUNDLE_REPO == "" ) {
-    echo "SPLITTING ${BUNDLE_URL}"
-    BUNDLE_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','github.com')
-    BUNDLE_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/').minus('bundle.yaml')
+    try {
+        BUNDLE_REPO = params.BUNDLE_URL.split('/')[0..4].join('/').replace('raw.githubusercontent.com','github.com')
+        BUNDLE_REPO_DIR = params.BUNDLE_URL.split('/')[8..6].reverse().join('/').minus('bundle.yaml')
+    } catch (error) {
+        echo "Error splitting BUNDLE_URL, leaving BUNDLE_REPO and BUNDLE_REPO_DIR empty. Not running zaza tests"
+        BUNDLE_REPO = ""
+        BUNDLE_REPO_DIR = ""
+    }
 }
 
 try {
