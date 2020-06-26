@@ -9,7 +9,6 @@ node('master') {
         [$class: 'StringParameterValue', name: 'CLOUD_NAME', value: params.CLOUD_NAME],
         [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH],
         [$class: 'StringParameterValue', name: 'DISPLAY_NAME', value: params.DISPLAY_NAME],
-        [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: params.SLAVE_NODE_NAME],
         [$class: 'BooleanParameterValue', name: 'CLEANUP_ON_FAILURE', value: false],
         [$class: 'BooleanParameterValue', name: 'FORCE_NEW_CONTROLLER', value: false],
         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: params.BUNDLE_URL],
