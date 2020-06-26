@@ -25,7 +25,7 @@ MASAKARI_TEST = "zaza.openstack.charm_tests.masakari.tests.MasakariTest"
 
 ACTCMD = "source \$(find . -name activate)"
 CONFCMD = "functest-configure --model ${params.MODEL_NAME} -c ${MASAKARI_CONFIG}"
-TESTCMD = "functest-test --model ${params.MODEL_NAME} -c ${MASAKARI_TEST} | tee ${TEST_CMD}_${BUILD_ID}_output.log"
+TESTCMD = "functest-test --model ${params.MODEL_NAME} -t ${MASAKARI_TEST} | tee ${TEST_CMD}_${BUILD_ID}_output.log"
 
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
