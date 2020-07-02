@@ -55,6 +55,7 @@
           - mysql-innodb-cluster
           - mysql-router
           - neutron-api
+          - neutron-api-plugin-arista
           - neutron-api-plugin-ovn
           - neutron-dynamic-routing
           - neutron-gateway
