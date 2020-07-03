@@ -43,6 +43,7 @@
           - mysql-innodb-cluster
           - mysql-router
           - neutron-dynamic-routing
+          - neutron-api-plugin-arista
           - neutron-api-plugin-ovn
           - nova-cell-controller
           - octavia
