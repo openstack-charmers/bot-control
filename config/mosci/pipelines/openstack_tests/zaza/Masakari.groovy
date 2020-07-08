@@ -32,7 +32,7 @@ node(params.SLAVE_NODE_NAME) {
         dir("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}") {
             try {
                 TEST_RUN = sh (
-                    script: "#!/bin/bash \nset -o pipefail ; ${ACTCMD} ; ${TESTCMD}",
+                    script: "#!/bin/bash \nset -o pipefail ; ${ACTCMD} ; ${CONFCMD} ; ${TESTCMD}",
                     returnStdout: true
                 )
                 sh "cat ${TEST_CMD}_${BUILD_ID}_output.log"
