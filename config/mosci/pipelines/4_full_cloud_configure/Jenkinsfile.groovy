@@ -104,8 +104,12 @@ def bundle_url_to_repo() {
     //} catch (error) {
     //    echo "No bundle_repo dir to delete - first run"
     //}
-    try {
+    try { 
         sh "git clone ${params.BUNDLE_REPO} ${env.HOME}/bundle_repo/"
+    } catch (error) {
+        echo "Couldn't clone repo, skipping"
+    }
+    try {
         sh "cd ${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR} ; tox -e venv -- /bin/true"
         if ( zaza_config_check() ) {
             zaza_check = true
