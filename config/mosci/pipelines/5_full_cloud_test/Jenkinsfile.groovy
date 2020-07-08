@@ -60,7 +60,9 @@ if ( params.SELECTED_TESTS ) {
                     [$class: 'BooleanParameterValue', name: 'OPENSTACK', value: Boolean.valueOf(OPENSTACK)],
                     [$class: 'StringParameterValue', name: 'SLAVE_NODE_NAME', value: SLAVE_NODE_NAME],
                     [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: params.BUNDLE_REPO],
+                    [$class: 'StringParameterValue', name: 'BUNDLE_REPO_DIR', value: params.BUNDLE_REPO_DIR],
                     [$class: 'StringParameterValue', name: 'WORKSPACE', value: params.WORKSPACE],
+                    [$class: 'StringParameterValue', name: 'MODEL_NAME', value: MODEL_NAME],
                     [$class: 'StringParameterValue', name: 'LXD_IP', value: params.LXD_IP],
                     [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH]]
             }
