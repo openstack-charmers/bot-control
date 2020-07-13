@@ -12,6 +12,8 @@ node('master') {
         [$class: 'BooleanParameterValue', name: 'CLEANUP_ON_FAILURE', value: false],
         [$class: 'BooleanParameterValue', name: 'FORCE_NEW_CONTROLLER', value: false],
         [$class: 'StringParameterValue', name: 'BUNDLE_URL', value: params.BUNDLE_URL],
+        [$class: 'StringParameterValue', name: 'BUNDLE_REPO', value: params.BUNDLE_URL],
+        [$class: 'StringParameterValue', name: 'BUNDLE_REPO_DIR', value: params.BUNDLE_URL],
         [$class: 'StringParameterValue', name: 'BUNDLE_OVERLAYS', value: params.BUNDLE_OVERLAYS],
         [$class: 'StringParameterValue', name: 'OVERRIDE_BUNDLE_CONFIG', value: params.OVERRIDE_BUNDLE_CONFIG],
         [$class: 'StringParameterValue', name: 'SELECTED_TESTS', value: TESTS],
