@@ -20,12 +20,15 @@ charm interface, a built charm, or a source charm (top layer), based on
 presence and/or absence of certain files.
 '''
 
+import glob
 import os
 
 
 def f_exists(*args):
     return os.path.isfile(os.path.join(*args))
 
+def glob_match(*args):
+    return glob.glob(os.path.join(*args))
 
 def is_built_charm(asset_path):
     '''Return True if the contents of asset_path appear to
@@ -92,6 +95,14 @@ def is_func_bundle(asset_path):
         f_exists(asset_path, 'tests', 'tests.yaml')
     )
 
+def is_bundle_test_collection(asset_path):
+    '''Return True if the contents of asset_path appear to
+    be a collection of bundles and tests.'''
+    return (
+        glob_match(asset_path, 'tests', '*', 'tests', 'tests.yaml') and not
+        f_exists(asset_path, 'bundle.yaml')
+    )
+
 
 def whatis(asset_path):
     '''Attempt to determine if the contents of asset_path appear
@@ -109,5 +120,7 @@ def whatis(asset_path):
         return 'interface'
     elif is_func_bundle(asset_path):
         return 'bundle (func)'
+    elif is_bundle_test_collection(asset_path):
+        return 'bundle (bundle_test_collection)'
     else:
         return None
