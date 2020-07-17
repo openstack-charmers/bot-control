@@ -30,17 +30,19 @@ TESTCMD = "functest-test --model ${params.MODEL_NAME} -t ${MASAKARI_TEST} | tee 
 node(params.SLAVE_NODE_NAME) {
     ws(params.WORKSPACE) {
         dir("${env.HOME}/bundle_repo/${params.BUNDLE_REPO_DIR}") {
-            try {
-                TEST_RUN = sh (
-                    script: "#!/bin/bash \nset -o pipefail ; ${ACTCMD} ; ${CONFCMD} ; ${TESTCMD}",
-                    returnStdout: true
-                )
-                sh "cat ${TEST_CMD}_${BUILD_ID}_output.log"
-                archiveArtifacts artifacts: "*output.log"
-            } catch (error) {
-                echo "Error with test runner: ${error}"
-                echo "We are going to pass these zaza tests until we fix all the tests in openstack-bundles"
-                currentBuild.result = 'SUCCESS'
+            timeout(240) {
+                try {
+                    TEST_RUN = sh (
+                        script: "#!/bin/bash \nset -o pipefail ; ${ACTCMD} ; ${CONFCMD} ; ${TESTCMD}",
+                        returnStdout: true
+                    )
+                    sh "cat ${TEST_CMD}_${BUILD_ID}_output.log"
+                    archiveArtifacts artifacts: "*output.log"
+                } catch (error) {
+                    echo "Error with test runner: ${error}"
+                    echo "We are going to pass these zaza tests until we fix all the tests in openstack-bundles"
+                    currentBuild.result = 'SUCCESS'
+                }
             }
         }
     }
