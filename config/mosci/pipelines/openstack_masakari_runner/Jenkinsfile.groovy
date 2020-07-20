@@ -1,4 +1,4 @@
-TESTS = "${params.SELECTED_TESTS},zaza test - openstack - zaza masakari"
+#TESTS = "${params.SELECTED_TESTS},zaza test - openstack - zaza masakari"
 FALSE = false
 TRUE = true
 
