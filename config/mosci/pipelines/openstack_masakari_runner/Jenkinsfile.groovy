@@ -7,6 +7,7 @@ node('master') {
         trigger_wrapper = build job: '0. Full Cloud - Pipeline', parameters: 
         [[$class: 'BooleanParameterValue', name: 'OPENSTACK', value: true],
         [$class: 'StringParameterValue', name: 'CLOUD_NAME', value: params.CLOUD_NAME],
+        [$class: 'StringParameterValue', name: 'PHASES', value: params.PHASES],
         [$class: 'StringParameterValue', name: 'ARCH', value: params.ARCH],
         [$class: 'StringParameterValue', name: 'DISPLAY_NAME', value: params.DISPLAY_NAME],
         [$class: 'BooleanParameterValue', name: 'CLEANUP_ON_FAILURE', value: false],
