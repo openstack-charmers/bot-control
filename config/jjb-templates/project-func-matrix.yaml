@@ -282,3 +282,129 @@
             TEST_PATH=$TEST_PATH
             GIT_BRANCH=$GIT_BRANCH
             DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
+- job:
+    name: test_func_kitchen_sink_matrix
+    disabled: false
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+      - timed: "00 22 * * 1"  # Once weekly at 22:00 on Monday
+    axes:
+      - axis:
+         type: user-defined
+         name: TEST_TOX_TARGET
+         values:
+          - "kitchen-sink-focal-ussuri"
+    parameters:
+      - string:
+          name: TEST_PATH
+          default: "."
+          description: Path to location of zaza tox.ini
+      - string:
+          name: GIT_REPO
+          default: "https://github.com/openstack-charmers/charmed-openstack-tester.git"
+          description: Git repo for Bundle
+      - string:
+          name: GIT_BRANCH
+          default: "master"
+          description: Git branch for Bundle repo
+    builders:
+      - trigger-builds:
+        - project:
+            - "zaza_cot_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            TEST_TOX_TARGET=$TEST_TOX_TARGET
+            GIT_REPO=$GIT_REPO
+            TEST_PATH=$TEST_PATH
+            GIT_BRANCH=$GIT_BRANCH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
+- job:
+    name: test_func_vrrp_matrix
+    disabled: false
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+      - timed: "00 07 * * 4"  # Once weekly, 07:00 on Thursday
+    axes:
+      - axis:
+         type: user-defined
+         name: TEST_TOX_TARGET
+         values:
+          - "vrrp-focal-ussuri"
+    parameters:
+      - string:
+          name: TEST_PATH
+          default: "."
+          description: Path to location of zaza tox.ini
+      - string:
+          name: GIT_REPO
+          default: "https://github.com/openstack-charmers/charmed-openstack-tester.git"
+          description: Git repo for Bundle
+      - string:
+          name: GIT_BRANCH
+          default: "master"
+          description: Git branch for Bundle repo
+    builders:
+      - trigger-builds:
+        - project:
+            - "zaza_cot_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            TEST_TOX_TARGET=$TEST_TOX_TARGET
+            GIT_REPO=$GIT_REPO
+            TEST_PATH=$TEST_PATH
+            GIT_BRANCH=$GIT_BRANCH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
+- job:
+    name: test_func_charm_upgrade_matrix
+    disabled: false
+    project-type: matrix
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    execution-strategy:
+      sequential: true
+    node: task
+    triggers:
+      - timed: "00 23 * * 3"  # Once weekly at 23:00 on Wednesday
+    axes:
+      - axis:
+         type: user-defined
+         name: TEST_TOX_TARGET
+         values:
+          - "charm-upgrade-focal-ussuri"
+    parameters:
+      - string:
+          name: TEST_PATH
+          default: "."
+          description: Path to location of zaza tox.ini
+      - string:
+          name: GIT_REPO
+          default: "https://github.com/openstack-charmers/charmed-openstack-tester.git"
+          description: Git repo for Bundle
+      - string:
+          name: GIT_BRANCH
+          default: "master"
+          description: Git branch for Bundle repo
+    builders:
+      - trigger-builds:
+        - project:
+            - "zaza_cot_runner"
+          current-parameters: true
+          block: true
+          predefined-parameters: |
+            TEST_TOX_TARGET=$TEST_TOX_TARGET
+            GIT_REPO=$GIT_REPO
+            TEST_PATH=$TEST_PATH
+            GIT_BRANCH=$GIT_BRANCH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
