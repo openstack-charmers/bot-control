@@ -215,7 +215,8 @@ node(params.SLAVE_NODE_NAME) {
                 dir("${env.HOME}/bundle_repo/${BUNDLE_REPO_DIR}") {
                     sh "tox -e venv -- /bin/true"
                     ACTCMD = "#!/bin/bash \nsource \$(find . -name activate)"
-                    sh "${ACTCMD} ; functest-configure --model ${MODEL_NAME}"
+                    IMGARCH = "export TEST_IMAGE_ARCH=${ARCH}"
+                    sh "${ACTCMD} ; ${IMGARCH} ; functest-configure --model ${MODEL_NAME}"
                 }
             } else {
                 echo "legacy configuration with openstack-charm-testing"
