@@ -54,7 +54,7 @@
           description: The tox target to run
       - string:
           name: TEST_DEPLOY_TIMEOUT
-          default: "7200"
+          default: "14400"
           description: Timeout for the deploy phase
       - NO_POST_DESTROY
       - DISPLAY_NAME
