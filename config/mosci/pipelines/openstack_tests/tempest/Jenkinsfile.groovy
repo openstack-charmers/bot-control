@@ -15,11 +15,12 @@ echo "Tempest tests selected: ${TEST_TYPE}"
 // Simple test to launch a single openstack instance
 
 SRCCMD = "#!/bin/bash \nsource rcs/openrc > /dev/null 2>&1"
+SRCCMD = "source rcs/openrc > /dev/null 2>&1"
 
 def test_runner(TEST_CMD) {
     try {
         TEST_RUN = sh (
-            script: "#!/bin/bash \nset -o pipefail ; tox -e ${TEST_CMD} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
+            script: "#!/bin/bash \nset -o pipefail ; ${SRCCMD} ; tox -e ${TEST_CMD} | tee ${TEST_CMD}_${BUILD_ID}_output.log",
             returnStdout: true
         )
         sh "cat ${TEST_CMD}_${BUILD_ID}_output.log"
