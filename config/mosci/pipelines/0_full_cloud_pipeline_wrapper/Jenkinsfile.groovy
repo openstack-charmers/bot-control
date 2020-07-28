@@ -305,8 +305,6 @@ def initLXDHost(IP_ADDRESS) {
 }
 
 stage ("[ build slave ]") {
-    echo "Looking for slave to run this job on - we will probably build a new slave."
-    echo "All nodes of label XXX are offline therefore may be an indication that a new node is being launched for this job."
     /* node ('master') {
         lxdonline = false
         // if params.LXD here to check if there is already a slave with this label - but actually it doesnt matter if there is, 
