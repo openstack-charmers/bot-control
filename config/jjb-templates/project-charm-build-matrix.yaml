@@ -26,12 +26,14 @@
           - barbican-softhsm
           - barbican-vault
           - ceph-fs
+          - ceph-iscsi
           - ceph-rbd-mirror
           - cinder-backup-swift-proxy
           - cinder-purestorage
           - designate
           - designate-bind
           - gnocchi
+          - keystone-kerberos
           - keystone-ldap
           - keystone-saml-mellon
           - manila

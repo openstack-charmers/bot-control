@@ -28,6 +28,7 @@
           - ceilometer
           - ceilometer-agent
           - ceph-fs
+          - ceph-iscsi
           - ceph-mon
           - ceph-osd
           - ceph-proxy
@@ -46,6 +47,7 @@
           - hacluster
           - heat
           - keystone
+          - keystone-kerberos
           - keystone-ldap
           - keystone-saml-mellon
           - manila
@@ -67,6 +69,9 @@
           - octavia
           - octavia-dashboard
           - octavia-diskimage-retrofit
+          - ops-interface-ceph-client
+          - ops-interface-tls-certificates
+          - ops-openstack
           - ovn-central
           - ovn-chassis
           - ovn-dedicated-chassis
