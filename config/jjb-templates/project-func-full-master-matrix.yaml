@@ -27,6 +27,7 @@
           - ceilometer
           - ceilometer-agent
           - ceph-fs
+          - ceph-iscsi
           - ceph-mon
           - ceph-osd
           - ceph-proxy
@@ -44,6 +45,7 @@
           - hacluster
           - heat
           - keystone
+          - keystone-kerberos
           - keystone-ldap
           - keystone-saml-mellon
           - manila
