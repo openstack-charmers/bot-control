@@ -36,6 +36,7 @@
           - cinder-backup-swift-proxy
           - cinder-backup
           - cinder-ceph
+          - cinder-purestorage
           - designate
           - designate-bind
           - glance
@@ -44,6 +45,7 @@
           - hacluster
           - heat
           - keystone
+          - keystone-kerberos
           - keystone-ldap
           - keystone-saml-mellon
           - manila
@@ -51,7 +53,11 @@
           - manila-ganesha
           - masakari
           - masakari-monitors
+          - mysql-innodb-cluster
+          - mysql-router
           - neutron-api
+          - neutron-api-plugin-arista
+          - neutron-api-plugin-ovn
           - neutron-dynamic-routing
           - neutron-gateway
           - neutron-openvswitch
@@ -61,6 +67,9 @@
           - octavia
           - octavia-dashboard
           - octavia-diskimage-retrofit
+          - ovn-central
+          - ovn-chassis
+          - ovn-dedicated-chassis
           - openstack-dashboard
           - pacemaker-remote
           - percona-cluster
