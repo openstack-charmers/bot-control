@@ -56,6 +56,25 @@ def is_source_charm(asset_path):
     )
 
 
+def is_source_operator_charm(asset_path):
+    '''Return True if the contents of asset_path appear to
+    be a Juju charm source (containing a top layer).'''
+    return (
+        f_exists(asset_path, 'src', 'charm.py') and
+        f_exists(asset_path, 'metadata.yaml') and not
+        glob_match(asset_path, 'src', 'reactive', '*') and not
+        glob_match(asset_path, '*.charm')
+    )
+
+
+def is_built_operator_charm(asset_path):
+    '''Return True if the contents of asset_path appear to
+    be a Juju charm source (containing a top layer).'''
+    return (
+        glob_match(asset_path, '*.charm')
+    )
+
+
 def is_classic_charm(asset_path):
     '''Return True if the contents of asset_path appear to
     be a classic (non-layered) Juju charm.'''
@@ -63,7 +82,8 @@ def is_classic_charm(asset_path):
         f_exists(asset_path, 'metadata.yaml') and not
         f_exists(asset_path, 'layer.yaml') and not
         f_exists(asset_path, '.build.manifest') and not
-        f_exists(asset_path, 'interface.yaml')
+        f_exists(asset_path, 'interface.yaml') and not
+        f_exists(asset_path, 'src', 'charm.py')
     )
 
 
@@ -114,6 +134,10 @@ def whatis(asset_path):
         return 'charm (classic)'
     elif is_source_charm(asset_path):
         return 'charm (source)'
+    elif is_source_operator_charm(asset_path):
+        return 'charm (source operator)'
+    elif is_built_operator_charm(asset_path):
+        return 'charm (built operator)'
     elif is_charm_layer(asset_path):
         return 'layer'
     elif is_charm_interface(asset_path):
