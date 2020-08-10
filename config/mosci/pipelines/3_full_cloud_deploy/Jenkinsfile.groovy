@@ -64,7 +64,7 @@ def zaza_config_check(GUESS_REPO_DIR) {
 
 CONMOD = "${CONTROLLER_NAME}:${MODEL_NAME}"
 
-def get_neutron_machine_id() {
+def get_neutron_machine_id(NETWORK_APP) {
     timeout(60) {
         waitUntil {
             // need max retries here
@@ -80,7 +80,7 @@ def get_neutron_machine_id() {
                 } else {
                     try {
                         NEUTRON_ID = sh (
-                        script: "juju show-machine \$(juju status neutron-gateway -m ${CONMOD}| awk /started/'{print \$1}') | awk /instance-id/'{print \$2}' | head -n1",
+                        script: "juju show-machine \$(juju status ${NETWORK_APP} -m ${CONMOD}| awk /started/'{print \$1}') | awk /instance-id/'{print \$2}' | head -n1",
                         returnStdout: true
                         )
                     if ( NEUTRON_ID == '' ) {
@@ -106,8 +106,8 @@ def get_neutron_machine_id() {
         }
     }
 }
-def get_neutron_interfaces() {
-        get_neutron_machine_id()
+def get_neutron_interfaces(NETWORK_APP) {
+        get_neutron_machine_id(NETWORK_APP)
         maas_api_cmd = "-o ${params.MAAS_OWNER} -m ${CLOUD_NAME} -k ${MAAS_API_KEY} --interfaces ${NEUTRON_ID}"
         dir("${env.HOME}/tools/openstack-charm-testing/") {
                 try {
@@ -247,10 +247,29 @@ node("${SLAVE_NODE_NAME}") {
         }
         stage('Configure neutron gateway dataport') {
             if ( params.OPENSTACK && S390X == false && ! params.OVERCLOUD_DEPLOY == true ) {
+                try {
+                    CHECK_OVN = sh (
+                        script: "juju status ovn-chassis",
+                        returnStdout: true 
+                    )
+                } catch(error) {
+                    echo "Could not get juju status: ${error}"
+                }
+                if CHECK_OVN.contains("active") {
+                    echo "OVN deployment detected"
+                    NETWORK_APP = "ovn-chassis"
+                    APP_PREX = "ovn"
+                    NETWORK_CONF = 'bridge-interface-mappings'
+                } else {
+                    echo "Neutron gateway deployment detected"
+                    NETWORK_APP = "neutron-gateway"
+                    APP_PREX = "neutron"
+                    NETWORK_CONF = "data-port"
+                }
                 if ( params.NEUTRON_DATAPORT != "" ) {
                     NEUTRON_INTERFACES = params.NEUTRON_DATAPORT
                 } else {
-                    get_neutron_interfaces()
+                    get_neutron_interfaces(NETWORK_APP)
                     NEUTRON_INTERFACE = NEUTRON_INTERFACES.split('\n')
                     // echo "Found neutron interfaces in this stage: ${NEUTRON_INTERFACES}"
                 }
@@ -258,20 +277,20 @@ node("${SLAVE_NODE_NAME}") {
                         echo "Waiting for neutron-gateway to settle so that we can ensure data-port config is correct"
                         sleep(60)
                         sh (
-                            script: "juju config neutron-gateway data-port=\"br-ex:${NEUTRON_INTERFACE[-1]}\" -m ${CONMOD}",
+                            script: "juju config ${NETWORK_APP} ${NETWORK_CONF}=\"br-ex:${NEUTRON_INTERFACE[-1]}\" -m ${CONMOD}",
                             returnStdout: true
                         )
-                        echo "Resolve neutron-gateway errors if there are any after setting correct data-port"
+                        echo "Resolve ${NETWORK_APP} errors if there are any after setting correct ${NETWORK_CONF}"
                         sleep(60)
                         sh (
-                            script: "for a in \$(juju status neutron-gateway -m ${CONMOD} |grep -E 'neutron.*error'|awk '!/jujucharms/ {print \$1}'|tr -d '*'); do echo juju resolved \$a -m ${CONMOD}; juju resolved \$a -m ${CONMOD}; done",
+                            script: "for a in \$(juju status ${NETWORK_APP} -m ${CONMOD} |grep -E '${APP_PREX}.*error'|awk '!/jujucharms/ {print \$1}'|tr -d '*'); do echo juju resolved \$a -m ${CONMOD}; juju resolved \$a -m ${CONMOD}; done",
                             returnStdout: true
                         )
                 } catch (error) {
-                        echo "Error setting neutron-gateway data-port: ${error}"
+                        echo "Error setting ${NETWORK_APP} ${NETWORK_CONF}: ${error}"
                 }
             } else {
-                echo "This is not an openstack deployment or is s390x, not configuring neutron gateway dataport"
+                echo "This is not an openstack deployment or is s390x, not configuring ${NETWORK_APP} ${NETWORK_CONF}"
             }
         }
         stage('Executing post deploy commands') {
