@@ -255,7 +255,7 @@ node("${SLAVE_NODE_NAME}") {
                 } catch(error) {
                     echo "Could not get juju status: ${error}"
                 }
-                if CHECK_OVN.contains("active") {
+                if ( CHECK_OVN.contains("active")) {
                     echo "OVN deployment detected"
                     NETWORK_APP = "ovn-chassis"
                     APP_PREX = "ovn"
