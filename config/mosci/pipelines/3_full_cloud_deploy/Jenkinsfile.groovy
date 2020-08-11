@@ -246,7 +246,16 @@ node("${SLAVE_NODE_NAME}") {
             }
         }
         stage('Configure neutron gateway dataport') {
-            if ( CHECK_OVN.contains("active")) {
+            if ( params.OPENSTACK && ! params.OVERCLOUD_DEPLOY == true ) {
+                try {
+                    CHECK_OVN = sh (
+                            script: "juju status ovn-chassis",
+                            returnStdout: true 
+                        )
+                } catch(error) {
+                    echo "Could not get juju status: ${error}"
+                }
+                if ( CHECK_OVN.contains("active")) {
                     echo "OVN deployment detected"
                     NETWORK_APP = "ovn-chassis"
                     APP_PREX = "ovn"
@@ -257,16 +266,9 @@ node("${SLAVE_NODE_NAME}") {
                     APP_PREX = "neutron"
                     NETWORK_CONF = "data-port"
                 }
+            }
             if ( params.OPENSTACK && S390X == false && ! params.OVERCLOUD_DEPLOY == true ) {
-                try {
-                    CHECK_OVN = sh (
-                        script: "juju status ovn-chassis",
-                        returnStdout: true 
-                    )
-                } catch(error) {
-                    echo "Could not get juju status: ${error}"
-                }
-                                if ( params.NEUTRON_DATAPORT != "" ) {
+                if ( params.NEUTRON_DATAPORT != "" ) {
                     NEUTRON_INTERFACES = params.NEUTRON_DATAPORT
                 } else {
                     get_neutron_interfaces(NETWORK_APP)
