@@ -246,16 +246,7 @@ node("${SLAVE_NODE_NAME}") {
             }
         }
         stage('Configure neutron gateway dataport') {
-            if ( params.OPENSTACK && S390X == false && ! params.OVERCLOUD_DEPLOY == true ) {
-                try {
-                    CHECK_OVN = sh (
-                        script: "juju status ovn-chassis",
-                        returnStdout: true 
-                    )
-                } catch(error) {
-                    echo "Could not get juju status: ${error}"
-                }
-                if ( CHECK_OVN.contains("active")) {
+            if ( CHECK_OVN.contains("active")) {
                     echo "OVN deployment detected"
                     NETWORK_APP = "ovn-chassis"
                     APP_PREX = "ovn"
@@ -266,7 +257,16 @@ node("${SLAVE_NODE_NAME}") {
                     APP_PREX = "neutron"
                     NETWORK_CONF = "data-port"
                 }
-                if ( params.NEUTRON_DATAPORT != "" ) {
+            if ( params.OPENSTACK && S390X == false && ! params.OVERCLOUD_DEPLOY == true ) {
+                try {
+                    CHECK_OVN = sh (
+                        script: "juju status ovn-chassis",
+                        returnStdout: true 
+                    )
+                } catch(error) {
+                    echo "Could not get juju status: ${error}"
+                }
+                                if ( params.NEUTRON_DATAPORT != "" ) {
                     NEUTRON_INTERFACES = params.NEUTRON_DATAPORT
                 } else {
                     get_neutron_interfaces(NETWORK_APP)
@@ -274,7 +274,7 @@ node("${SLAVE_NODE_NAME}") {
                     // echo "Found neutron interfaces in this stage: ${NEUTRON_INTERFACES}"
                 }
                 try {
-                        echo "Waiting for neutron-gateway to settle so that we can ensure data-port config is correct"
+                        echo "Waiting for ${NETWORK_APP} to settle so that we can ensure ${NETWORK_CONF} is correct"
                         sleep(60)
                         sh (
                             script: "juju config ${NETWORK_APP} ${NETWORK_CONF}=\"br-ex:${NEUTRON_INTERFACE[-1]}\" -m ${CONMOD}",
