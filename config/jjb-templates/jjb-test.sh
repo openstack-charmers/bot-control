@@ -8,7 +8,7 @@ stat -t .tox/jjb/bin/activate ||\
 
 tempfile="$(mktemp)"
 
-time jenkins-jobs --conf jjb-run.conf test . &> $tempfile
+time jenkins-jobs test . &> $tempfile
 grep "jenkins_jobs" $tempfile
 
 rm -fv $tempfile

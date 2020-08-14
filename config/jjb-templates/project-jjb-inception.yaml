@@ -1,0 +1,37 @@
+# OpenStack Charm CI - JJB Inception
+- job:
+    name: 'jjb_inception'
+    description: |
+        <p>Watch for git commits and kick off JJB config update against OSCI Jenkins (self)!</p>
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    node: task
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 365
+          artifact-num-to-keep: 500
+    scm:
+      - git:
+         url: https://github.com/openstack-charmers/bot-control
+         fastpoll: true
+         shallow-clone: true
+         clean: {before: true}
+         branches:
+          - master
+    triggers:
+      - pollscm:
+          cron: 'H/10 * * * *'
+          ignore-post-commit-hooks: True
+    builders:
+      - prep_osci_repo_if_necessary
+      - build_jjb_inception
+    publishers:
+        - archive_artifacts
+        - email_watchers
+
+- builder:
+    name: build_jjb_inception
+    builders:
+        - shell: |
+            #!/bin/bash -ue
+            . ~/oscirc
+            ${OSCI_ROOT}/run/job-parts/build_jjb_inception.sh

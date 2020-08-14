@@ -195,7 +195,7 @@ INFO:jenkins_jobs.builder:Cache saved
 Create the conf file.  Here is an example:
 
 ```
-ubuntu@osci-bastion:~/git/bot-control/config/jjb-templates⟫ cat uosci-jjb.conf
+ubuntu@osci-bastion:~/git/bot-control/config/jjb-templates⟫ cat jenkins_jobs.ini
 [job_builder]
 ignore_cache=True
 allow_duplicates=False
@@ -212,7 +212,7 @@ url=http://n.n.n.n:8080/
 cd bot-control/config/jjb-templates
 tox -e jjb
 . jjbrc
-jenkins-jobs --conf uosci-jjb.conf update --workers 8 .
+jenkins-jobs update --workers 8 .
 ```
 
 #### References

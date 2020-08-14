@@ -8,11 +8,11 @@ stat -t .tox/jjb/bin/activate ||\
 
 tempfile="$(mktemp)"
 
-time jenkins-jobs --conf jjb-run.conf test . &> $tempfile
+time jenkins-jobs test . &> $tempfile
 jobs="$(awk '/jenkins_jobs.*bundle.*openstack/{ print $3 }' $tempfile)"
 
 for j in $jobs; do
-    time jenkins-jobs --conf jjb-run.conf delete -j $j
+    time jenkins-jobs delete -j $j
 done
 
 rm -fv $tempfile
