@@ -8,8 +8,8 @@ stat -t .tox/jjb/bin/activate ||\
 . jjbrc
 
 # Build everything
-time jenkins-jobs --conf jjb-run.conf update --workers 16 .
+time jenkins-jobs --conf jjb-run.conf update .
 
 # Other examples for limiting
-# time jenkins-jobs --conf jjb-run.conf update --workers 16 . charm_push*
-# time jenkins-jobs --conf jjb-run.conf update --workers 16 . bundle-*
+# time jenkins-jobs --conf jjb-run.conf update . charm_push*
+# time jenkins-jobs --conf jjb-run.conf update . bundle-*
