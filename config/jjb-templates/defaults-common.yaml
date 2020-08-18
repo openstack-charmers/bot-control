@@ -44,6 +44,29 @@
             presend-script: $DEFAULT_PRESEND_SCRIPT
             save-output: false
 
+- publisher:
+    name: mattermost_qa
+    publishers:
+        - raw:
+            xml: |
+              <jenkins.plugins.mattermost.MattermostNotifier plugin="mattermost@3.1.0">
+              <endpoint />
+              <room />
+              <icon />
+              <startNotification>false</startNotification>
+              <notifySuccess>false</notifySuccess>
+              <notifyAborted>false</notifyAborted>
+              <notifyNotBuilt>false</notifyNotBuilt>
+              <notifyUnstable>false</notifyUnstable>
+              <notifyFailure>true</notifyFailure>
+              <notifyBackToNormal>false</notifyBackToNormal>
+              <notifyRepeatedFailure>false</notifyRepeatedFailure>
+              <includeTestSummary>false</includeTestSummary>
+              <commitInfoChoice>NONE</commitInfoChoice>
+              <includeCustomAttachmentMessage>false</includeCustomAttachmentMessage>
+              <includeCustomMessage>false</includeCustomMessage>
+              </jenkins.plugins.mattermost.MattermostNotifier>
+
 - parameter:
     name: DISPLAY_NAME
     parameters:
