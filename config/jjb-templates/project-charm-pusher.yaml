@@ -120,6 +120,7 @@
     publishers:
         - archive_artifacts
         - email_watchers
+        - mattermost_qa
 
 # STABLE
 - job-template:
@@ -161,6 +162,7 @@
     publishers:
         - archive_artifacts
         - email_watchers
+        - mattermost_qa
 
 # NO-OP DEBUG JOB
 - job-template:
