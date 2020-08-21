@@ -37,6 +37,7 @@
             BASE_NAME=distro-regression
             GIT_BRANCH=master
             DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
+            TOX_ARGUMENT=$TOX_ARGUMENT
 
 - job:
     name: zaza_target_runner
