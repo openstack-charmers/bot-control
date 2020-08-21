@@ -52,7 +52,7 @@
     description: |
       <p>Matrix jobs</p>
     view-type: list
-    regex: "test_func.*matrix.*||zaza_runner.*||distro_regression*"
+    regex: "test_func.*matrix.*||zaza_runner.*||test_distro_regression.*"
     columns:
       - status
       - build-button
