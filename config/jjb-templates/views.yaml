@@ -52,21 +52,7 @@
     description: |
       <p>Matrix jobs</p>
     view-type: list
-    regex: "test_func.*matrix.*||zaza_runner.*"
-    columns:
-      - status
-      - build-button
-      - weather
-      - job
-      - last-success
-      - last-failure
-
-- view:
-    name: Distro Regression Matrix
-    description: |
-        <p>Matrix jobs</p>
-    view-type: list
-    regex: "distro_regression.*matrix.*"
+    regex: "test_func.*matrix.*||zaza_runner.*||distro_regression*"
     columns:
       - status
       - build-button

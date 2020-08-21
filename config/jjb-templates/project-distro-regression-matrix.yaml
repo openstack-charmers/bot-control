@@ -35,7 +35,7 @@
           block: true
           predefined-parameters: |
             BASE_NAME=distro-regression
-            GIT_BRANCH=$GIT_BRANCH
+            GIT_BRANCH=master
             DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
 
 - job:
