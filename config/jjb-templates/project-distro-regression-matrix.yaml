@@ -30,9 +30,76 @@
     builders:
       - trigger-builds:
         - project:
-            - "test_charm_func_target"
+            - "zaza_target_runner"
           current-parameters: true
           block: true
           predefined-parameters: |
             BASE_NAME=distro-regression
             GIT_BRANCH=$GIT_BRANCH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
+
+- job:
+    name: zaza_target_runner
+    # display-name: "Zaza Test Runner"
+    project-type: freestyle
+    description: |
+        <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
+    node: slave
+    disabled: false
+    concurrent: true
+    properties:
+      - build-discarder:
+          artifact-days-to-keep: 3
+          artifact-num-to-keep: ''
+      - throttle:
+          max-per-node: 1
+          max-total: 3
+          option: project
+          # NOTE(beisner): One can use either strategy/option (project or category).
+          #     Category (from Jenkins master global config) wins over any max
+          #     throttle values set here.  Leaving in place as an example, however.
+          # categories:
+          #   - overclouds
+          # option: category
+          # matrix-builds: false
+          # matrix-configs: true
+    parameters:
+      - string:
+          name: TEST_PATH
+          default: "."
+          description: Path to location of zaza tox.ini
+      - string:
+          name: GIT_REPO
+          default: "https://github.com/openstack-charmers/charmed-openstack-tester.git"
+          description: Git repo for Bundle
+      - string:
+          name: GIT_BRANCH
+          default: "master"
+          description: Git branch for Bundle repo
+      - string:
+          name: BASE_NAME
+          default: "func"
+          description: Affects the checkout/clone directory (CO_DIR) in UOSCI.  Does not need to be detailed or specific, but it must be set.
+      - string:
+          name: TEST_TOX_TARGET
+          default: "func-target"
+          description: The tox target to run
+      - string:
+          name: TEST_DEPLOY_TIMEOUT
+          default: "14400"
+          description: Timeout for the deploy phase
+      - string:
+          name: TOX_ARGUMENT
+          description: "What tox target to build"
+      - NO_POST_DESTROY
+      - DISPLAY_NAME
+
+    wrappers:
+      - timestamps
+      - build-name:
+          name: '#${BUILD_NUMBER} ${ENV,var="GIT_REPO"} ${ENV,var="TEST_PATH"}'
+    builders:
+      - prep_osci_repo_if_necessary
+      - build_zaza_runner
+    publishers:
+      - archive_artifacts
