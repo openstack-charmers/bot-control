@@ -36,9 +36,8 @@
           predefined-parameters: |
             BASE_NAME=distro-regression
             GIT_BRANCH=master
-            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH $TEST_PATH
+            DISPLAY_NAME=$GIT_REPO/$GIT_BRANCH
             TOX_ARGUMENT=$TOX_ARGUMENT
-
 - job:
     name: zaza_target_runner
     # display-name: "Zaza Test Runner"
@@ -98,7 +97,7 @@
     wrappers:
       - timestamps
       - build-name:
-          name: '#${BUILD_NUMBER} ${ENV,var="GIT_REPO"} ${ENV,var="TEST_PATH"}'
+          name: '#${BUILD_NUMBER} ${ENV,var="TOX_ARGUMENT"} ${ENV,var="GIT_REPO"} ${ENV,var="TEST_PATH"}'
     builders:
       - prep_osci_repo_if_necessary
       - build_zaza_runner
