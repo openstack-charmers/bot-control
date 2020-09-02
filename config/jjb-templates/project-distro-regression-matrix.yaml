@@ -53,7 +53,7 @@
           artifact-num-to-keep: ''
       - throttle:
           max-per-node: 1
-          max-total: 3
+          max-total: 2
           option: project
           # NOTE(beisner): One can use either strategy/option (project or category).
           #     Category (from Jenkins master global config) wins over any max
