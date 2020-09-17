@@ -21,9 +21,9 @@
            - keystone_v3_smoke:xenial-queens
            - keystone_v3_smoke:bionic-queens
            - keystone_v3_smoke_rocky:bionic-rocky
-           - keystone_v3_smoke:bionic-stein
-           - keystone_v3_smoke:bionic-train
-           - keystone_v3_smoke:bionic-ussuri
+           - keystone_v3_smoke_stein:bionic-stein
+           - keystone_v3_smoke_stein:bionic-train
+           - keystone_v3_smoke_stein:bionic-ussuri
            - keystone_v3_smoke_focal:focal-ussuri
            - keystone_v3_smoke_focal:focal-victoria
            - keystone_v3_smoke_focal:groovy-victoria
