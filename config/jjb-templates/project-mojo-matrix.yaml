@@ -920,7 +920,6 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
-          - "eoan-train"
     builders:
       - trigger-builds:
         - project:
