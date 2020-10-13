@@ -45,6 +45,8 @@
           - gnocchi
           - hacluster
           - heat
+          - ironic-api
+          - ironic-conductor
           - keystone
           - keystone-kerberos
           - keystone-ldap
@@ -58,6 +60,7 @@
           - mysql-router
           - neutron-api
           - neutron-api-plugin-arista
+          - neutron-api-plugin-ironic
           - neutron-api-plugin-ovn
           - neutron-dynamic-routing
           - neutron-gateway
