@@ -33,6 +33,8 @@
           - designate
           - designate-bind
           - gnocchi
+          - ironic-api
+          - ironic-conductor
           - keystone-kerberos
           - keystone-ldap
           - keystone-saml-mellon
@@ -46,6 +48,7 @@
           - mysql-router
           - neutron-dynamic-routing
           - neutron-api-plugin-arista
+          - neutron-api-plugin-ironic
           - neutron-api-plugin-ovn
           - nova-cell-controller
           - octavia
