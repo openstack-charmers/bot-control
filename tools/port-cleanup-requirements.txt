@@ -1,11 +1,17 @@
 # one of the dependencies include openstacksdk and a dependency of
 # openstacksdk 0.44 dropped Python 3.5 support
 openstacksdk<0.44
-python-openstackclient
-python-neutronclient
-python-novaclient
-python-keystoneclient
-python-glanceclient
+
+# Newer versions dropped Python 3.5 support:
+python-openstackclient<3.19.0
+python-neutronclient<6.13.0
+python-novaclient<14.0.0
+python-keystoneclient<3.20.0
+python-glanceclient<2.17.0
+
+# Missing dependency of python-openstackclient:
+dogpile.cache<1.0.0
+
 jinja2
 
 # Newer versions use keywords that didn't exist in
