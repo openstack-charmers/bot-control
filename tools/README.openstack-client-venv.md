@@ -21,7 +21,9 @@ Alternatively, or perhaps more traditionally, one can just:
 cd /tmp
 virtualenv openstack-client
 . openstack-client/bin/activate
-pip install python-openstackclient
+
+# Newer versions dropped Python 3.5 support:
+pip install "python-openstackclient<3.19.0" "dogpile.cache<1.0.0"
+
 openstack --version
 ```
-
