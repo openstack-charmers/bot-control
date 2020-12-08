@@ -1,6 +1,8 @@
 # Newer versions dropped Python 3.5 support:
-python-openstackclient<3.19.0
-python-neutronclient<6.13.0
+python-openstackclient<3.19.0; python_version < '3.6'
+python-openstackclient; python_version >= '3.6'
+python-neutronclient<6.13.0; python_version < '3.6'
+python-neutronclient; python_version >= '3.6'
 
 # Missing dependency of python-openstackclient:
-dogpile.cache<1.0.0
+dogpile.cache<1.0.0; python_version < '3.6'
