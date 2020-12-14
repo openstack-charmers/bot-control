@@ -52,6 +52,7 @@
           - keystone-kerberos
           - keystone-ldap
           - keystone-saml-mellon
+          - magpie
           - manila
           - manila-generic
           - manila-ganesha
