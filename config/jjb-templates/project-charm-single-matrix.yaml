@@ -46,6 +46,7 @@
           - heat
           - keystone
           - keystone-ldap
+          - magpie
           - manila
           - manila-generic
           - manila-ganesha
