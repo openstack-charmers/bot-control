@@ -97,11 +97,14 @@ def main():
         app_unit_clean_name = app_unit.replace('/', '-')
         # Note: /var/lib/charm may not always exist (ceph stores confs there)
 
+        # NOTE(lourot): gathering /var/lib/rabbitmq in order to investigate
+        # lp:1912638
         # NOTE(lourot): I can't figure out why but 'tar' sometimes exits 1
         # although it does the job. Thus '||:' as a workaround.
         cmds_archive = [
             'dpkg -l | bzip2 -9z > /home/ubuntu/%UNIT%-dpkg-list.bz2',
             '[[ -d /var/lib/charm ]] && sudo tar -cjf /home/ubuntu/%UNIT%-var-lib-charm.tar.bz2 /var/lib/charm ||:',  # noqa
+            '[[ -d /var/lib/rabbitmq ]] && sudo tar -cjf /home/ubuntu/%UNIT%-var-lib-rabbitmq.tar.bz2 /var/lib/rabbitmq ||:',  # noqa
             'ps aux | bzip2 -9z > /home/ubuntu/%UNIT%-processes.bz2',
             'sudo netstat -taupn | grep LISTEN | bzip2 -9z > /home/ubuntu/%UNIT%-listening.bz2',  # noqa
             'sudo ip a > /home/ubuntu/%UNIT%-ip-addr.txt',
