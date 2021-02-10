@@ -67,10 +67,13 @@
       - swift-proxy
       - swift-storage
       - tempest
-      - trilio-data-mover
-      - trilio-dm-api
-      - trilio-horizon-plugin
-      - trilio-wlm
+# NOTE(lourot): by commenting out trilio-* here, these pusher jobs won't be
+# touched next time we run the Jenkins Job Builder. This allows us to keep
+# these stable pushers working an older release branch (20.10):
+#      - trilio-data-mover
+#      - trilio-dm-api
+#      - trilio-horizon-plugin
+#      - trilio-wlm
       - vault
       - watcher
       - watcher-dashboard
