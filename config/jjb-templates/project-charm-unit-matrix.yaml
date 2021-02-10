@@ -16,7 +16,7 @@
          name: GIT_BRANCH
          values:
           - master
-          - stable/20.10
+          - stable/21.01
       - axis:
          type: user-defined
          name: BASE_NAME
