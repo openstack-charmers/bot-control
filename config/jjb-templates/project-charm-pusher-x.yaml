@@ -72,7 +72,7 @@
             description: Asset name (charm name).
         - string:
             name: GIT_BRANCH
-            default: stable/20.10
+            default: stable/21.01
             description: Git branch.  Generally master or stable/nn.nn.
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
@@ -89,7 +89,7 @@
          shallow-clone: true
          clean: {before: true}
          branches:
-          - stable/20.10
+          - stable/21.01
     triggers:
       - pollscm:
           cron: 'H/10 * * * *'
