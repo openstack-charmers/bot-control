@@ -37,6 +37,8 @@
         - DISPLAY_NAME
     properties:
       - build-discarder:
+          days-to-keep: 90
+          num-to-keep: ''
           artifact-days-to-keep: 3
           artifact-num-to-keep: ''
     scm:
@@ -78,6 +80,8 @@
         - DISPLAY_NAME
     properties:
       - build-discarder:
+          days-to-keep: 90
+          num-to-keep: ''
           artifact-days-to-keep: 3
           artifact-num-to-keep: ''
     scm:
