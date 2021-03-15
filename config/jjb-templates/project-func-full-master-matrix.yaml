@@ -12,8 +12,6 @@
       - build-discarder:
           days-to-keep: 90
           num-to-keep: ''
-          artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
     triggers:
         - timed: ""  # No schedule, leaving in place for manual trigger.
     axes:

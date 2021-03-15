@@ -676,8 +676,6 @@
       - build-discarder:
           days-to-keep: 90
           num-to-keep: ''
-          artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
       - throttle:
           max-per-node: 1
           max-total: 4

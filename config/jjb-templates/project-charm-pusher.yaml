@@ -107,8 +107,6 @@
       - build-discarder:
           days-to-keep: 90
           num-to-keep: ''
-          artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
     scm:
       - git:
          url: https://opendev.org/openstack/charm-{charm}
@@ -150,8 +148,6 @@
       - build-discarder:
           days-to-keep: 90
           num-to-keep: ''
-          artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
     scm:
       - git:
          url: https://opendev.org/openstack/charm-{charm}
@@ -192,8 +188,6 @@
       - build-discarder:
           days-to-keep: 90
           num-to-keep: ''
-          artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
     scm:
       - git:
          url: https://github.com/ryan-beisner/trigger-test
