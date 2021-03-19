@@ -38,10 +38,14 @@
       - keystone-kerberos
       - keystone-ldap
       - keystone-saml-mellon
+      - magnum
+      - magnum-dashboard
       - magpie
       - manila
+      - manila-dashboard
       - manila-ganesha
       - manila-generic
+      - manila-netapp
       - masakari
       - masakari-monitors
       - mysql-innodb-cluster
