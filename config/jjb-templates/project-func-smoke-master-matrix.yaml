@@ -11,7 +11,6 @@
     properties:
       - build-discarder:
           days-to-keep: 90
-          num-to-keep: ''
     triggers:
         - timed: ""  # No schedule, leaving in place for manual trigger.
     axes:

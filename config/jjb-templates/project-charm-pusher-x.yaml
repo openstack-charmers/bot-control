@@ -38,9 +38,7 @@
     properties:
       - build-discarder:
           days-to-keep: 90
-          num-to-keep: ''
           artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
     scm:
       - git:
          url: https://opendev.org/x/charm-{charm}
@@ -81,9 +79,6 @@
     properties:
       - build-discarder:
           days-to-keep: 90
-          num-to-keep: ''
-          artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
     scm:
       - git:
          url: https://opendev.org/x/charm-{charm}

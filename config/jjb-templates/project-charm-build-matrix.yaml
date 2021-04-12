@@ -14,7 +14,6 @@
     properties:
       - build-discarder:
           days-to-keep: 90
-          num-to-keep: ''
     axes:
       - axis:
          type: user-defined

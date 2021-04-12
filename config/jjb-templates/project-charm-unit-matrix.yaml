@@ -11,9 +11,6 @@
     properties:
       - build-discarder:
           days-to-keep: 90
-          num-to-keep: ''
-          artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
     triggers:
         - timed: "H H(0-6) * * *"  # Daily in the wee hours
     axes:

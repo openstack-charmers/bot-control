@@ -17,8 +17,7 @@
     concurrent: true
     properties:
       - build-discarder:
-          artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
+          days-to-keep: 90
       - throttle:
           max-per-node: 1
           max-total: 3
@@ -79,8 +78,7 @@
     concurrent: true
     properties:
       - build-discarder:
-          artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
+          days-to-keep: 90
       - throttle:
           max-per-node: 1
           max-total: 3

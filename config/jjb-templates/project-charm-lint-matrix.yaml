@@ -103,9 +103,6 @@
           properties:
             - build-discarder:
               days-to-keep: 90
-              num-to-keep: ''
-              artifact-days-to-keep: 90
-              artifact-num-to-keep: ''
           predefined-parameters: |
             BASE_NAME=$BASE_NAME
             GIT_BRANCH=$GIT_BRANCH
