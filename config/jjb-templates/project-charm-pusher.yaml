@@ -110,7 +110,6 @@
     properties:
       - build-discarder:
           days-to-keep: 90
-          num-to-keep: ''
     scm:
       - git:
          url: https://opendev.org/openstack/charm-{charm}
@@ -151,7 +150,6 @@
     properties:
       - build-discarder:
           days-to-keep: 90
-          num-to-keep: ''
     scm:
       - git:
          url: https://opendev.org/openstack/charm-{charm}
@@ -191,7 +189,6 @@
     properties:
       - build-discarder:
           days-to-keep: 90
-          num-to-keep: ''
     scm:
       - git:
          url: https://github.com/ryan-beisner/trigger-test

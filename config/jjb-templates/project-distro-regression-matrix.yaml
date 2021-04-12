@@ -50,7 +50,6 @@
     properties:
       - build-discarder:
           artifact-days-to-keep: 3
-          artifact-num-to-keep: ''
       - throttle:
           max-per-node: 1
           max-total: 2
