@@ -55,7 +55,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -96,7 +95,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -133,7 +131,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -174,7 +171,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -211,7 +207,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -252,7 +247,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -289,7 +283,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -326,7 +319,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -363,7 +355,6 @@
          type: user-defined
          name: U_OS
          values:
-          # - "trusty-mitaka"        # Nothing to upgrade to.
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -404,7 +395,6 @@
          type: user-defined
          name: U_OS
          values:
-          # - "trusty-mitaka"         # Nothing to upgrade to.
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -441,7 +431,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -451,6 +440,7 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
+          - "bionic-ussuri"
     builders:
       - trigger-builds:
         - project:
@@ -483,7 +473,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -524,7 +513,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -565,7 +553,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -615,6 +602,7 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
+          - "bionic-ussuri"
     builders:
       - trigger-builds:
         - project:
@@ -647,7 +635,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -745,7 +732,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -786,7 +772,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -827,7 +812,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
@@ -868,7 +852,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
@@ -909,7 +892,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
@@ -919,6 +901,7 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
+          - "bionic-ussuri"
     builders:
       - trigger-builds:
         - project:
@@ -951,7 +934,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
@@ -989,7 +971,6 @@
          type: user-defined
          name: U_OS
          values:
-          # - "trusty-mitaka" # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
           # - "xenial-mitaka" # Pending https://bugs.launchpad.net/charm-ceph-osd/+bug/1604501
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
@@ -1030,7 +1011,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           # - "xenial-newton"  # Same ceph version as Mitaka UCA
           # - "xenial-ocata"   # Same ceph version as Mitaka UCA
@@ -1071,7 +1051,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -1081,6 +1060,7 @@
           - "bionic-rocky"
           - "bionic-stein"
           - "bionic-train"
+          - "bionic-ussuri"
     builders:
       - trigger-builds:
         - project:
@@ -1112,7 +1092,6 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-mitaka"
           - "xenial-newton"
           - "xenial-ocata"
@@ -1188,8 +1167,8 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-queens"
+          # - "bionic-ussuri" -- Note this is actually in COT now.
     builders:
       - trigger-builds:
         - project:
@@ -1203,7 +1182,7 @@
 
 - job:
     name: test_mojo_parallel_series_upgrade_master_matrix
-    disabled: false
+    disabled: true
     project-type: matrix
     description: |
         <p><i>Dynamically Generated Job - Do not edit through the Jenkins Web UI.  You will lose your changes.</i></p>
@@ -1222,8 +1201,8 @@
          type: user-defined
          name: U_OS
          values:
-          - "trusty-mitaka"
           - "xenial-queens"
+          # - "bionic-ussuri" -- Note this is actually in COT now.
     builders:
       - trigger-builds:
         - project:
