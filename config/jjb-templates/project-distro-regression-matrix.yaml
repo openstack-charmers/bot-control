@@ -13,6 +13,7 @@
          type: user-defined
          name: TOX_ARGUMENT
          values:
+           - keystone_v2_smoke:trusty-mitaka
            - keystone_v2_smoke:xenial-mitaka
            - keystone_v2_smoke:xenial-newton
            - keystone_v2_smoke:xenial-ocata
