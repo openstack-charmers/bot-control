@@ -27,7 +27,6 @@
          values:
           - aodh
           - barbican
-          - barbican-softhsm
           - barbican-vault
           - ceph-fs
           - ceph-iscsi
