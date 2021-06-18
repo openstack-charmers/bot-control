@@ -69,7 +69,6 @@
       - rabbitmq-server
       - swift-proxy
       - swift-storage
-      - tempest
 # NOTE(lourot): by commenting out trilio-* here, these pusher jobs won't be
 # touched next time we run the Jenkins Job Builder. This allows us to keep
 # these stable pushers working an older release branch (20.10):
