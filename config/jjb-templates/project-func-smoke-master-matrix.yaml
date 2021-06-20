@@ -88,7 +88,6 @@
           - rabbitmq-server
           - swift-proxy
           - swift-storage
-          - tempest
           - vault
           - watcher
           - watcher-dashboard

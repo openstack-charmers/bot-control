@@ -26,9 +26,9 @@ Presumes you are the ubuntu user.
 mkdir -p /home/ubuntu/checkout
 mkdir -p /home/ubuntu/tools
 git clone https://github.com/openstack-charmers/bot-control /home/ubuntu/tools/bot-control
-git clone https://github.com/openstack/charm-tempest /home/ubuntu/checkout/charm-tempest
+git clone https://github.com/openstack/charm-aodh /home/ubuntu/checkout/charm-aodh
 cd /home/ubuntu/tools/bot-control/tools
-./charm-what /home/ubuntu/checkout/charm-tempest
+./charm-what /home/ubuntu/checkout/charm-aodh
 layer
 
 
@@ -40,7 +40,7 @@ charm (classic)
 ```
 #!/usr/bin/python3     
 import lib.charm_what.utils as cw_utils
-print(cw_utils.whatis('/home/ubuntu/checkout/charm-tempest'))
+print(cw_utils.whatis('/home/ubuntu/checkout/charm-aodh'))
 ```
 
 ##### Hacking / Testing

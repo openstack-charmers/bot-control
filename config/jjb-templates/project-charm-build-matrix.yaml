@@ -67,7 +67,6 @@
           - ovn-dedicated-chassis
           - pacemaker-remote
           - placement
-          - tempest
           - vault
           - watcher
           - watcher-dashboard
