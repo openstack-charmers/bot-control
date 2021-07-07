@@ -1,0 +1,119 @@
+- job:
+    description: null
+    disabled: false
+    name: '6. Full Cloud - Teardown'
+    parameters:
+    - bool:
+        default: true
+        description: Destroy juju model on target slave (if DESTROY_CONTROLLER=true,
+          this option is ignored as the model will always be destroyed when the controller
+          is destroyed).
+        name: DESTROY_MODEL
+    - bool:
+        default: true
+        description: 'Destroy controller and model for specific ARCH on '
+        name: DESTROY_CONTROLLER
+    - bool:
+        default: true
+        description: 'Experimental: take slave offline so no jobs can run here again
+          (to avoid model contention / switch issues)'
+        name: OFFLINE_SLAVE
+    - bool:
+        default: false
+        description: 'Forcibly destroy target slave '
+        name: DESTROY_SLAVE
+    - string:
+        default: ''
+        description: Target slave. If not defined, we will only try to release nodes.
+        name: SLAVE_NODE_NAME
+        trim: false
+    - choice:
+        choices:
+        - amd64
+        - arm64
+        - ppc64el
+        - s390x
+        description: ''
+        name: ARCH
+    - choice:
+        choices:
+        - ruxton
+        - icarus
+        - s390x
+        description: ''
+        name: CLOUD_NAME
+    - bool:
+        default: true
+        description: 'Release all nodes with matching tags and arch. If arch was defined
+          in MODEL_CONSTRAINTS, machines may need to be released manually or with
+          a different architecture specification. '
+        name: RELEASE_MACHINES
+    - bool:
+        default: false
+        description: If disabled, do not release MAAS machines which have the tag
+          'locked'. If enabled, release even locked nodes.
+        name: FORCE_RELEASE
+    - string:
+        default: mosci
+        description: 'MAAS machine owner name '
+        name: MAAS_OWNER
+        trim: false
+    - string:
+        default: ''
+        description: API Key for ruxton-maas
+        name: RUXTON_API_KEY
+        trim: false
+    - string:
+        default: ''
+        description: ''
+        name: ICARUS_API_KEY
+        trim: false
+    - string:
+        default: tags=uosci
+        description: |-
+          Tags to match for releasing MAAS machines. separated by commas, e.g.:
+          tags=uosci,dell,metal
+        name: MODEL_CONSTRAINTS
+        trim: false
+    - raw:
+        xml: |
+          <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition plugin="extended-choice-parameter@0.76">
+          <name>S390X_NODES</name>
+          <description>s390x LPARs to be reset (lvm snapshot restore)</description>
+          <quoteValue>false</quoteValue>
+          <saveJSONParameterToFile>false</saveJSONParameterToFile>
+          <visibleItemCount>10</visibleItemCount>
+          <type>PT_MULTI_SELECT</type>
+          <value>10.13.3.5,10.13.3.6,10.13.3.7,10.13.3.8,10.13.3.9,10.13.3.10,10.13.3.11,10.13.3.12,10.13.3.13,10.13.3.14</value>
+          <defaultValue>none</defaultValue>
+          <multiSelectDelimiter>,</multiSelectDelimiter>
+          <descriptionPropertyValue>s4lp5,s4lp6,s4lp7,s4lp8,s4lp9,s4lpa,s4lpb,s4lpc,s4lpd,s4lpe</descriptionPropertyValue>
+          </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+    pipeline-scm:
+      lightweight-checkout: true
+      scm:
+      - git:
+          branches:
+          - '*/admcleod_test'
+          url: https://github.com/openstack-charmers/bot-control.git
+      script-path: ./config/pipelines-mosci/6_full_cloud_teardown/Jenkinsfile.groovy
+    project-type: pipeline
+    properties:
+    - raw:
+        xml: |
+          <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.28">
+          <autoRebuild>false</autoRebuild>
+          <rebuildDisabled>false</rebuildDisabled>
+          </com.sonyericsson.rebuild.RebuildSettings>
+    - raw:
+        xml: |
+          <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
+          <maxConcurrentPerNode>0</maxConcurrentPerNode>
+          <maxConcurrentTotal>0</maxConcurrentTotal>
+          <categories class="java.util.concurrent.CopyOnWriteArrayList" />
+          <throttleEnabled>false</throttleEnabled>
+          <throttleOption>project</throttleOption>
+          <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
+          <paramsToUseForLimit />
+          </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+    triggers: []

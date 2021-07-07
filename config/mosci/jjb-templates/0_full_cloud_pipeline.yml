@@ -1,0 +1,345 @@
+- job:
+    description: null
+    disabled: false
+    name: '0. Full Cloud - Pipeline'
+    parameters:
+    - raw:
+        xml: |
+          <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition plugin="extended-choice-parameter@0.76">
+          <name>PHASES</name>
+          <description>Chose which phases to run / skip</description>
+          <quoteValue>false</quoteValue>
+          <saveJSONParameterToFile>false</saveJSONParameterToFile>
+          <visibleItemCount>6</visibleItemCount>
+          <type>PT_CHECKBOX</type>
+          <value>Preparation,Bootstrap,Deploy,Configure,Test,Teardown</value>
+          <defaultValue>Preparation,Bootstrap,Deploy,Configure,Test,Teardown</defaultValue>
+          <multiSelectDelimiter>,</multiSelectDelimiter>
+          </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+    - bool:
+        default: true
+        description: Untick this box if this is not an openstack deployment
+        name: OPENSTACK
+    - raw:
+        xml: |
+          <jenkins.plugins.parameter__separator.ParameterSeparatorDefinition plugin="parameter-separator@1.0">
+          <name>separator-87aafbf9-d320-497e-898f-1e8678e5b44a</name>
+          <description />
+          <sectionHeader>CLOUD AND ARCH DETAILS</sectionHeader>
+          <sectionHeaderStyle />
+          <separatorStyle />
+          </jenkins.plugins.parameter__separator.ParameterSeparatorDefinition>
+    - choice:
+        choices:
+        - ruxton
+        - icarus
+        - s390x
+        description: |-
+          MAAS host, or a set of s390x LPARs.
+          s390x cloud depends on chosing "additional machines" below.
+        name: CLOUD_NAME
+    - raw:
+        xml: |
+          <com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition plugin="extended-choice-parameter@0.76">
+          <name>S390X_NODES</name>
+          <description>Select S390X Nodes to be used in this deployment</description>
+          <quoteValue>false</quoteValue>
+          <saveJSONParameterToFile>false</saveJSONParameterToFile>
+          <visibleItemCount>10</visibleItemCount>
+          <type>PT_CHECKBOX</type>
+          <value>10.13.3.5,10.13.3.6,10.13.3.7,10.13.3.8,10.13.3.9,10.13.3.10,10.13.3.11,10.13.3.12,10.13.3.13,10.13.3.14</value>
+          <defaultValue>none</defaultValue>
+          <multiSelectDelimiter>,</multiSelectDelimiter>
+          <descriptionPropertyValue>s4lp5,s4lp6,s4lp7,s4lp8,s4lp9,s4lpa,s4lpb,s4lpc,s4lpd,s4lpe</descriptionPropertyValue>
+          </com.cwctravel.hudson.plugins.extended__choice__parameter.ExtendedChoiceParameterDefinition>
+    - bool:
+        default: false
+        description: Is this an openstack-on-lxd (single machine) deployment?
+        name: OOLXD
+    - choice:
+        choices:
+        - amd64
+        - arm64
+        - ppc64el
+        - s390x
+        description: 'Default architecture to deploy on. Charm constraints in a bundle
+          will override this value. '
+        name: ARCH
+    - string:
+        default: ''
+        description: Force this job to run on a specific slave
+        name: SLAVE_NODE_NAME
+        trim: false
+    - string:
+        default: serverstack
+        description: 'Specify a label for slaves that this job may run on '
+        name: SLAVE_LABEL
+        trim: false
+    - string:
+        default: https://github.com/openstack-charmers/charm-test-infra
+        description: GIT REPO URL for Charm Test Infra
+        name: CTI_GIT_REPO
+        trim: false
+    - string:
+        default: admcleod_test
+        description: GIT REPO BRANCH NAME for Charm Test Infra
+        name: CTI_GIT_BRANCH
+        trim: false
+    - string:
+        default: mosci
+        description: MAAS username (should be the same on all MAAS controllers)
+        name: MAAS_OWNER
+        trim: false
+    - bool:
+        default: false
+        description: Verbose logging during jenkins pipeline jobs
+        name: VERBOSE_LOGS
+    - bool:
+        default: false
+        description: By default, if a job or stage fails, no cleanup of machines,
+          controllers or slaves will be performed. If this option is enabled, then
+          we will attempt to remove models, controllers and jenkins slaves on failure.
+        name: CLEAUP_ON_FAILURE
+    - bool:
+        default: true
+        description: If enabled, failures will present retry prompts. If not, automatic
+          retries will occur. If creating an automated job, ensure this is disabled.
+        name: MANUAL_JOB
+    - raw:
+        xml: |
+          <jenkins.plugins.parameter__separator.ParameterSeparatorDefinition plugin="parameter-separator@1.0">
+          <name>separator-5ec60cb0-9dae-402f-a59a-ed5a1a8ffe07</name>
+          <description />
+          <sectionHeader>BOOTSTRAP PHASE</sectionHeader>
+          <sectionHeaderStyle />
+          <separatorStyle />
+          </jenkins.plugins.parameter__separator.ParameterSeparatorDefinition>
+    - bool:
+        default: false
+        description: If enabled, attempt to release all nodes on CLOUD_NAME which
+          match MODEL_CONSTRAINTS and ARCH before running prepare. This should be
+          enabled for important automated jobs. Will attempt to revert snapshots on
+          s390x LPARs if they are already provisioned.
+        name: PRE_RELEASE_MACHINES
+    - text:
+        default: tags=uosci
+        description: MAAS tags (one per line) to use when requesting a machine for
+          the controller. Ignored if "BOOTSTRAP_SLAVE" is enabled. If cloud / arch
+          is s390x, this will be set to null
+        name: BOOTSTRAP_CONSTRAINTS
+        trim: false
+    - text:
+        default: tags=uosci
+        description: MAAS tags (one per line) to use when requesting machines for
+          the model. If cloud or arch is s390x, "arch=s390x" will be appended to this
+          value as it is mandatory when bootstrapping on a non-s390x host.
+        name: MODEL_CONSTRAINTS
+        trim: false
+    - bool:
+        default: false
+        description: Bootstrap on the jenkins slave instead of on a maas machine (this
+          is mandatory for an s390x only deploy)
+        name: BOOTSTRAP_ON_SLAVE
+    - bool:
+        default: false
+        description: Tries to find an existing controller for this architecture; if
+          found, it will destroy it, ensure juju is the latest version and create
+          a new controller.
+        name: FORCE_NEW_CONTROLLER
+    - text:
+        default: ''
+        description: |-
+          Value to apply to model config after bootstrap, one key=value pair per line, e.g.
+
+          agent-stream=devel
+        name: OVERRIDE_MODEL_CONFIG
+        trim: false
+    - text:
+        default: ''
+        description: |-
+          Value to apply to model config after bootstrap, one key=value pair per line, e.g.
+
+          max-logs-size=4096M
+        name: OVERRIDE_CONTROLLER_CONFIG
+        trim: false
+    - raw:
+        xml: |
+          <jenkins.plugins.parameter__separator.ParameterSeparatorDefinition plugin="parameter-separator@1.0">
+          <name>separator-90140057-5fc5-40e4-9688-2aa9d75e0509</name>
+          <description />
+          <sectionHeader>DEPLOY PHASE</sectionHeader>
+          <sectionHeaderStyle />
+          <separatorStyle />
+          </jenkins.plugins.parameter__separator.ParameterSeparatorDefinition>
+    - string:
+        default: bundle.yaml
+        description: Specify bundle name to deploy - the default of bundle.yaml assumes
+          this file is present in the repo fetched during the prepare phase
+        name: BUNDLE_NAME
+        trim: false
+    - string:
+        default: https://raw.githubusercontent.com/andrewdmcleod/magpie-bundle/master/bundle.yaml
+        description: Deploy a bundle at a specific URL. Overrides BUNDLE_NAME.
+        name: BUNDLE_URL
+        trim: false
+    - string:
+        default: ''
+        description: Upload a bundle file to deploy. Overrides BUNDLE_NAME and BUNDLE_URL.
+        name: BUNDLE_FILE
+        trim: false
+    - text:
+        default: ''
+        description: |-
+          Override config in the bundle, e.g. setting osd-devices for ceph-osd, one item per line
+
+          application,key=value
+          e.g.
+          ceph-osd,osd-devices=/srv/ceph-osd
+        name: OVERRIDE_BUNDLE_CONFIG
+        trim: false
+    - text:
+        default: ''
+        description: Paste a full bundle to deploy. Will override all other bundle
+          settings.
+        name: BUNDLE_PASTE
+        trim: false
+    - raw:
+        xml: |
+          <jenkins.plugins.parameter__separator.ParameterSeparatorDefinition plugin="parameter-separator@1.0">
+          <name>separator-cab70b10-ff2e-4ca6-b52b-aa4a51fee560</name>
+          <description />
+          <sectionHeader>CONFIG PHASE</sectionHeader>
+          <sectionHeaderStyle />
+          <separatorStyle />
+          </jenkins.plugins.parameter__separator.ParameterSeparatorDefinition>
+    - string:
+        default: ''
+        description: Keystone version (2 or 3) - leave blank to try to find out after
+          deployment
+        name: KEYSTONE_API_VERSION
+        trim: false
+    - string:
+        default: ''
+        description: |-
+          Set data-port for neutron-gateway charm before waiting for deployment to complete.
+
+          Example value: br-ex:eth1
+
+          If this value is not set, we will wait for the machines to be deployed, and then use the MAAS API to get the second configured interface on the machine. We will also confirm this interface appears in dmesg for the neutron-gateway unit.
+        name: NEUTRON_DATAPORT
+        trim: false
+    - string:
+        default: ''
+        description: Extra ssh keys to import from launchpad ids. imports into jenkins/.ssh/authorized_keys2
+        name: IMPORT_LP_KEYS
+        trim: false
+    - raw:
+        xml: |
+          <jenkins.plugins.parameter__separator.ParameterSeparatorDefinition plugin="parameter-separator@1.0">
+          <name>separator-38e8fe96-d09b-4ad3-b86e-8e62bb8480fb</name>
+          <description />
+          <sectionHeader>TEST PHASE</sectionHeader>
+          <sectionHeaderStyle />
+          <separatorStyle />
+          </jenkins.plugins.parameter__separator.ParameterSeparatorDefinition>
+    - raw:
+        xml: |
+          <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@2.1">
+          <name>SELECTED_TESTS</name>
+          <description>Select openstack tests to run on top of deployed cloud</description>
+          <randomName>choice-parameter-2594949611690406</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+          <secureScript plugin="script-security@1.44">
+          <script>import hudson.model.*
+
+          def a = hudson.model.Hudson.instance.items.findAll{job -&gt; job.name =~ /openstack test/ }.each {
+          job -&gt;
+          println job
+          }
+
+          return a.displayName</script>
+          <sandbox>false</sandbox>
+          </secureScript>
+          <secureFallbackScript plugin="script-security@1.44">
+          <script>return['error getting job names']</script>
+          <sandbox>false</sandbox>
+          </secureFallbackScript>
+          </script>
+          <projectName>0. Full Cloud - Pipeline</projectName>
+          <choiceType>PT_CHECKBOX</choiceType>
+          <filterable>false</filterable>
+          <filterLength>1</filterLength>
+          </org.biouno.unochoice.ChoiceParameter>
+    - raw:
+        xml: |
+          <jenkins.plugins.parameter__separator.ParameterSeparatorDefinition plugin="parameter-separator@1.0">
+          <name>separator-935e996f-390d-4737-bc94-a6365ebf4d2c</name>
+          <description />
+          <sectionHeader>TEARDOWN PHASE</sectionHeader>
+          <sectionHeaderStyle />
+          <separatorStyle />
+          </jenkins.plugins.parameter__separator.ParameterSeparatorDefinition>
+    - bool:
+        default: false
+        description: If true, use a slave which will not be automatically removed
+          after a certain period of time (does not override teardown options). Use
+          in combination with BOOTSTRAP_ON_SLAVE.
+        name: PERSIST_SLAVE
+    - bool:
+        default: false
+        description: Force slave removal at the end of the job
+        name: DESTROY_SLAVE
+    - bool:
+        default: false
+        description: 'Destroy model on slave after job completiion '
+        name: DESTROY_MODEL
+    - bool:
+        default: false
+        description: Remove the controller from this slave at the end of the job
+        name: DESTROY_CONTROLLER
+    - bool:
+        default: true
+        description: Take this slave offline when the job completes
+        name: OFFLINE_SLAVE
+    - bool:
+        default: false
+        description: Attempt to release MAAS machines or remove-machine and reset
+          snapshots s390x LPARs. Destroying juju model and controller should release
+          machines, but enabling this will clean up any machines which match ARCH
+          and tags in MODEL_CONSTRAINTS in case of failed jobs. It will only release
+          nodes owned by MAAS_OWNER
+        name: RELEASE_MACHINES
+    - bool:
+        default: false
+        description: Force the removal of MAAS nodes even if they have the 'locked'
+          tag. Currently there is no mechanism to lock LPARs
+        name: FORCE_RELEASE
+    pipeline-scm:
+      lightweight-checkout: true
+      scm:
+      - git:
+          branches:
+          - '*/admcleod_test'
+          url: https://github.com/openstack-charmers/bot-control.git
+      script-path: ./config/pipelines-mosci/0_full_cloud_pipeline_wrapper/Jenkinsfile.groovy
+    project-type: pipeline
+    properties:
+    - raw:
+        xml: |
+          <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.28">
+          <autoRebuild>false</autoRebuild>
+          <rebuildDisabled>false</rebuildDisabled>
+          </com.sonyericsson.rebuild.RebuildSettings>
+    - raw:
+        xml: |
+          <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
+          <maxConcurrentPerNode>1</maxConcurrentPerNode>
+          <maxConcurrentTotal>10</maxConcurrentTotal>
+          <categories class="java.util.concurrent.CopyOnWriteArrayList" />
+          <throttleEnabled>true</throttleEnabled>
+          <throttleOption>project</throttleOption>
+          <limitOneJobWithMatchingParams>true</limitOneJobWithMatchingParams>
+          <paramsToUseForLimit />
+          </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+    triggers: []

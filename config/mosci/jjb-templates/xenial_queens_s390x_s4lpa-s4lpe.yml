@@ -1,0 +1,69 @@
+- job:
+    block-downstream: false
+    block-upstream: false
+    builders:
+    - raw:
+        xml: |
+          <hudson.plugins.parameterizedtrigger.TriggerBuilder plugin="parameterized-trigger@2.35.2">
+          <configs>
+          <hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+          <configs>
+          <hudson.plugins.parameterizedtrigger.BooleanParameters>
+          <configs>
+          <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+          <name>PRE_RELEASE_MACHINES</name>
+          <value>true</value>
+          </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+          <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+          <name>DESTROY_CONTROLLER</name>
+          <value>true</value>
+          </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+          <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+          <name>DESTROY_SLAVE</name>
+          <value>true</value>
+          </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+          </configs>
+          </hudson.plugins.parameterizedtrigger.BooleanParameters>
+          <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          <properties>CLOUD_NAME=s390x
+          ARCH=s390x
+          BUNDLE_URL=https://raw.githubusercontent.com/openstack-charmers/openstack-bundles/master/development/openstack-base-xenial-queens/bundle.yaml
+          SELECTED_TESTS=openstack test - instance launch,openstack test - magpie
+          S390X_NODES=a,b,c,d,e</properties>
+          <textParamValueOnNewLine>false</textParamValueOnNewLine>
+          </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          </configs>
+          <projects>0. Full Cloud - Pipeline</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
+          <buildAllNodesWithLabel>false</buildAllNodesWithLabel>
+          </hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+          </configs>
+          </hudson.plugins.parameterizedtrigger.TriggerBuilder>
+    concurrent: false
+    description: null
+    disabled: false
+    name: 'xenial queens s390x - s4lpa...s4lpe'
+    project-type: freestyle
+    properties:
+    - raw:
+        xml: |
+          <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.27">
+          <autoRebuild>false</autoRebuild>
+          <rebuildDisabled>false</rebuildDisabled>
+          </com.sonyericsson.rebuild.RebuildSettings>
+    - raw:
+        xml: |
+          <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
+          <maxConcurrentPerNode>0</maxConcurrentPerNode>
+          <maxConcurrentTotal>0</maxConcurrentTotal>
+          <categories class="java.util.concurrent.CopyOnWriteArrayList" />
+          <throttleEnabled>false</throttleEnabled>
+          <throttleOption>project</throttleOption>
+          <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
+          <paramsToUseForLimit />
+          </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+    publishers: []
+    triggers: []
+    wrappers: []

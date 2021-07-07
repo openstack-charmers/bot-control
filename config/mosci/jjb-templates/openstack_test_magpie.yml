@@ -1,0 +1,77 @@
+- job:
+    description: Launch a single openstack instance of ARCH, give it a floating IP,
+      ssh to the IP and run uname -a. Result of job will be uname -a output, or FAILED.
+    disabled: false
+    name: 'openstack test - magpie'
+    parameters:
+    - choice:
+        choices:
+        - ruxton
+        - icarus
+        - s390x
+        description: ''
+        name: CLOUD_NAME
+    - choice:
+        choices:
+        - amd64
+        - arm64
+        - ppc64el
+        - s390x
+        description: ''
+        name: ARCH
+    - string:
+        default: ''
+        description: ''
+        name: WORKSPACE
+    - string:
+        default: ''
+        description: ''
+        name: SLAVE_NODE_NAME
+    - string:
+        default: https://raw.githubusercontent.com/andrewdmcleod/magpie-bundle/master/bundle.yaml
+        description: https://raw.githubusercontent.com/andrewdmcleod/magpie-bundle/master/bundle.yaml
+        name: BUNDLE_URL
+    - bool:
+        default: true
+        description: If this is running on an existing openstack cloud
+        name: OVERCLOUD_DEPLOY
+    - string:
+        default: magpie-overcloud
+        description: juju controller name
+        name: CONTROLLER_NAME
+    - string:
+        default: magpie
+        description: juju model name
+        name: MODEL_NAME
+    - bool:
+        default: true
+        description: True if this is an openstack test
+        name: OPENSTACK
+    pipeline-scm:
+      lightweight-checkout: true
+      scm:
+      - git:
+          branches:
+          - '*/admcleod_test'
+          url: https://github.com/openstack-charmers/bot-control.git
+      script-path: ./config/pipelines-mosci/openstack_tests/generic_juju/Jenkinsfile.groovy
+    project-type: pipeline
+    properties:
+    - raw:
+        xml: |
+          <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.27">
+          <autoRebuild>false</autoRebuild>
+          <rebuildDisabled>false</rebuildDisabled>
+          </com.sonyericsson.rebuild.RebuildSettings>
+    - raw:
+        xml: |
+          <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
+          <maxConcurrentPerNode>0</maxConcurrentPerNode>
+          <maxConcurrentTotal>0</maxConcurrentTotal>
+          <categories class="java.util.concurrent.CopyOnWriteArrayList" />
+          <throttleEnabled>false</throttleEnabled>
+          <throttleOption>project</throttleOption>
+          <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
+          <paramsToUseForLimit />
+          </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+    triggers: []

@@ -1,0 +1,57 @@
+- job:
+    description: null
+    disabled: false
+    name: 'terminate mosci slaves'
+    parameters:
+    - raw:
+        xml: |
+          <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@2.1">
+          <name>TERMINATE_SLAVES</name>
+          <description />
+          <randomName>choice-parameter-3292341312216171</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+          <secureScript plugin="script-security@1.41">
+          <script>import hudson.model.*
+          names = Hudson.getInstance().getSlaves().name
+          return names</script>
+          <sandbox>false</sandbox>
+          </secureScript>
+          <secureFallbackScript plugin="script-security@1.41">
+          <script>return "error getting slaves"</script>
+          <sandbox>false</sandbox>
+          </secureFallbackScript>
+          </script>
+          <projectName>terminate mosci slaves</projectName>
+          <choiceType>PT_MULTI_SELECT</choiceType>
+          <filterable>false</filterable>
+          <filterLength>1</filterLength>
+          </org.biouno.unochoice.ChoiceParameter>
+    pipeline-scm:
+      lightweight-checkout: true
+      scm:
+      - git:
+          branches:
+          - '*/admcleod_test'
+          url: https://github.com/openstack-charmers/bot-control.git
+      script-path: ./config/pipelines-mosci/utils/terminate_slaves/Jenkinsfile.groovy
+    project-type: pipeline
+    properties:
+    - raw:
+        xml: |
+          <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.27">
+          <autoRebuild>false</autoRebuild>
+          <rebuildDisabled>false</rebuildDisabled>
+          </com.sonyericsson.rebuild.RebuildSettings>
+    - raw:
+        xml: |
+          <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
+          <maxConcurrentPerNode>0</maxConcurrentPerNode>
+          <maxConcurrentTotal>0</maxConcurrentTotal>
+          <categories class="java.util.concurrent.CopyOnWriteArrayList" />
+          <throttleEnabled>false</throttleEnabled>
+          <throttleOption>project</throttleOption>
+          <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
+          <paramsToUseForLimit />
+          </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+    triggers: []
