@@ -24,6 +24,8 @@
            - keystone_v3_smoke_focal:groovy-victoria
            - keystone_v3_smoke_focal:focal-wallaby
            - keystone_v3_smoke_focal:hirsute-wallaby
+           - keystone_v3_smoke_focal:focal-xena
+           - keystone_v3_smoke_focal:impish-xena
     builders:
       - trigger-builds:
         - project:
