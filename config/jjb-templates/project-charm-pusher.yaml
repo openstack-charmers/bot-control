@@ -64,6 +64,7 @@
       - octavia-dashboard
       - octavia-diskimage-retrofit
       - openstack-dashboard
+      - openstack-loadbalancer
       - pacemaker-remote
       - percona-cluster
       - placement
