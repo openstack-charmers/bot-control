@@ -90,6 +90,7 @@
     jobs:
       - 'charm_pusher_{charm}_master'
       - 'charm_pusher_{charm}_stable'
+      - 'charm_pusher_{charm}_candidate'
       - 'charm_pusher_noop_debug'
 
 # MASTER
@@ -106,6 +107,10 @@
             name: GIT_BRANCH
             default: master
             description: Git branch.  Generally master or stable/nn.nn.
+        - string:
+            name: JUJU_CHANNEL
+            default: stable
+            description: The channel to push the charm to (stable, candidate, beta, edge)
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
     properties:
@@ -130,7 +135,7 @@
       - build_charm_push_and_publish
     publishers:
         - archive_artifacts
-        - email_watchers
+        #- email_watchers
 
 # STABLE
 - job-template:
@@ -146,6 +151,10 @@
             name: GIT_BRANCH
             default: stable/21.04
             description: Git branch.  Generally master or stable/nn.nn.
+        - string:
+            name: JUJU_CHANNEL
+            default: stable
+            description: The channel to push the charm to (stable, candidate, beta, edge)
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
     properties:
@@ -170,7 +179,51 @@
       - build_charm_push_and_publish
     publishers:
         - archive_artifacts
-        - email_watchers
+        #- email_watchers
+
+# CANDIDATE
+- job-template:
+    name: 'charm_pusher_{charm}_candidate'
+    node: task
+    disabled: true
+    parameters:
+        - string:
+            name: BASE_NAME
+            default: '{charm}'
+            description: Asset name (charm name).
+        - string:
+            name: GIT_BRANCH
+            default: stable/21.10
+            description: Git branch.  Generally master or stable/nn.nn.
+        - string:
+            name: JUJU_CHANNEL
+            default: candidate
+            description: The channel to push the charm to (stable, candidate, beta, edge)
+        - CHARM_PUSH_DRY_RUN
+        - DISPLAY_NAME
+    properties:
+      - build-discarder:
+          days-to-keep: 90
+    scm:
+      - git:
+         url: https://opendev.org/openstack/charm-{charm}
+         basedir: '{charm}'
+         skip-tag: true
+         fastpoll: true
+         shallow-clone: true
+         clean: {before: true}
+         branches:
+          - stable/21.10
+    triggers:
+      - pollscm:
+          cron: 'H/10 * * * *'
+          ignore-post-commit-hooks: True
+    builders:
+      - prep_osci_repo_if_necessary
+      - build_charm_push_and_publish
+    publishers:
+        - archive_artifacts
+        #- email_watchers
 
 # NO-OP DEBUG JOB
 - job-template:
@@ -185,6 +238,10 @@
             name: GIT_BRANCH
             default: master
             description: Git branch.  Generally master or stable/nn.nn.
+        - string:
+            name: JUJU_CHANNEL
+            default: stable
+            description: The channel to push the charm to (stable, candidate, beta, edge)
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
     properties:
