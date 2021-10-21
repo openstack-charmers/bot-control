@@ -170,7 +170,7 @@
          shallow-clone: true
          clean: {before: true}
          branches:
-          - stable/21.04
+          - stable/21.10
     triggers:
       - pollscm:
           cron: 'H/10 * * * *'
@@ -214,7 +214,7 @@
          shallow-clone: true
          clean: {before: true}
          branches:
-          - stable/21.10
+          - stable/22.04
     triggers:
       - pollscm:
           cron: 'H/10 * * * *'
