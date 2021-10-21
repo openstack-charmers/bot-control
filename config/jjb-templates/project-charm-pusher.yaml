@@ -150,7 +150,7 @@
             description: Asset name (charm name).
         - string:
             name: GIT_BRANCH
-            default: stable/21.04
+            default: stable/21.10
             description: Git branch.  Generally master or stable/nn.nn.
         - string:
             name: JUJU_CHANNEL
@@ -194,7 +194,7 @@
             description: Asset name (charm name).
         - string:
             name: GIT_BRANCH
-            default: stable/21.10
+            default: stable/22.04
             description: Git branch.  Generally master or stable/nn.nn.
         - string:
             name: JUJU_CHANNEL
