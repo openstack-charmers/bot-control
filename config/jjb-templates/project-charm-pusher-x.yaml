@@ -36,7 +36,7 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - string:
             name: JUJU_CHANNEL
-            default: candidate
+            default: stable
             description: The channel to push the charm to (stable, candidate, beta, edge)
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
@@ -81,7 +81,7 @@
             description: Git branch.  Generally master or stable/nn.nn.
         - string:
             name: JUJU_CHANNEL
-            default: candidate
+            default: stable
             description: The channel to push the charm to (stable, candidate, beta, edge)
         - CHARM_PUSH_DRY_RUN
         - DISPLAY_NAME
