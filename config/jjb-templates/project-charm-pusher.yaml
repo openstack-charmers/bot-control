@@ -64,6 +64,7 @@
       - nova-cell-controller
       - nova-cloud-controller
       - nova-compute
+      - nova-compute-nvidia-vgpu
       - octavia
       - octavia-dashboard
       - octavia-diskimage-retrofit
