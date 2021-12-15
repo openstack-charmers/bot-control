@@ -64,7 +64,9 @@
       - nova-cell-controller
       - nova-cloud-controller
       - nova-compute
-      - nova-compute-nvidia-vgpu
+      # disabled as this charm will never be published to the charmstore, but
+      # directly to the charmhub from day one instead:
+      # - nova-compute-nvidia-vgpu
       - octavia
       - octavia-dashboard
       - octavia-diskimage-retrofit
