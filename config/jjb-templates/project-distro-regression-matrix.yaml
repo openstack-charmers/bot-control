@@ -13,7 +13,6 @@
          type: user-defined
          name: TOX_ARGUMENT
          values:
-           - keystone_v3_smoke:xenial-queens
            - keystone_v3_smoke:bionic-queens
            - keystone_v3_smoke_rocky:bionic-rocky
            - keystone_v3_smoke_stein:bionic-stein
@@ -21,11 +20,13 @@
            - keystone_v3_smoke_stein:bionic-ussuri
            - keystone_v3_smoke_focal:focal-ussuri
            - keystone_v3_smoke_focal:focal-victoria
-           - keystone_v3_smoke_focal:groovy-victoria
            - keystone_v3_smoke_focal:focal-wallaby
-           - keystone_v3_smoke_focal:hirsute-wallaby
            - keystone_v3_smoke_focal:focal-xena
            - keystone_v3_smoke_focal:impish-xena
+           - keystone_v3_smoke_focal:focal-yoga
+           - keystone_v3_smoke_focal:jammy-yoga
+           - keystone_v3_smoke_focal:jammy-zed
+           - keystone_v3_smoke_focal:kinetic-zed
     builders:
       - trigger-builds:
         - project:
